@@ -12,4 +12,5 @@ target/
 build.xml
 /.idea/workspace.xml
 .DS_Store
-/.idea/*
+**/.idea/workspace.xml
+**/.idea/tasks.xml
