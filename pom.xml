@@ -13,7 +13,8 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.10</version>
+			<version>1.18.4</version>
+			<!-- 1.18.10 was causing compile errors, so downgraded to 1.18.4 -->
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>

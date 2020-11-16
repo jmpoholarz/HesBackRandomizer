@@ -157,7 +157,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void actionSaveMWD(ActionEvent evt) {
+    public void actionSaveMWD(ActionEvent evt) {
         SaveController.saveFiles(GUIMain.EXE_CONFIG, getMwdFile());
     }
 

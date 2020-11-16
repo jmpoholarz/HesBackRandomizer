@@ -17,6 +17,7 @@ import net.highwayfrogs.editor.file.config.Config;
 import net.highwayfrogs.editor.file.config.FroggerEXEInfo;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.reader.FileSource;
+import net.highwayfrogs.editor.randomizer.Randomizer;
 import net.highwayfrogs.editor.utils.DataSizeUnit;
 import net.highwayfrogs.editor.utils.Utils;
 
@@ -129,6 +130,9 @@ public class GUIMain extends Application {
         MWDFile mwd = loadConfig.getMWD();
         mwd.load(new DataReader(new FileSource(mwdFile)));
         MainController.MAIN_WINDOW.loadMWD(mwd); // Setup GUI.
+
+        Randomizer randomizer = new Randomizer();
+        randomizer.randomize();
     }
 
     /**

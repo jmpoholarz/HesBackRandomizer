@@ -15,7 +15,7 @@ import net.highwayfrogs.editor.gui.editor.map.manager.EntityManager;
 @Getter
 @Setter
 public class MatrixData extends EntityData {
-    private PSXMatrix matrix = new PSXMatrix();
+    public PSXMatrix matrix = new PSXMatrix();
 
     @Override
     public void load(DataReader reader) {
