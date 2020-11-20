@@ -89,6 +89,7 @@ public class Randomizer {
             mf.setStartXTile(startPos.x);
             mf.setStartZTile(startPos.z);
             mf.setStartRotation(startPos.rotation);
+            //mf.
 
             // Remove same zone frogs from frogPositions
             frogPositions.removeIf(frog -> frog.zone == startPos.zone);
