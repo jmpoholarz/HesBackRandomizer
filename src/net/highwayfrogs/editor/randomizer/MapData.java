@@ -165,9 +165,52 @@ public class MapData {
                  new FrogPosition(168.0, -164.0, -198.25, 180, 0, 180, 4),
                  new FrogPosition(215.9375, -98.875, -361.6875, 0, 0, 0, 4)
          )));
+         FROG_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(-168.0, -35.625, -120.0, 0, 89.9, 0, 0),
+                 new FrogPosition(-120.0, -32.5625, -136.0, 0, 0, 0, 0),
+                 new FrogPosition(-152.0, -38.25, -88.0, 0, -89.9, 0, 0),
+                 new FrogPosition(-120.0, -33.9375, -72.0, 180, 0, 180, 0),
+                 new FrogPosition(-88.0, -30.4375, -88.0, 0, -89.9, 0, 0),
+                 new FrogPosition(-56.0, -27.75, -88.0, 0, 89.9, 0, 0),
+                 new FrogPosition(-168.0, -34.0, 8.0, 0, 89.9, 0, 1),
+                 new FrogPosition(-169.6875, -37.5, 56.0625, 0, 89.9, 0, 2),
+                 new FrogPosition(-169.6875, -38.0625, 88.0625, 0, 90, 0, 2),
+                 new FrogPosition(-119.9375, -34.5625, 137.6875, 180, 0, 180, 2),
+                 new FrogPosition(-55.875, -31.0, 137.6875, 180, 0, 180, 2),
+                 new FrogPosition(-88.0, -31.25, 72.0, 0, -89.9, 0, 2),
+                 new FrogPosition(-120.0, -32.8125, 56.0, 0, 0, 0, 2),
+                 new FrogPosition(56.0625, -31.5625, 137.6875, 180, 0, 180, 3),
+                 new FrogPosition(104.0, -28.3125, 88.0, 0, 0, 0, 3),
+                 new FrogPosition(136.0, -30.75, 135.9375, 180, 0, 180, 3),
+                 new FrogPosition(168.0, -31.1875, 88.0, 0, -89.9, 0, 3),
+                 new FrogPosition(152.0, -30.1875, 40.0, 0, 0, 0, 3),
+                 new FrogPosition(152.0, -27.0, -8.0, 180, 0, 180, 4),
+                 new FrogPosition(55.875, -30.1875, -104.0, 0, 89.9, 0, 5),
+                 new FrogPosition(120.0, -26.8125, -120.0, 0, 89.9, 0, 5),
+                 new FrogPosition(168.0, -29.9375, -39.8125, 0, -89.9, 0, 5),
+                 new FrogPosition(167.9375, -29.9375, -87.6875, 0, -89.9, 9, 5)
+         )));
 
 
-
+         FROG_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(-88.125, -147.6875, -7.75, 0, 89.9, 0, 0),
+                 new FrogPosition(53.625, -140.625, -120.0, 0, -89.9, 0, 1),
+                 new FrogPosition(-40.0, -36.375, -168.0, 180, 0, 180, 2),
+                 new FrogPosition(-119.75, -36.9375, -135.0, 180, 0, 180, 2),
+                 new FrogPosition(-150.0625, -100.75, -152.4375, 180, 0, 180, 2),
+                 new FrogPosition(-150.0, -102.3125, -84.75, 0, 0, 0, 3),
+                 new FrogPosition(-216.125, -132.75, 168.9375, 0, 0, 0, 3),
+                 new FrogPosition(-232.0, -128.6875, -360.0, 0, 89.9, 0, 4),
+                 new FrogPosition(-135.75, -38.3125, -392.125, 0, 0, 0, 5),
+                 new FrogPosition(-39.875, -62.5, -327.8125, 0, -89.9, 0, 5),
+                 new FrogPosition(-56.0, -36.3125, -376.0, 0, -89.9, 0, 5),
+                 new FrogPosition(-40.9375, -78.625, -264.125, 0, -89.9, 0, 5),
+                 new FrogPosition(216.0, -36.375, -376.0, 0, -89.9, 0, 6),
+                 new FrogPosition(216.0, -36.125, -248.0, 0, -89.9, 0, 6),
+                 new FrogPosition(103.3125, -72.0, -248.3125, 0, 0, 0, 7),
+                 new FrogPosition(212.0625, -78.375, -341.1875, 0, -89.9, 0, 7),
+                 new FrogPosition(106.625, -96.25, -118.4375, 0, 89.9, 0, 8)
+         )));
          FROG_LOCATIONS.put("VOL1.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition(-56.0, -63.9375, -24.0, 180, 0, 180, 1),
                  new FrogPosition(40.0625, -64.0, -24.0, 180, 0, 180, 1),
@@ -201,6 +244,7 @@ public class MapData {
                  new FrogPosition(-24.0, -144.0, 40.0, 0, 90, 0, 1),
                  new FrogPosition(-40.0, -16.0, -72.0, 0, 0, 0, 1)
          )));
+
 
      }
 
@@ -271,9 +315,34 @@ public class MapData {
                  new StartPosition(36, 22, StartRotation.SOUTH, 2),
                  new StartPosition(38, 30, StartRotation.WEST, 3)
          )));
-
-
-
+         START_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(9, 3, StartRotation.NORTH, 0,
+                         new ArrayList<>(Arrays.asList(5))),
+                 new StartPosition(3, 9, StartRotation.EAST, 1,
+                         new ArrayList<>(Arrays.asList(0, 5))),
+                 new StartPosition(3, 19, StartRotation.EAST, 2,
+                         new ArrayList<>(Arrays.asList(3))),
+                 new StartPosition(15, 20, StartRotation.SOUTH, 3,
+                         new ArrayList<>(Arrays.asList(2))),
+                 new StartPosition(24, 15, StartRotation.WEST, 3,
+                         new ArrayList<>(Arrays.asList(4, 5))),
+                 new StartPosition(24, 5, StartRotation.WEST, 5,
+                         new ArrayList<>(Arrays.asList(0, 4))),
+                 new StartPosition(19, 3, StartRotation.NORTH, 5,
+                         new ArrayList<>(Arrays.asList(0, 4)))
+         )));
+         START_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(15, 23, StartRotation.SOUTH, 0),
+                 new StartPosition(15, 29, StartRotation.NORTH, 0),
+                 new StartPosition(18, 26, StartRotation.EAST, 0),
+                 new StartPosition(20, 19, StartRotation.WEST, 1),
+                 new StartPosition(6, 5, StartRotation.WEST, 4,
+                         new ArrayList<>(Arrays.asList(0, 1, 7, 8))),
+                 new StartPosition(24, 15, StartRotation.SOUTH, 6,
+                         new ArrayList<>(Arrays.asList(0, 1, 7, 8))),
+                 new StartPosition(30, 10, StartRotation.WEST, 7,
+                         new ArrayList<>(Arrays.asList(0, 1)))
+         )));
          START_LOCATIONS.put("VOL1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(9, 2, StartRotation.NORTH, 0),
                  new StartPosition(2, 3, StartRotation.EAST, 0),
