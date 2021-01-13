@@ -307,8 +307,6 @@ public class MapData {
                  new FrogPosition(104.0, 0.0, 8.0, 0, -89.9, 0, 8)
          )));
          FROG_LOCATIONS.put("SKY1.MAP", new ArrayList<>(Arrays.asList(
-                 new FrogPosition(8.1875, -72.125, -120.3125, 0, -89.9, 0, 0),
-                 new FrogPosition(-183.6875, -74.5, -151.75, 0, 0, 0, 0),
                  new FrogPosition(-215.875, -45.0625, -39.75, 0, 89.9, 0, 1),
                  new FrogPosition(-215.625, -75.3125, 136.125, 0, 89.9, 0, 2),
                  new FrogPosition(-55.625, -71.0, 88.125, 0, 89.9, 0, 3),
@@ -416,8 +414,96 @@ public class MapData {
                  new FrogPosition(-392.0, -70.8125, 264.0, 0, 89.9, 0, 8),
                  new FrogPosition(-168.0, -151.0, 264.0, 0, -89.9, 0, 8)
          )));
-
-
+         FROG_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(216.0, -0.0625, -231.9375, 0, 0, 0, 0),
+                 new FrogPosition(-231.9375, -1.0625, -231.9375, 0, 0, 0, 0),
+                 new FrogPosition(-8.0, 0.0, -87.9375, 0, 0, 0, 0),
+                 new FrogPosition(-120.25, -93.1875, -120.125, 0, -89.9, 0, 1),
+                 new FrogPosition(-168.0, -132.125, -8.0, 0, -89.9, 0, 1),
+                 new FrogPosition(-232.25, -96.0, 232.375, 180, 0, 180, 2),
+                 new FrogPosition(-55.8125, 3.0, 167.625, 180, 0, 180, 2),
+                 new FrogPosition(-40.0, -16.0, 40.0, 0, 0, 0, 2),
+                 new FrogPosition(-136.0, -8.0, 8.0, 0, 89.9, 0, 2),
+                 new FrogPosition(136.0, 0.0, -72.0, 0, 0, 0, 2),
+                 new FrogPosition(72.125, -5.6875, 167.625, 180, 0, 180, 2),
+                 new FrogPosition(232.0, -96.0, 232.5, 0, -89.9, 0, 2),
+                 new FrogPosition(152.0, -96.0, -8.0, 0, 89.9, 0, 3),
+                 new FrogPosition(120.3125, -93.25, -119.8125, 0, 89.9, 0, 3),
+                 new FrogPosition(-7.8125, -72.0, -120.3125, 180, 0, 180, 3)
+         )));
+         FROG_LOCATIONS.put("DES2.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(-88.0, -111.9375, 40.0, 0, 89.9, 0, 0),
+                 new FrogPosition(-56.1875, -95.0625, -23.4375, 0, -89.9, 0, 0),
+                 new FrogPosition(-200.375, -96.3125, -182.875, 0, 0, 0, 0),
+                 new FrogPosition(-199.8125, -390.0, 199.625, 180, 0, 180, 1),
+                 new FrogPosition(-167.8125, -276.6875, 215.625, 180, 0, 180, 1),
+                 new FrogPosition(-56.0, -96.0, 216.0, 0, 89.9, 0, 2),
+                 new FrogPosition(120.0, -94.0, -104.0, 0, -89.9, 0, 3),
+                 new FrogPosition(-40.1875, 0.0, -70.9375, 0, 89.9, 0, 3),
+                 new FrogPosition(56.125, 3.0, 71.625, 180, 0, 180, 3),
+                 new FrogPosition(120.0, -96.0, -24.0, 180, 0, 180, 4),
+                 new FrogPosition(39.875, -191.0, 197.5, 0, 0, 0, 4),
+                 new FrogPosition(168.125, -351.25, 215.625, 180, 0, 180, 5)
+         )));
+         FROG_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(-7.9375, -101.5625, -152.0, 0, 0, 0, 0),
+                 new FrogPosition(-88.0, -101.5, -232.5625, 0, 0, 0, 0),
+                 new FrogPosition(-88.125, -152.0, -151.625, 0, 0, 0, 1),
+                 new FrogPosition(-8.125, -152.0, -231.625, 0, 89.9, 0, 2),
+                 new FrogPosition(-104.0, -100.9375, 40.0, 180, 0, 180, 3),
+                 new FrogPosition(-120.0, -100.9375, 56.0, 0, -89.9, 0, 4),
+                 new FrogPosition(-136.0, -101.6875, 216.0, 180, 0, 180, 5),
+                 new FrogPosition(88.0, -100.9375, 216.0, 180, 0, 180, 5),
+                 new FrogPosition(120.0, -100.3125, 72.0, 180, 0, 180, 6)
+         )));
+         FROG_LOCATIONS.put("DES4.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(72.0, 0.0, -231.9375, 0, 0, 0, 0),
+                 new FrogPosition(-231.9375, 0.0, -231.9375, 0, 0, 0, 0),
+                 new FrogPosition(-120.3125, -95.9375, -120.125, 0, -89.9, 0, 1),
+                 new FrogPosition(-232.0, -132.125, 104.0, 0, 89.9, 0, 1),
+                 new FrogPosition(-200.0, -94.9375, 232.0, 180, 0, 180, 2),
+                 new FrogPosition(-56.0, 0.0, 136.0, 180, 0, 180, 2),
+                 new FrogPosition(72.125, -5.9375, 167.625, 180, 0, 180, 2),
+                 new FrogPosition(-136.0, 0.0, -88.0, 0, 89.9, 0, 3),
+                 new FrogPosition(-39.9375, 0.0, -24.3125, 180, 0, 180, 3),
+                 new FrogPosition(-8.0, 0.0, -88.625, 0, 0, 0, 3),
+                 new FrogPosition(104.0625, -8.0625, -6.6875, 180, 0, 180, 3),
+                 new FrogPosition(200.0, -96.0, -40.0, 0, -89.9, 0, 4),
+                 new FrogPosition(120.3125, -95.9375, -119.8125, 0, 89.9, 0, 4),
+                 new FrogPosition(-7.8125, -72.0, -120.3125, 180, 0, 180, 4)
+         )));
+         FROG_LOCATIONS.put("DES5.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(-200.375, -96.3125, -182.875, 0, 0, 0, 0),
+                 new FrogPosition(120.0, -96.0, -104.0, 0, 0, 0, 1),
+                 new FrogPosition(-56.0, -96.0, 120.0, 180, 0, 180, 2),
+                 new FrogPosition(-120.0, -194.5, 88.0, 0, 89.9, 0, 2),
+                 new FrogPosition(-199.8125, -390.375, 201.9375, 180, 0, 180, 3),
+                 new FrogPosition(88.0, -96.0, 200.0, 0, -89.9, 0, 4),
+                 new FrogPosition(168.375, -351.9375, 218.375, 180, 0, 180, 5),
+                 new FrogPosition(56.0, 0.0, 88.0, 0, -89.9, 0, 6),
+                 new FrogPosition(88.0, 0.0, -152.0, 0, 89.9, 0, 7),
+                 new FrogPosition(232.0, 0.0, -24.0, 180, 0, 180, 7),
+                 new FrogPosition(-57.6875, -0.1875, -231.5, 0, 89.9, 0, 8),
+                 new FrogPosition(-232.375, 0.0, -198.875, 180, 0, 180, 8),
+                 new FrogPosition(-184.0, -8.0, 8.0, 180, 0, 180, 9)
+         )));
+         FROG_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
+                 new FrogPosition(152.1875, -8.8125, -424.5, 0, 0, 0, 0),
+                 new FrogPosition(-136.0, -11.1875, -424.0, 0, 0, 0, 1),
+                 new FrogPosition(-39.5, -12.5, -343.3125, 0, 0, 0, 2),
+                 new FrogPosition(168.5625, -37.3125, -296.25, 0, -89.9, 0, 3),
+                 new FrogPosition(136.0, -64.0, -168.0, 180, 0, 180, 4),
+                 new FrogPosition(-55.75, -43.9375, -232.5, 0, -89.9, 0, 5),
+                 new FrogPosition(8.3125, -54.6875, -150.875, 0, 89.9, 0, 6),
+                 new FrogPosition(-71.75, -112.9375, -72.5, 0, -89.9, 0, 6),
+                 new FrogPosition(-71.75, -136.4375, -24.5, 0, -89.9, 0, 7),
+                 new FrogPosition(-8.0, -166.0625, -40.0, 0, 0, 0, 8),
+                 new FrogPosition(88.3125, -116.5625, -24.375, 0, -89.9, 0, 9),
+                 new FrogPosition(152.0, -162.125, 56.0, 0, 0, 0, 10),
+                 new FrogPosition(120.1875, -182.4375, 119.4375, 0, -89.9, 0, 10),
+                 new FrogPosition(-72.0, -182.875, 104.0, 0, 0, 0, 10),
+                 new FrogPosition(-135.75, -150.75, 135.4375, 0, 89.9, 0, 10)
+         )));
      }
 
 
@@ -592,7 +678,63 @@ public class MapData {
                  new StartPosition(3, 34, StartRotation.SOUTH, 6,
                          new ArrayList<>(Arrays.asList(8)))
          )));
-
+         START_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(21, 8, StartRotation.NORTH, 0),
+                 new StartPosition(7, 15, StartRotation.EAST, 1),
+                 new StartPosition(21, 30, StartRotation.NORTH, 2),
+                 new StartPosition(36, 15, StartRotation.WEST, 3)
+         )));
+         START_LOCATIONS.put("DES2.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(8, 9, StartRotation.NORTH, 0),
+                 new StartPosition(9, 28, StartRotation.EAST, 1),
+                 new StartPosition(26, 15, StartRotation.NORTH, 3),
+                 new StartPosition(30, 21, StartRotation.SOUTH, 4)
+         )));
+         START_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(6, 4, StartRotation.NORTH, 0),
+                 new StartPosition(6, 9, StartRotation.NORTH, 1),
+                 new StartPosition(11, 4, StartRotation.EAST, 2),
+                 new StartPosition(3, 24, StartRotation.EAST, 4),
+                 new StartPosition(11, 32, StartRotation.SOUTH, 5),
+                 new StartPosition(15, 20, StartRotation.NORTH, 6)
+         )));
+         START_LOCATIONS.put("DES4.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(21, 8, StartRotation.NORTH, 0),
+                 new StartPosition(7, 15, StartRotation.EAST, 1),
+                 new StartPosition(21, 37, StartRotation.SOUTH, 2),
+                 new StartPosition(36, 15, StartRotation.WEST, 4),
+                 new StartPosition(22, 16, StartRotation.SOUTH, 4)
+         )));
+         START_LOCATIONS.put("DES5.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(8, 9, StartRotation.NORTH, 0),
+                 new StartPosition(17, 19, StartRotation.WEST, 0),
+                 new StartPosition(26, 15, StartRotation.NORTH, 1),
+                 new StartPosition(7, 29, StartRotation.EAST, 3),
+                 new StartPosition(17, 34, StartRotation.EAST, 4),
+                 new StartPosition(28, 20, StartRotation.SOUTH, 4),
+                 new StartPosition(18, 17, StartRotation.EAST, 6,
+                         new ArrayList<>(Arrays.asList(8))),
+                 new StartPosition(34, 20, StartRotation.SOUTH, 7),
+                 new StartPosition(6, 17, StartRotation.EAST, 9,
+                         new ArrayList<>(Arrays.asList(8)))
+         )));
+         START_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
+                 new StartPosition(12, 3, StartRotation.NORTH, 0,
+                         new ArrayList<>(Arrays.asList(2))),
+                 new StartPosition(6, 3, StartRotation.NORTH, 1,
+                         new ArrayList<>(Arrays.asList(2))),
+                 new StartPosition(24, 17, StartRotation.WEST, 4,
+                         new ArrayList<>(Arrays.asList(3))),
+                 new StartPosition(13, 15, StartRotation.SOUTH, 5),
+                 new StartPosition(11, 20, StartRotation.SOUTH, 6),
+                 new StartPosition(9, 25, StartRotation.WEST, 6),
+                 new StartPosition(9, 29, StartRotation.NORTH, 7),
+                 new StartPosition(19, 29, StartRotation.WEST, 9),
+                 new StartPosition(6, 34, StartRotation.NORTH, 10,
+                         new ArrayList<>(Arrays.asList(8))),
+                 new StartPosition(14, 38, StartRotation.SOUTH, 10,
+                         new ArrayList<>(Arrays.asList(8)))
+         )));
 
      }
 
