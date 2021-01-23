@@ -1,0 +1,280 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Main.gd" type="Script" id=1]
+[ext_resource path="res://logo.png" type="Texture" id=2]
+
+[node name="Main" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="pnlWindow" type="Panel" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="pnlWindow"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 16
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="vbxMainLayout" type="VBoxContainer" parent="pnlWindow/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 784.0
+margin_bottom = 584.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="txrctFroggerLogo" type="TextureRect" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_left = 286.0
+margin_right = 482.0
+margin_bottom = 100.0
+size_flags_horizontal = 6
+texture = ExtResource( 2 )
+
+[node name="lblTitle" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_top = 104.0
+margin_right = 768.0
+margin_bottom = 408.0
+size_flags_vertical = 7
+text = "Frogger: He's Back Randomizer"
+align = 1
+
+[node name="hboxEnterSeed" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_top = 412.0
+margin_right = 768.0
+margin_bottom = 436.0
+
+[node name="lblEnterSeed" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed"]
+margin_top = 5.0
+margin_right = 382.0
+margin_bottom = 19.0
+size_flags_horizontal = 3
+text = "Enter Seed (leave blank for random) :"
+align = 2
+
+[node name="lnedtEnterSeed" type="LineEdit" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed"]
+margin_left = 386.0
+margin_right = 768.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+max_length = 19
+
+[node name="hboxSettings" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_top = 440.0
+margin_right = 768.0
+margin_bottom = 520.0
+
+[node name="lblEmpty" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings"]
+margin_top = 33.0
+margin_right = 382.0
+margin_bottom = 47.0
+size_flags_horizontal = 3
+
+[node name="vboxSettings" type="VBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings"]
+margin_left = 386.0
+margin_right = 768.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+
+[node name="chkbxLevelOrder" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
+margin_right = 382.0
+margin_bottom = 24.0
+disabled = true
+text = "Randomize level order"
+
+[node name="chkbxZoneOrder" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
+margin_top = 28.0
+margin_right = 382.0
+margin_bottom = 52.0
+disabled = true
+text = "Randomize zone order"
+
+[node name="chkbxMixAcrossZones" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
+margin_top = 56.0
+margin_right = 382.0
+margin_bottom = 80.0
+disabled = true
+text = "Mix levels across zones"
+
+[node name="hboxPickJar" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_top = 524.0
+margin_right = 768.0
+margin_bottom = 544.0
+rect_pivot_offset = Vector2( -279, -519 )
+
+[node name="labelPickJar" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar"]
+margin_top = 3.0
+margin_right = 382.0
+margin_bottom = 17.0
+size_flags_horizontal = 3
+text = "Froglord.Jar : "
+align = 2
+
+[node name="btnPickJar" type="Button" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar"]
+margin_left = 386.0
+margin_right = 768.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "None"
+
+[node name="btnRandomize" type="Button" parent="pnlWindow/MarginContainer/vbxMainLayout"]
+margin_top = 548.0
+margin_right = 768.0
+margin_bottom = 568.0
+disabled = true
+text = "Randomize"
+
+[node name="fdlPickJar" type="FileDialog" parent="pnlWindow"]
+margin_left = 8.0
+margin_top = 572.0
+margin_right = 315.0
+margin_bottom = 702.0
+window_title = "Open a File"
+mode = 0
+access = 2
+filters = PoolStringArray( "*.jar" )
+current_dir = "C:/_Dev/FrogLord/HesBackRandomizer"
+current_path = "C:/_Dev/FrogLord/HesBackRandomizer/"
+
+[node name="popupErrorInvalidSeed" type="AcceptDialog" parent="pnlWindow"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -80.0
+margin_right = 120.0
+margin_bottom = 80.0
+popup_exclusive = true
+window_title = "Error"
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupErrorInvalidSeed"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnlWindow/popupErrorInvalidSeed/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 108.0
+size_flags_vertical = 3
+text = "Invalid seed.  
+Must be a number between 0 and 2,147,483,647."
+autowrap = true
+
+[node name="popupErrorRandomizer" type="AcceptDialog" parent="pnlWindow"]
+visible = true
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -80.0
+margin_right = 120.0
+margin_bottom = 80.0
+popup_exclusive = true
+window_title = "Error"
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupErrorRandomizer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnlWindow/popupErrorRandomizer/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 108.0
+size_flags_vertical = 3
+autowrap = true
+
+[node name="popupSuccessRandomizer" type="AcceptDialog" parent="pnlWindow"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -120.0
+margin_top = -80.0
+margin_right = 120.0
+margin_bottom = 80.0
+popup_exclusive = true
+window_title = "Success!"
+dialog_autowrap = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupSuccessRandomizer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 8.0
+margin_top = 8.0
+margin_right = -8.0
+margin_bottom = -36.0
+custom_constants/margin_right = 8
+custom_constants/margin_top = 8
+custom_constants/margin_left = 8
+custom_constants/margin_bottom = 8
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="pnlWindow/popupSuccessRandomizer/MarginContainer"]
+margin_left = 8.0
+margin_top = 8.0
+margin_right = 216.0
+margin_bottom = 108.0
+size_flags_vertical = 3
+text = "Game randomized.
+
+Updated files:
+  frogger.exe
+  frogpsx.mwd
+  seed.txt"
+autowrap = true
+[connection signal="file_selected" from="pnlWindow/fdlPickJar" to="." method="_on_fdlPickJar_file_selected"]

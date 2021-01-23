@@ -17,8 +17,10 @@ import net.highwayfrogs.editor.gui.GUIMain;
 import net.highwayfrogs.editor.gui.MainController;
 import net.highwayfrogs.editor.gui.editor.SaveController;
 import net.highwayfrogs.editor.utils.Utils;
-import sun.applet.Main;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class Randomizer {
@@ -26,7 +28,27 @@ public class Randomizer {
      * The main class for Randomizing Frogger He's Back
      */
 
+    String[] launchArgs;
+    long randomizerSeed = -1;
+
+    public void setLaunchArgs(String[] launchArgs) {
+        this.launchArgs = launchArgs;
+        for (String s : launchArgs) {
+            System.out.println(s);
+        }
+    }
+
+    public void parseLaunchArgs() {
+        for (String s : launchArgs) {
+            if (s.startsWith("--seed=")) {
+                randomizerSeed = Long.parseLong(s.substring(7));
+            }
+        }
+    }
+
+
     public void randomize() {
+        parseLaunchArgs();
 
         // Get MWD file loaded by GUI launch
         MWDFile mwdFile = MainController.MAIN_WINDOW.getMwdFile();
@@ -68,8 +90,16 @@ public class Randomizer {
             }
         }
 
-
-        Random random = new Random();
+        // Init random number generator using provided seed if available
+        Random random;
+        if (randomizerSeed != -1) {
+            random = new Random(randomizerSeed);
+        }
+        else {
+            random = new Random();
+            randomizerSeed = random.nextInt(Integer.MAX_VALUE);
+            random.setSeed(randomizerSeed);
+        }
 
         for (GameFile gf : mapFiles) {
             MAPFile mf = (MAPFile) gf;
@@ -129,6 +159,17 @@ public class Randomizer {
 
 
         // Save the end result
-        //SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
+        SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
+        try {
+            FileWriter writer = new FileWriter(new File(
+                    GUIMain.EXE_CONFIG.getFolder(), "seed.txt"));
+            writer.write("Seed: " + randomizerSeed);
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Unable to write seed to file. Error: ");
+            e.printStackTrace();
+        }
+        System.exit(0);
     }
 }

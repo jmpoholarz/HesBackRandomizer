@@ -35,7 +35,11 @@ public class GUIMain extends Application {
     public static FroggerEXEInfo EXE_CONFIG;
     public static final Image NORMAL_ICON = GameFile.loadIcon("icon");
 
+    public static Randomizer randomizer;
+
     public static void main(String[] args) {
+        randomizer = new Randomizer();
+        randomizer.setLaunchArgs(args);
         launch(args);
     }
 
@@ -131,7 +135,7 @@ public class GUIMain extends Application {
         mwd.load(new DataReader(new FileSource(mwdFile)));
         MainController.MAIN_WINDOW.loadMWD(mwd); // Setup GUI.
 
-        Randomizer randomizer = new Randomizer();
+
         randomizer.randomize();
     }
 

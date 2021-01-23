@@ -52,7 +52,11 @@ public class SaveController implements Initializable {
      * @param folder     The folder to output the mwds.
      */
     public void startSaving(MWDFile mwdToSave, FroggerEXEInfo froggerEXE, File folder) {
-        AbstractService.runAbstractTask(() -> new SaveTask(mwdToSave, froggerEXE, new File(folder, "FROGPSX.MWD"), new File(folder, "frogger.exe"), this));
+        AbstractService.runAbstractTask(() -> new SaveTask(
+                mwdToSave, froggerEXE,
+                new File(folder, "FROGPSX.MWD"),
+                new File(folder, "frogger.exe"),
+                this));
     }
 
     /**
