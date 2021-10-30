@@ -16,16 +16,18 @@ import net.highwayfrogs.editor.file.writer.DataWriter;
 @Getter
 @Setter
 public class LevelInfo extends ExeStruct {
-    private int level;
+    private int level; // index of the level map in getConfig().getAllLevelInfo()
     private WorldId world;
-    private int stackPosition; // 0 = Top of level stack.
+    public int stackPosition; // 0 = Top of level stack.
     private int theme;
-    private int localLevelId; // 0 -> 4 (Level 1 -> 5)
+    public int localLevelId; // 0 -> 4 (Level 1 -> 5)
     private int levelsInWorld; // Number of levels in the world. (Used to calculate size.)
+    /* Graphics for the slice of the level select */
     private long worldImageSelectablePointer;
     private long worldImageVisitedPointer;
     private long worldImageNotTriedPointer;
     private long levelTexturePointer; // The screenshot of the level.
+    /* Graphics used to display the level name */
     private long levelNameTexturePointer;
     private long levelNameTextureInGamePointer;
 
@@ -68,12 +70,16 @@ public class LevelInfo extends ExeStruct {
 
     @Override
     public String toString() {
-        return "[" + getLevel() + "/" + getWorld() + "] " + getTheme() + " (" + (getLocalLevelId() + 1) + "/" + getLevelsInWorld() + ") [" + getStackPosition() + "]";
+        return "[" + level + "::" + getLevel() + "/" + getWorld() + "] " + getTheme() + " (" + (getLocalLevelId() + 1) + "/" + getLevelsInWorld() + ") [" + getStackPosition() + "]";
     }
 
     @Override
     public boolean isEntry(FileEntry test) {
         return false;
+    }
+
+    public int getLevelInt() {
+        return level;
     }
 
     /**
@@ -82,6 +88,10 @@ public class LevelInfo extends ExeStruct {
      */
     public MAPLevel getLevel() {
         return isTerminator() ? null : MAPLevel.values()[this.level];
+    }
+
+    public int getThemeInt() {
+        return theme;
     }
 
     /**

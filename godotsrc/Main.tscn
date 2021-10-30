@@ -52,7 +52,8 @@ margin_top = 104.0
 margin_right = 768.0
 margin_bottom = 408.0
 size_flags_vertical = 7
-text = "Frogger: He's Back Randomizer"
+text = "Frogger: He's Back Randomizer
+v0.0.2"
 align = 1
 
 [node name="hboxEnterSeed" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
@@ -102,7 +103,8 @@ text = "Randomize level order"
 margin_top = 28.0
 margin_right = 382.0
 margin_bottom = 52.0
-disabled = true
+hint_tooltip = "Note: Gold Frog locations in the level stack may not match up properly."
+mouse_default_cursor_shape = 2
 text = "Randomize zone order"
 
 [node name="chkbxMixAcrossZones" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]

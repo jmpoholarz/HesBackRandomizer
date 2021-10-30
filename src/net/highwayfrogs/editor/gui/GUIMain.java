@@ -136,7 +136,7 @@ public class GUIMain extends Application {
         MainController.MAIN_WINDOW.loadMWD(mwd); // Setup GUI.
 
 
-        randomizer.randomize();
+        randomizer.randomize(loadConfig);
     }
 
     /**

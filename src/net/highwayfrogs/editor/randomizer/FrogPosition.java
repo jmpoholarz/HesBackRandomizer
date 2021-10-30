@@ -10,6 +10,11 @@ public class FrogPosition {
     public float roll; // Rotation about the X axis
     public int zone; // Area of the map for this position; mutually exclusive with Frogger start
 
+    public int tileX; // X tile in the map of the frog
+    public int tileZ; // Z tile in the map of the frog
+    public int ringTextureIndex; // texture that holds the ring graphic
+    public int defaultTextureIndex; // index of the tile when not the frog ring tile
+
     FrogPosition(double x, double y, double z, double yaw, double pitch, double roll, int zone) {
         this.x = (float) x;
         this.y = (float) y;
@@ -18,5 +23,25 @@ public class FrogPosition {
         this.pitch = (float) pitch;
         this.roll = (float) roll;
         this.zone = zone;
+        this.tileX = -1;
+        this.tileZ = -1;
+        this.defaultTextureIndex = -1;
+        this.ringTextureIndex = -1;
     }
+
+    FrogPosition(double x, double y, double z, double yaw, double pitch, double roll, int zone,
+                 int tileX, int tileZ, int defaultTextureIndex, int ringTextureIndex) {
+        this.x = (float) x;
+        this.y = (float) y;
+        this.z = (float) z;
+        this.yaw = (float) yaw;
+        this.pitch = (float) pitch;
+        this.roll = (float) roll;
+        this.zone = zone;
+        this.tileX = tileX;
+        this.tileZ = tileZ;
+        this.defaultTextureIndex = defaultTextureIndex;
+        this.ringTextureIndex = ringTextureIndex;
+    }
+
 }

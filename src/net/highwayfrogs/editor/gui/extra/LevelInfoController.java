@@ -18,10 +18,7 @@ import net.highwayfrogs.editor.file.map.MAPTheme;
 import net.highwayfrogs.editor.utils.Utils;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Controls level information.
@@ -53,6 +50,8 @@ public class LevelInfoController implements Initializable {
         this.disableFields = Arrays.asList(themeSelector, worldSelector, musicSelector, stackPosField, localLevelField, worldLevelField, mapFileSelector);
 
         List<MAPLevel> levelInfo = new ArrayList<>();
+        Map<MAPLevel, LevelInfo> levelInfoMap = getConfig().getLevelInfoMap();
+        List<LevelInfo> allLevelInfo = getConfig().getAllLevelInfo();
         for (LevelInfo info : getConfig().getAllLevelInfo())
             if (info.getLevel() != null)
                 levelInfo.add(info.getLevel());

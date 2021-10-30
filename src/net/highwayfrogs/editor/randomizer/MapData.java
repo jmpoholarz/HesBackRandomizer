@@ -2,7 +2,6 @@ package net.highwayfrogs.editor.randomizer;
 
 import net.highwayfrogs.editor.file.map.StartRotation;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -243,68 +242,126 @@ public class MapData {
                  new FrogPosition(-40.0, -16.0, -72.0, 0, 0, 0, 1)
          )));
          FROG_LOCATIONS.put("CAV1.MAP", new ArrayList<>(Arrays.asList(
-                 new FrogPosition(40.0, -7.125, -200.0, 0, 0, 0, 0),
-                 new FrogPosition(-88.0, 0.0, -200.0, 0, 0, 0, 0),
-                 new FrogPosition(-136.0, 0.0, -200.0, 0, 0, 0, 1),
-                 new FrogPosition(-120.0, 0.0, -152.0, 180, 0, 180, 1),
-                 new FrogPosition(-151.875, 0.0, -88.0, 180, 0, 180, 2),
-                 new FrogPosition(-152.0, 0.0, 8.0, 180, 0, 180, 2),
-                 new FrogPosition(-152.0, -18.6875, 56.0, 180, 0, 180, 3),
-                 new FrogPosition(-151.9375, 2.4375, 119.0, 180, 0, 180, 3),
-                 new FrogPosition(-87.8125, 2.4375, 119.0, 180, 0, 180, 4),
-                 new FrogPosition(-23.8125, 2.125, 119.0, 180, 0, 180, 4),
-                 new FrogPosition(-39.8125, 2.4375, 87.0, 180, 0, 180, 4),
-                 new FrogPosition(8.0, -8.375, 88.0, 0, -89.9, 0, 4),
-                 new FrogPosition(24.0, -4.1875, 72.0, 180, 0, 180, 4),
-                 new FrogPosition(103.0, 1.25, 103.8125, 0, -89.9, 0, 5),
-                 new FrogPosition(88.0, -4.1875, 24.0, 180, 0, 180, 5),
-                 new FrogPosition(104.0, 0.0, -24.0, 180, 0, 180, 6),
-                 new FrogPosition(88.0, -3.5625, -72.0, 0, 0, 0, 6),
-                 new FrogPosition(72.0, -7.125, -200.0, 0, 0, 0, 7)
+                 new FrogPosition(40.0, -7.125, -200.0, 0, 0, 0, 0,
+                         15, 2, 6, 31),
+                 new FrogPosition(-88.0, 0.0, -200.0, 0, 0, 0, 0,
+                         7, 2, 1, 31),
+                 new FrogPosition(-136.0, 0.0, -200.0, 0, 0, 0, 1,
+                         4, 2, 0, 31),
+                 new FrogPosition(-120.0, 0.0, -152.0, 180, 0, 180, 1,
+                         5, 5, 20, 31),
+                 new FrogPosition(-151.875, 0.0, -88.0, 180, 0, 180, 2,
+                         3, 9, 6, 31),
+                 new FrogPosition(-152.0, 0.0, 8.0, 180, 0, 180, 2,
+                         3, 15, 16, 31),
+                 new FrogPosition(-152.0, -18.6875, 56.0, 180, 0, 180, 3,
+                         3, 18, 29, 31),
+                 new FrogPosition(-151.9375, 2.4375, 119.0, 180, 0, 180, 3,
+                         3, 22, 11, 31),
+                 new FrogPosition(-87.8125, 2.4375, 119.0, 180, 0, 180, 4,
+                         7, 22, 3, 31),
+                 new FrogPosition(-23.8125, 2.125, 119.0, 180, 0, 180, 4,
+                         11, 22, 3, 31),
+                 new FrogPosition(-39.8125, 2.4375, 87.0, 180, 0, 180, 4,
+                         10, 20, 12, 31),
+                 new FrogPosition(8.0, -8.375, 88.0, 0, -89.9, 0, 4,
+                         13, 20, 16, 31),
+                 new FrogPosition(24.0, -4.1875, 72.0, 180, 0, 180, 4,
+                         14, 19, 6, 31),
+                 new FrogPosition(103.0, 1.25, 103.8125, 0, -89.9, 0, 5,
+                         19, 21, 35, 31),
+                 new FrogPosition(88.0, -4.1875, 24.0, 180, 0, 180, 5,
+                         18, 16, 2, 31),
+                 new FrogPosition(104.0, 0.0, -24.0, 180, 0, 180, 6,
+                         19, 13, 16, 31),
+                 new FrogPosition(88.0, -3.5625, -72.0, 0, 0, 0, 6,
+                         18, 10, 9, 31),
+                 new FrogPosition(72.0, -7.125, -200.0, 0, 0, 0, 7,
+                         17, 2, 7, 31)
          )));
          FROG_LOCATIONS.put("CAV3.MAP", new ArrayList<>(Arrays.asList(
-                 new FrogPosition(-104.0625, -819.6875, 24.0625, 180, 0, 180, 1),
-                 new FrogPosition(-104.0, -695.0, 424.0, 180, 0, 180, 1),
-                 new FrogPosition(87.75, -620.5625, 600.1875, 0, -89.9, 0, 1),
-                 new FrogPosition(71.75, -576.75, 312.1875, 0, 0, 0, 1),
-                 new FrogPosition(-8.4375, -568.5625, 266.0, 180, 0, 180, 1),
-                 new FrogPosition(39.75, -518.4375, -23.75, 180, 0, 180, 1),
-                 new FrogPosition(71.75, -480.25, -231.75, 0, 0, 0, 1),
-                 new FrogPosition(40.0, -342.0625, -552.0, 180, 0, 180, 1),
-                 new FrogPosition(71.75, -362.375, -503.75, 180, 0, 180, 1),
-                 new FrogPosition(231.4375, -319.5625, -663.75, 0, -89.9, 0, 1),
-                 new FrogPosition(248.0, -272.5625, -312.0, 180, 0, 180, 1),
-                 new FrogPosition(151.4375, -260.9375, -247.5625, 180, 0, 180, 1),
-                 new FrogPosition(231.4375, -219.3125, -7.5625, 180, 0, 180, 1),
-                 new FrogPosition(183.4375, -66.0, 456.375, 180, 0, 180, 1),
-                 new FrogPosition(216.0, -30.0625, 552.0, 180, 0, 180, 1),
-                 new FrogPosition(199.875, -18.5, 628.6875, 180, 0, 180, 1)
+                 new FrogPosition(-104.0625, -819.6875, 24.0625, 180, 0, 180, 1,
+                         13, 53, 12, 17),
+                 new FrogPosition(-104.0, -695.0, 424.0, 180, 0, 180, 1,
+                         13, 78, 7, 17), //
+                 new FrogPosition(87.75, -620.5625, 600.1875, 0, -89.9, 0, 1,
+                         25, 89, 8, 17),
+                 new FrogPosition(71.75, -576.75, 312.1875, 0, 0, 0, 1,
+                         24, 71, 7, 17),
+                 new FrogPosition(-8.4375, -568.5625, 266.0, 180, 0, 180, 1,
+                         19, 68, 7, 17), //
+                 new FrogPosition(39.75, -518.4375, -23.75, 180, 0, 180, 1,
+                         22, 50, 7, 17),
+                 new FrogPosition(71.75, -480.25, -231.75, 0, 0, 0, 1,
+                         24, 37, 8, 17),
+                 new FrogPosition(40.0, -342.0625, -552.0, 180, 0, 180, 1,
+                         22, 17, 7, 17), //
+                 new FrogPosition(71.75, -362.375, -503.75, 180, 0, 180, 1,
+                         24, 20, 7, 17),
+                 new FrogPosition(231.4375, -319.5625, -663.75, 0, -89.9, 0, 1,
+                         34, 10, 7, 17),
+                 new FrogPosition(248.0, -272.5625, -312.0, 180, 0, 180, 1,
+                         35, 32, 7, 17), //
+                 new FrogPosition(151.4375, -260.9375, -247.5625, 180, 0, 180, 1,
+                         29, 36, 12, 17),
+                 new FrogPosition(231.4375, -219.3125, -7.5625, 180, 0, 180, 1,
+                         34, 51, 8, 17),
+                 new FrogPosition(183.4375, -66.0, 456.375, 180, 0, 180, 1,
+                         31, 80, 5, 17),
+                 new FrogPosition(216.0, -30.0625, 552.0, 180, 0, 180, 1,
+                         33, 86, 27, 17), //
+                 new FrogPosition(199.875, -18.5, 628.6875, 180, 0, 180, 1,
+                         32, 91, 27, 17)
          )));
          FROG_LOCATIONS.put("CAV4.MAP", new ArrayList<>(Arrays.asList(
-                 new FrogPosition(-23.9375, -31.1875, -376.0, 180, 0, 180, 0),
-                 new FrogPosition(-104.125, -31.1875, -440.1875, 0, 0, 0, 1),
-                 new FrogPosition(-103.9375, -31.1875, -376.0, 0, 89.9, 0, 1),
-                 new FrogPosition(-183.9375, -31.1875, -280.0, 180, 0, 180, 2),
-                 new FrogPosition(-200.0, -32.0, -232.0, 0, 89.9, 0, 2),
-                 new FrogPosition(-184.0625, -31.9375, -90.4375, 0, 0, 0, 3),
-                 new FrogPosition(-56.0, -32.0, -88.0, 0, 0, 0, 3),
-                 new FrogPosition(-40.0, -32.0, -232.0, 0, -89.9, 0, 4),
-                 new FrogPosition(216.0, 0.125, -455.3125, 0, -89.9, 0, 5),
-                 new FrogPosition(151.8125, -31.5, -407.625, 0, 0, 0, 5),
-                 new FrogPosition(104.0, -31.4375, -424.0, 180, 0, 180, 5),
-                 new FrogPosition(120.0, -31.4375, -376.0, 0, -89.9, 0, 5),
-                 new FrogPosition(56.0, -31.4375, -296.0, 0, -89.9, 0, 5),
-                 new FrogPosition(200.0, -31.4375, -280.0, 0, 0, 0, 5),
-                 new FrogPosition(200.0, -47.9375, -216.0, 0, 0, 0, 6),
-                 new FrogPosition(120.0, -47.9375, -152.0, 180, 0, 180, 6),
-                 new FrogPosition(135.875, -47.9375, -106.4375, 0, 0, 0, 6),
-                 new FrogPosition(216.0, -32.0, -56.0, 0, -89.9, 0, 6),
-                 new FrogPosition(40.0, -47.9375, -88.0, 0, -89.9, 0, 6),
-                 new FrogPosition(-136.0, 0.0, -40.0, 180, 0, 180, 7),
-                 new FrogPosition(-152.0625, 2.125, 69.5, 0, 0, 0, 8),
-                 new FrogPosition(-40.0, 0.0, -8.0, 180, 0, 180, 8),
-                 new FrogPosition(40.0, 0.0, 88.0, 180, 0, 180, 8),
-                 new FrogPosition(104.0, 0.0, 8.0, 0, -89.9, 0, 8)
+                 new FrogPosition(-23.9375, -31.1875, -376.0, 180, 0, 180, 0,
+                         15, 8, 10, 5),
+                 new FrogPosition(-104.125, -31.1875, -440.1875, 0, 0, 0, 1,
+                         10, 4, 13, 5), //
+                 new FrogPosition(-103.9375, -31.1875, -376.0, 0, 89.9, 0, 1,
+                         10, 8, 29, 5),
+                 new FrogPosition(-183.9375, -31.1875, -280.0, 180, 0, 180, 2,
+                         5, 14, 3, 5),
+                 new FrogPosition(-200.0, -32.0, -232.0, 0, 89.9, 0, 2,
+                         4, 17, 22, 5),
+                 new FrogPosition(-184.0625, -31.9375, -90.4375, 0, 0, 0, 3,
+                         5, 26, 17, 5), //
+                 new FrogPosition(-56.0, -32.0, -88.0, 0, 0, 0, 3,
+                         13, 26, 17, 5),
+                 new FrogPosition(-40.0, -32.0, -232.0, 0, -89.9, 0, 4,
+                         14, 17, 10, 5),
+                 new FrogPosition(216.0, 0.125, -455.3125, 0, -89.9, 0, 5,
+                         30, 3, 28, 5),
+                 new FrogPosition(151.8125, -31.5, -407.625, 0, 0, 0, 5, //
+                         26, 6, 11, 5),
+                 new FrogPosition(104.0, -31.4375, -424.0, 180, 0, 180, 5,
+                         23, 5, 26, 5),
+                 new FrogPosition(120.0, -31.4375, -376.0, 0, -89.9, 0, 5,
+                         24, 8, 11, 5),
+                 new FrogPosition(56.0, -31.4375, -296.0, 0, -89.9, 0, 5,
+                         20, 13, 28, 5),
+                 new FrogPosition(200.0, -31.4375, -280.0, 0, 0, 0, 5,
+                         29, 14, 2, 5),
+                 new FrogPosition(200.0, -47.9375, -216.0, 0, 0, 0, 6,
+                         29, 18, 10, 5),
+                 new FrogPosition(120.0, -47.9375, -152.0, 180, 0, 180, 6,
+                         24, 22, 30, 5),
+                 new FrogPosition(135.875, -47.9375, -106.4375, 0, 0, 0, 6,
+                         25, 25, 11, 5), //
+                 new FrogPosition(216.0, -32.0, -56.0, 0, -89.9, 0, 6,
+                         30, 28, 4, 5),
+                 new FrogPosition(40.0, -47.9375, -88.0, 0, -89.9, 0, 6,
+                         19, 26, 30, 5),
+                 new FrogPosition(-136.0, 0.0, -40.0, 180, 0, 180, 7,
+                         8, 29, 11, 5),
+                 new FrogPosition(-152.0625, 2.125, 69.5, 0, 0, 0, 8,
+                         7, 36, 30, 5), //
+                 new FrogPosition(-40.0, 0.0, -8.0, 180, 0, 180, 8,
+                         14, 31, 8, 5),
+                 new FrogPosition(40.0, 0.0, 88.0, 180, 0, 180, 8,
+                         19, 37, 4, 5),
+                 new FrogPosition(104.0, 0.0, 8.0, 0, -89.9, 0, 8,
+                         23, 32, 14, 5)
          )));
          FROG_LOCATIONS.put("SKY1.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition(-215.875, -45.0625, -39.75, 0, 89.9, 0, 1),
@@ -614,26 +671,38 @@ public class MapData {
          )));
          START_LOCATIONS.put("CAV1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(11, 2, StartRotation.NORTH, 0,
+                         3, 4,
                          new ArrayList<>(Arrays.asList(1, 7))),
                  new StartPosition(3, 7, StartRotation.EAST, 2,
+                         23, 4,
                          new ArrayList<>(Arrays.asList(0, 1, 3))),
                  new StartPosition(5, 22, StartRotation.SOUTH, 4,
+                         27, 4,
                          new ArrayList<>(Arrays.asList(3, 5))),
                  new StartPosition(15, 22, StartRotation.SOUTH, 4,
+                         1, 4,
                          new ArrayList<>(Arrays.asList(3, 5))),
                  new StartPosition(19, 7, StartRotation.WEST, 6,
+                         22, 4,
                          new ArrayList<>(Arrays.asList(0, 5, 7)))
          )));
          START_LOCATIONS.put("CAV3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(13, 12, StartRotation.NORTH, 0)
+                 new StartPosition(13, 12, StartRotation.NORTH, 0,
+                        7,  2)
          )));
          START_LOCATIONS.put("CAV4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(17, 5, StartRotation.NORTH, 0),
-                 new StartPosition(4, 16, StartRotation.EAST, 2),
-                 new StartPosition(17, 17, StartRotation.NORTH, 4),
-                 new StartPosition(6, 29, StartRotation.EAST, 7),
-                 new StartPosition(23, 29, StartRotation.WEST, 7),
-                 new StartPosition(16, 37, StartRotation.SOUTH, 8)
+                 new StartPosition(17, 5, StartRotation.NORTH, 0,
+                         4, 21), //
+                 new StartPosition(4, 16, StartRotation.EAST, 2,
+                         13, 21),
+                 new StartPosition(17, 17, StartRotation.NORTH, 4,
+                          7, 21),
+                 new StartPosition(6, 29, StartRotation.EAST, 7,
+                         24, 21),
+                 new StartPosition(23, 29, StartRotation.WEST, 7,
+                         23, 21),
+                 new StartPosition(16, 37, StartRotation.SOUTH, 8,
+                         17, 21)
          )));
          START_LOCATIONS.put("SKY1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(20, 15, StartRotation.NORTH, 0,
@@ -660,8 +729,8 @@ public class MapData {
          )));
          START_LOCATIONS.put("SWP3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(15, 4, StartRotation.NORTH, 0),
-                 new StartPosition(13, 16, StartRotation.NORTH, 1),
-                 new StartPosition(17, 16, StartRotation.NORTH, 3)
+                 new StartPosition(13, 16, StartRotation.NORTH, 1), //TODO: Check if need to move so camera doesn't flip out
+                 new StartPosition(17, 16, StartRotation.NORTH, 3) //TODO: Check if need to move so camera doesn't flip out
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(14, 12, StartRotation.NORTH, 0),
@@ -724,16 +793,18 @@ public class MapData {
                  new StartPosition(6, 3, StartRotation.NORTH, 1,
                          new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(24, 17, StartRotation.WEST, 4,
-                         new ArrayList<>(Arrays.asList(3))),
-                 new StartPosition(13, 15, StartRotation.SOUTH, 5),
+                         new ArrayList<>(Arrays.asList(3, 5))),
+                 new StartPosition(13, 15, StartRotation.SOUTH, 5,
+                         new ArrayList<>(Arrays.asList(2, 4))),
                  new StartPosition(11, 20, StartRotation.SOUTH, 6),
                  new StartPosition(9, 25, StartRotation.WEST, 6),
                  new StartPosition(9, 29, StartRotation.NORTH, 7),
-                 new StartPosition(19, 29, StartRotation.WEST, 9),
+                 new StartPosition(19, 29, StartRotation.WEST, 9,
+                         new ArrayList<>(Arrays.asList(8, 10))),
                  new StartPosition(6, 34, StartRotation.NORTH, 10,
-                         new ArrayList<>(Arrays.asList(8))),
+                         new ArrayList<>(Arrays.asList(8, 9))),
                  new StartPosition(14, 38, StartRotation.SOUTH, 10,
-                         new ArrayList<>(Arrays.asList(8)))
+                         new ArrayList<>(Arrays.asList(8, 9)))
          )));
 
      }

@@ -12,12 +12,18 @@ public class StartPosition {
     public int zone; // Area of the map for this position; mutually exclusive with frog locations
     public ArrayList<Integer> bannedFrogZones; // Other zones frogs cannot be placed with this start
 
+    public int ringTextureIndex; // texture that holds the target graphic
+    public int defaultTextureIndex; // index of the tile when not the target tile
+
     StartPosition(int x, int z, StartRotation rotation, int zone) {
         this.x = (short) x;
         this.z = (short) z;
         this.rotation = rotation;
         this.zone = zone;
         bannedFrogZones = new ArrayList<>();
+
+        this.ringTextureIndex = -1;
+        this.defaultTextureIndex = -1;
     }
 
     StartPosition(int x, int z, StartRotation rotation, int zone,
@@ -27,5 +33,32 @@ public class StartPosition {
         this.rotation = rotation;
         this.zone = zone;
         this.bannedFrogZones = bannedFrogZones;
+
+        this.ringTextureIndex = -1;
+        this.defaultTextureIndex = -1;
+    }
+
+    StartPosition(int x, int z, StartRotation rotation, int zone,
+                  int defaultTextureIndex, int ringTextureIndex) {
+        this.x = (short) x;
+        this.z = (short) z;
+        this.rotation = rotation;
+        this.zone = zone;
+        bannedFrogZones = new ArrayList<>();
+
+        this.ringTextureIndex = ringTextureIndex;
+        this.defaultTextureIndex = defaultTextureIndex;
+    }
+
+    StartPosition(int x, int z, StartRotation rotation, int zone, int defaultTextureIndex,
+                  int ringTextureIndex, ArrayList<Integer> bannedFrogZones) {
+        this.x = (short) x;
+        this.z = (short) z;
+        this.rotation = rotation;
+        this.zone = zone;
+        this.bannedFrogZones = bannedFrogZones;
+
+        this.ringTextureIndex = ringTextureIndex;
+        this.defaultTextureIndex = defaultTextureIndex;
     }
 }

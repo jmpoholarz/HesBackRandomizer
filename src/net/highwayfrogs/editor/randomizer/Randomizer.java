@@ -5,13 +5,23 @@ import javafx.collections.ObservableList;
 import net.highwayfrogs.editor.file.GameFile;
 import net.highwayfrogs.editor.file.MWDFile;
 import net.highwayfrogs.editor.file.MWIFile;
+import net.highwayfrogs.editor.file.config.FroggerEXEInfo;
+import net.highwayfrogs.editor.file.config.LevelShuffler;
 import net.highwayfrogs.editor.file.config.data.MAPLevel;
 import net.highwayfrogs.editor.file.config.exe.LevelInfo;
 import net.highwayfrogs.editor.file.map.MAPFile;
+import net.highwayfrogs.editor.file.map.animation.MAPAnimation;
+import net.highwayfrogs.editor.file.map.animation.MAPUVInfo;
 import net.highwayfrogs.editor.file.map.entity.Entity;
 import net.highwayfrogs.editor.file.map.entity.data.EntityData;
 import net.highwayfrogs.editor.file.map.entity.data.MatrixData;
 import net.highwayfrogs.editor.file.map.entity.data.general.CheckpointEntity;
+import net.highwayfrogs.editor.file.map.grid.GridSquare;
+import net.highwayfrogs.editor.file.map.grid.GridStack;
+import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyGT4;
+import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyTexture;
+import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
+import net.highwayfrogs.editor.file.standard.SVector;
 import net.highwayfrogs.editor.file.standard.psx.PSXMatrix;
 import net.highwayfrogs.editor.gui.GUIMain;
 import net.highwayfrogs.editor.gui.MainController;
@@ -30,6 +40,9 @@ public class Randomizer {
 
     String[] launchArgs;
     long randomizerSeed = -1;
+    boolean randomizeZoneOrder = false;
+    boolean randomizeLevelOrder = true;
+    boolean randomizeLevelsAcrossZones = false;
 
     public void setLaunchArgs(String[] launchArgs) {
         this.launchArgs = launchArgs;
@@ -43,11 +56,17 @@ public class Randomizer {
             if (s.startsWith("--seed=")) {
                 randomizerSeed = Long.parseLong(s.substring(7));
             }
+//            else if (s.startsWith("--randZones=")) {
+//                randomizeZoneOrder = (s.substring(12).equalsIgnoreCase("true"));
+//            }
+//            else if (s.startsWith("--randLevels=")) {
+//                randomizeLevelOrder = (s.substring(13).equalsIgnoreCase("true"));
+//            }
         }
     }
 
 
-    public void randomize() {
+    public void randomize(FroggerEXEInfo exeFile) {
         parseLaunchArgs();
 
         // Get MWD file loaded by GUI launch
@@ -101,6 +120,75 @@ public class Randomizer {
             random.setSeed(randomizerSeed);
         }
 
+
+        /* Randomize Level Order */
+        //List<MAPLevel> levelList = new ArrayList<>();
+
+        HashMap<Integer, ArrayList<LevelInfo>> levelInfoHashMap = new HashMap<>();
+        for (int i = 0; i < 8; i++) {
+            levelInfoHashMap.put(i, new ArrayList<>());
+        }
+
+
+        for (LevelInfo info : exeFile.getAllLevelInfo()) {
+            System.out.println(info.toString());
+        }
+
+        System.out.println("~~~~~~~~~~~~~~~~~~~~");
+
+        //LevelShuffler levelShuffler = new LevelShuffler(exeFile.getAllLevelInfo(), random);
+        //levelShuffler.removeNonSingleplayerLevels();
+
+//        if (randomizeLevelOrder) {
+//            levelShuffler.shuffleLevelsInWorlds();
+//        }
+
+
+        List<LevelInfo> levels = exeFile.getAllLevelInfo();
+        //LevelInfo A = levels.get(5); //LILY1
+        //LevelInfo B = levels.get(6); //LILY2
+        //A.setLevel(49);
+        //A.setWorld(); ?
+        //A.setStackPosition(2);
+        //A.setTheme(); ?
+        //A.setLocalLevelId(1);
+        //A.setLevelsInWorld(2);
+        //A.setWorldImageSelectablePointer(4785856);
+        //A.setWorldImageVisitedPointer(4797760);
+        //A.setWorldImageNotTriedPointer(4797760);
+        //A.setLevelTexturePointer(4783888);
+        //A.setLevelNameTexturePointer(4795536);
+        //A.setLevelNameTextureInGamePointer(4795536);
+
+        //B.setLevel(48);
+        //B.setWorld(); ?
+        //B.setStackPosition(1);
+        //B.setTheme(); ?
+        //B.setLocalLevelId(0);
+        //B.setLevelsInWorld(5);
+        //B.setWorldImageSelectablePointer(4788064);
+        //B.setWorldImageVisitedPointer(4794480);
+        //B.setWorldImageNotTriedPointer(4794480);
+        //B.setLevelTexturePointer(4800256);
+        //B.setLevelNameTexturePointer(4796592);
+        //B.setLevelNameTextureInGamePointer(4796592);*/
+
+
+        for (LevelInfo info : exeFile.getAllLevelInfo()) {
+            //if (info.getLevel() != null) {
+            //    levelList.add(info.getLevel());
+            //}
+            System.out.println(info.toString());
+
+            //levelInfoHashMap.get(info.getStackPosition()).add(info);
+            //info.save();
+
+        }
+
+
+
+
+        /* Randomize Maps */
         for (GameFile gf : mapFiles) {
             MAPFile mf = (MAPFile) gf;
 
@@ -114,12 +202,89 @@ public class Randomizer {
                 continue;
             }
 
+
+            // Remove all Frog Circle markers
+            for (FrogPosition frogPos : frogPositions) {
+                if (frogPos.tileX == -1 || frogPos.tileZ == -1
+                        || frogPos.defaultTextureIndex == -1) {
+                    continue;
+                }
+                GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
+                MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+
+                if (poly.getTextureId() != frogPos.defaultTextureIndex) {
+                    System.out.println("Reset texture in " + mapName + " at " +
+                            frogPos.tileX + "," + frogPos.tileZ + " from " + poly.getTextureId()
+                            + " to " + frogPos.defaultTextureIndex);
+
+                    poly.setTextureId((short) frogPos.defaultTextureIndex);
+                }
+            }
+
+
             // Randomize start location
             StartPosition startPos = startPositions.get(random.nextInt(startPositions.size()));
             mf.setStartXTile(startPos.x);
             mf.setStartZTile(startPos.z);
             mf.setStartRotation(startPos.rotation);
-            //mf.
+
+            // Remove all start Target markers except for the selected
+            for (StartPosition startOpt : startPositions) {
+                if (startOpt.x == -1 || startOpt.z == -1 || startOpt.ringTextureIndex == -1) {
+                    continue;
+                }
+
+                for (GridStack gs : mf.getGridStacks()) {
+                    // Find optional start tile in tiles
+                    if (mf.getGridX(gs) != startOpt.x || mf.getGridZ(gs) != startOpt.z) {
+                        continue;
+                    }
+                    if (startPos.x == startOpt.x && startPos.z == startOpt.z) {
+                        // If the optional start tile was actually selected as the start
+                        // Add the target on that tile if supported
+                        if (startOpt.ringTextureIndex != -1) {
+
+                            MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+
+                            System.out.println("Changed start texture in " + mapName + " at " +
+                                    startOpt.x + "," + startOpt.z + " from " + poly.getTextureId() +
+                                    " to " + startOpt.ringTextureIndex);
+
+                            poly.setTextureId((short) startOpt.ringTextureIndex);
+
+                            // Remove animation from the tile if there is one
+                            for (MAPAnimation ma : mf.getMapAnimations()) {
+                                List<MAPUVInfo> uvs = ma.getMapUVs();
+                                uvs.removeIf(uv -> {
+                                    boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
+                                    //if (ret) System.out.println("Was true");
+                                    return ret;
+                                });
+                            }
+                        }
+                    }
+                    else {
+                        // If the optional start tile was not selected
+                        // Find all polygons with a matching vertex with the target graphic
+                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+
+                        for (MAPPolygon mp : mf.getAllPolygons()) {
+                            try {
+                                MAPPolyTexture mpt = (MAPPolyTexture) mp;
+                                if (verticesIntersect(poly.getVertices(), mpt.getVertices())) {
+                                    if (mpt.getTextureId() == startOpt.ringTextureIndex
+                                            && startOpt.defaultTextureIndex != -1) {
+                                        // Set them to the default texture
+                                        mpt.setTextureId((short) startOpt.defaultTextureIndex);
+                                    }
+                                }
+
+                            } catch (Exception ignored) {}
+                        }
+                    }
+                }
+            }
+
 
             // Remove same zone frogs from frogPositions
             frogPositions.removeIf(frog -> frog.zone == startPos.zone);
@@ -151,6 +316,30 @@ public class Randomizer {
                             frogPos.roll * Math.PI / 180.0
                     );
 
+                    // Add new frog circles on tiles that support them
+                    if (frogPos.tileX != -1 && frogPos.tileZ != -1
+                            && frogPos.ringTextureIndex != -1) {
+                        GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
+                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+
+                        System.out.println("Changed texture in " + mapName + " at " +
+                                frogPos.tileX + "," + frogPos.tileZ + " from " +
+                                poly.getTextureId() + " to " + frogPos.ringTextureIndex);
+
+                        poly.setTextureId((short) frogPos.ringTextureIndex);
+
+                        // Remove animation from the tile if there is one
+                        for (MAPAnimation ma : mf.getMapAnimations()) {
+                            List<MAPUVInfo> uvs = ma.getMapUVs();
+                            uvs.removeIf(uv -> {
+                                boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
+                                //if (ret) System.out.println("Was true");
+                                return ret;
+                            });
+                        }
+
+                    }
+
 
                 }
             }
@@ -159,7 +348,7 @@ public class Randomizer {
 
 
         // Save the end result
-        SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
+        /*SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
         try {
             FileWriter writer = new FileWriter(new File(
                     GUIMain.EXE_CONFIG.getFolder(), "seed.txt"));
@@ -169,7 +358,53 @@ public class Randomizer {
         } catch (IOException e) {
             System.out.println("Unable to write seed to file. Error: ");
             e.printStackTrace();
+        }*/
+        //System.exit(0);
+    }
+
+
+    /**
+     * Given two arrays of vertex IDs, check if all the IDs between the two arrays match.  Order
+     * may differ between a and b.
+     * @param aa first array of vertices
+     * @param bb second array of vertices
+     * @return true if all elements in a match all elements in b
+     */
+    boolean verticesMatch(int[] aa, int[] bb) {
+        // Copy arrays since the original is pass by reference and we're going to overwrite values
+        int[] a = Arrays.copyOf(aa, aa.length);
+        int[] b = Arrays.copyOf(bb, bb.length);
+        if (a.length != b.length)
+            return false;
+        for (int i = 0; i < a.length; i++) {
+            boolean isInB = false;
+            for (int j = 0; j < b. length; j++) {
+                if (b[j] == a[i]) {
+                    isInB = true;
+                    a[i] = -1 * i;
+                    b[j] = -1 * j;
+                }
+            }
+            if (!isInB)
+                return false;
         }
-        System.exit(0);
+        return true;
+    }
+
+    /**
+     * Given two arrays of vertex IDs, check if any of the IDs between thw two arrays match
+     * @param a first array of vertices
+     * @param b second array of vertices
+     * @return true if any element of a matches any element of b
+     */
+    boolean verticesIntersect(int[] a, int[] b) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < b.length; j++) {
+                if (b[j] == a[i]) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

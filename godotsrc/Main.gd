@@ -2,6 +2,8 @@ extends Control
 
 onready var lnedtEnterSeed = \
 	$pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed/lnedtEnterSeed
+onready var chkbxZoneOrder = \
+	$pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings/chkbxZoneOrder
 onready var btnPickJar = \
 	$pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar/btnPickJar
 
@@ -48,9 +50,14 @@ func _on_btnRandomize_pressed() -> void:
 	if not is_valid_seed(randomizer_seed):
 		popupErrorInvalid.popup_centered()
 		return
-	var exit_code = OS.execute("java", 
-		["-jar", froglord_jar_path, "--seed="+randomizer_seed, "1>", "out.txt", "2>&1"], 
-		true)
+	var args = [
+		"-jar", froglord_jar_path, 
+		"--seed="+randomizer_seed, 
+		"--randZones="+str(chkbxZoneOrder.pressed),
+		"1>", "out.txt", "2>&1"
+	]
+	print("Args: " + str(args))
+	var exit_code = OS.execute("java", args, true)
 	if exit_code == 0:
 		popupErrorSuccess.popup_centered()
 	else:
