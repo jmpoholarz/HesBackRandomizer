@@ -22,6 +22,7 @@ import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyGT4;
 import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyTexture;
 import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
 import net.highwayfrogs.editor.file.standard.SVector;
+import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 import net.highwayfrogs.editor.file.standard.psx.PSXMatrix;
 import net.highwayfrogs.editor.gui.GUIMain;
 import net.highwayfrogs.editor.gui.MainController;
@@ -261,6 +262,10 @@ public class Randomizer {
                                     return ret;
                                 });
                             }
+                            // Set Tile UVs if provided
+                            if (startPos.UVs != null) {
+                                poly.setUvs(startPos.UVs);
+                            }
                         }
                     }
                     else {
@@ -268,17 +273,35 @@ public class Randomizer {
                         // Find all polygons with a matching vertex with the target graphic
                         MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
 
-                        for (MAPPolygon mp : mf.getAllPolygons()) {
+                        ArrayList<int[]> targetMarkedPolys = new ArrayList<>();
+                        targetMarkedPolys.add(poly.getVertices()); // polys which had target graphic
+                        List<MAPPolygon> polysToCheck = mf.getAllPolygons();
+                        for (int i = 0; i < polysToCheck.size(); i++) {
+                            MAPPolygon mp = polysToCheck.get(i);
                             try {
                                 MAPPolyTexture mpt = (MAPPolyTexture) mp;
-                                if (verticesIntersect(poly.getVertices(), mpt.getVertices())) {
-                                    if (mpt.getTextureId() == startOpt.ringTextureIndex
-                                            && startOpt.defaultTextureIndex != -1) {
-                                        // Set them to the default texture
-                                        mpt.setTextureId((short) startOpt.defaultTextureIndex);
+                                if (mpt.getTextureId() == startOpt.ringTextureIndex
+                                        && startOpt.defaultTextureIndex != -1) {
+                                    for (int[] entry : targetMarkedPolys) {
+                                        if (verticesIntersect(entry, mpt.getVertices())) {
+                                            // Set them to the default texture
+                                            mpt.setTextureId((short) startOpt.defaultTextureIndex);
+                                            /*
+                                             * Add the poly just changed to the list of polys to
+                                             * check because another poly with the target graphic
+                                             * may share a vertex with one of them but not the
+                                             * main poly from the original tile provided
+                                             */
+                                            targetMarkedPolys.add(mpt.getVertices());
+                                            // Remove it from the list to prevent an infinite loop
+                                            polysToCheck.remove(i);
+                                            // Restart at the beginning of the list of polys in
+                                            // case any were missed initially
+                                            i = -1;
+                                            break;
+                                        }
                                     }
                                 }
-
                             } catch (Exception ignored) {}
                         }
                     }
@@ -336,6 +359,10 @@ public class Randomizer {
                                 //if (ret) System.out.println("Was true");
                                 return ret;
                             });
+                        }
+                        // Set Tile UVs if provided
+                        if (frogPos.UVs != null) {
+                            poly.setUvs(frogPos.UVs);
                         }
 
                     }

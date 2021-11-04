@@ -1,6 +1,7 @@
 package net.highwayfrogs.editor.randomizer;
 
 import net.highwayfrogs.editor.file.map.StartRotation;
+import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,8 @@ public class StartPosition {
 
     public int ringTextureIndex; // texture that holds the target graphic
     public int defaultTextureIndex; // index of the tile when not the target tile
+    public ByteUV[] UVs; // UVs for the tile texture
+
 
     StartPosition(int x, int z, StartRotation rotation, int zone) {
         this.x = (short) x;
@@ -24,6 +27,7 @@ public class StartPosition {
 
         this.ringTextureIndex = -1;
         this.defaultTextureIndex = -1;
+        this.UVs = null;
     }
 
     StartPosition(int x, int z, StartRotation rotation, int zone,
@@ -36,10 +40,11 @@ public class StartPosition {
 
         this.ringTextureIndex = -1;
         this.defaultTextureIndex = -1;
+        this.UVs = null;
     }
 
     StartPosition(int x, int z, StartRotation rotation, int zone,
-                  int defaultTextureIndex, int ringTextureIndex) {
+                  int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
         this.x = (short) x;
         this.z = (short) z;
         this.rotation = rotation;
@@ -48,10 +53,11 @@ public class StartPosition {
 
         this.ringTextureIndex = ringTextureIndex;
         this.defaultTextureIndex = defaultTextureIndex;
+        this.UVs = UVs;
     }
 
     StartPosition(int x, int z, StartRotation rotation, int zone, int defaultTextureIndex,
-                  int ringTextureIndex, ArrayList<Integer> bannedFrogZones) {
+                  int ringTextureIndex, ByteUV[] UVs, ArrayList<Integer> bannedFrogZones) {
         this.x = (short) x;
         this.z = (short) z;
         this.rotation = rotation;
@@ -60,5 +66,6 @@ public class StartPosition {
 
         this.ringTextureIndex = ringTextureIndex;
         this.defaultTextureIndex = defaultTextureIndex;
+        this.UVs = UVs;
     }
 }
