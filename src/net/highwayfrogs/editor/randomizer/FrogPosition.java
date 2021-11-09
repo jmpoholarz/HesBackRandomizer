@@ -14,6 +14,7 @@ public class FrogPosition {
 
     public int tileX; // X tile in the map of the frog
     public int tileZ; // Z tile in the map of the frog
+    public int stackIndex; // which index in the stack of tiles at that location to change the gfx
     public int ringTextureIndex; // texture that holds the ring graphic
     public int defaultTextureIndex; // index of the tile when not the frog ring tile
     public ByteUV[] UVs; // UVs for the tile texture
@@ -28,13 +29,15 @@ public class FrogPosition {
         this.zone = zone;
         this.tileX = -1;
         this.tileZ = -1;
+        this.stackIndex = 0;
         this.defaultTextureIndex = -1;
         this.ringTextureIndex = -1;
         this.UVs = null;
     }
 
     FrogPosition(double x, double y, double z, double yaw, double pitch, double roll, int zone,
-                 int tileX, int tileZ, int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
+                 int tileX, int tileZ, int stackIndex,
+                 int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
         this.x = (float) x;
         this.y = (float) y;
         this.z = (float) z;
@@ -44,6 +47,7 @@ public class FrogPosition {
         this.zone = zone;
         this.tileX = tileX;
         this.tileZ = tileZ;
+        this.stackIndex = stackIndex;
         this.defaultTextureIndex = defaultTextureIndex;
         this.ringTextureIndex = ringTextureIndex;
         this.UVs = UVs;

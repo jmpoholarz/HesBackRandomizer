@@ -211,7 +211,8 @@ public class Randomizer {
                     continue;
                 }
                 GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
-                MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+                MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares()
+                        .get(frogPos.stackIndex).getPolygon();
 
                 if (poly.getTextureId() != frogPos.defaultTextureIndex) {
                     System.out.println("Reset texture in " + mapName + " at " +
@@ -343,7 +344,8 @@ public class Randomizer {
                     if (frogPos.tileX != -1 && frogPos.tileZ != -1
                             && frogPos.ringTextureIndex != -1) {
                         GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
-                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
+                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares()
+                                .get(frogPos.stackIndex).getPolygon();
 
                         System.out.println("Changed texture in " + mapName + " at " +
                                 frogPos.tileX + "," + frogPos.tileZ + " from " +
