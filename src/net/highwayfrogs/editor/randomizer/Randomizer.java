@@ -312,7 +312,7 @@ public class Randomizer {
 
 
             // Remove same zone frogs from frogPositions
-            frogPositions.removeIf(frog -> frog.zone == startPos.zone);
+            //frogPositions.removeIf(frog -> frog.zone == startPos.zone);
 
             // Remove banned zone frogs from frogPositions
             frogPositions.removeIf(frog -> startPos.bannedFrogZones.contains(frog.zone));

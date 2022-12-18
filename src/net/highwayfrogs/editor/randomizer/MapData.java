@@ -881,356 +881,475 @@ public class MapData {
      public static Map<String, ArrayList<StartPosition>> START_LOCATIONS = new HashMap<>();
      static {
          START_LOCATIONS.put("ORG1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 1, StartRotation.NORTH, 0) //,
+                 new StartPosition(10, 1, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1)
-         )));
+         ))
+         );
          START_LOCATIONS.put("ORG2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 1, StartRotation.NORTH, 0) //,
+                 new StartPosition(10, 1, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1)
          )));
          START_LOCATIONS.put("ORG3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 1, StartRotation.NORTH, 0) //,
+                 new StartPosition(10, 1, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1)
          )));
          START_LOCATIONS.put("ORG4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 1, StartRotation.NORTH, 0) //,
+                 new StartPosition(10, 1, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1)
          )));
          START_LOCATIONS.put("ORG5.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 1, StartRotation.NORTH, 0) //,
+                 new StartPosition(10, 1, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1)
          )));
          START_LOCATIONS.put("SUB1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(17, 21, StartRotation.NORTH, 0,
-                         13, 47, null),
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(23, 26, StartRotation.EAST, 1,
-                         14, 47, null),
+                         14, 47, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(16, 42, StartRotation.EAST, 2,
-                         13, 47, null),
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(19, 38, StartRotation.NORTH, 2,
-                         13, 47, null),
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(37, 42, StartRotation.SOUTH, 2,
-                         13, 47, null),
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(50, 42, StartRotation.WEST, 3,
-                         14, 47, null),
+                         14, 47, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(51, 29, StartRotation.EAST, 5,
-                         13, 47, null),
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(5))),
                  new StartPosition(47, 22, StartRotation.NORTH, 5,
-                         13, 47, null)
+                         13, 47, null,
+                         new ArrayList<>(Arrays.asList(5)))
          )));
          START_LOCATIONS.put("SUB2.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(26, 6, StartRotation.NORTH, 0,
-                         2, 12, null), //
+                         2, 12, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(19, 26, StartRotation.WEST, 1,
-                         2, 12, null),
+                         2, 12, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(21, 34, StartRotation.SOUTH, 2,
-                         2, 12, null),
+                         2, 12, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(31, 29, StartRotation.WEST, 3,
-                         2, 12, null)
+                         2, 12, null,
+                         new ArrayList<>(Arrays.asList(3)))
          )));
          START_LOCATIONS.put("SUB3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(21, 6, StartRotation.NORTH, 0,
-                         0, 43, null), //
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(5, 11, StartRotation.EAST, 1,
-                         0, 43, null),
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(17, 17, StartRotation.EAST, 2,
-                         0, 43, null),
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(14, 24, StartRotation.SOUTH, 2,
                          36, 43,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(16, 38, StartRotation.SOUTH, 3,
-                         0, 43, null),
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(25, 31, StartRotation.EAST, 4,
                          17, 43,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(39, 24, StartRotation.NORTH, 4,
-                         0, 43, null),
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(29, 10, StartRotation.SOUTH, 5,
-                         12, 43, null),
+                         12, 43, null,
+                         new ArrayList<>(Arrays.asList(5))),
                  new StartPosition(35, 11, StartRotation.WEST, 5,
-                         0, 43, null)
+                         0, 43, null,
+                         new ArrayList<>(Arrays.asList(5)))
          )));
          START_LOCATIONS.put("SUB4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(17, 24, StartRotation.NORTH, 0,
-                         9, 19, null), //
+                         9, 19, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(23, 29, StartRotation.EAST, 0,
-                         14, 19, null),
+                         14, 19, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(19, 41, StartRotation.NORTH, 2,
-                         9, 19, null),
+                         9, 19, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(32, 39, StartRotation.EAST, 3,
-                         9, 19, null),
+                         9, 19, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(37, 45, StartRotation.SOUTH, 3,
-                         14, 19, null),
+                         14, 19, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(56, 41, StartRotation.NORTH, 4,
-                         14, 19, null),
+                         14, 19, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(47, 32, StartRotation.WEST, 5,
-                         9, 19, null)
+                         9, 19, null,
+                         new ArrayList<>(Arrays.asList(5)))
          )));
          START_LOCATIONS.put("SUB5.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(33, 7, StartRotation.NORTH, 0,
-                         0, 9, null), //
+                         0, 9, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(20, 12, StartRotation.EAST, 0,
-                         0, 9, null),
+                         0, 9, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(20, 27, StartRotation.EAST, 1,
-                         3, 9, null),
+                         3, 9, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(36, 22, StartRotation.SOUTH, 2,
-                         29, 9, null),
+                         29, 9, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(38, 30, StartRotation.WEST, 3,
-                         0, 9, null)
+                         0, 9, null,
+                         new ArrayList<>(Arrays.asList(3)))
          )));
          START_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(9, 3, StartRotation.NORTH, 0,
                          3, 30, //
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(5))),
+                         new ArrayList<>(Arrays.asList(0, 5))),
                  new StartPosition(3, 9, StartRotation.EAST, 1,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(0, 5))),
+                         new ArrayList<>(Arrays.asList(0, 1, 5))),
                  new StartPosition(3, 19, StartRotation.EAST, 2,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(3))),
+                         new ArrayList<>(Arrays.asList(2, 3))),
                  new StartPosition(15, 20, StartRotation.SOUTH, 3,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(2))),
+                         new ArrayList<>(Arrays.asList(2, 3))),
                  new StartPosition(24, 15, StartRotation.WEST, 3,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(4, 5))),
+                         new ArrayList<>(Arrays.asList(3, 4, 5))),
                  new StartPosition(24, 5, StartRotation.WEST, 5,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(0, 4))),
+                         new ArrayList<>(Arrays.asList(0, 4, 5))),
                  new StartPosition(19, 3, StartRotation.NORTH, 5,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
-                         new ArrayList<>(Arrays.asList(0, 4)))
+                         new ArrayList<>(Arrays.asList(0, 4, 5)))
          )));
          START_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(15, 23, StartRotation.SOUTH, 0),
-                 new StartPosition(15, 29, StartRotation.NORTH, 0),
-                 new StartPosition(18, 26, StartRotation.EAST, 0),
-                 new StartPosition(20, 19, StartRotation.WEST, 1),
+                 new StartPosition(15, 23, StartRotation.SOUTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))),
+                 new StartPosition(15, 29, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))),
+                 new StartPosition(18, 26, StartRotation.EAST, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))),
+                 new StartPosition(20, 19, StartRotation.WEST, 1,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(6, 5, StartRotation.WEST, 4,
-                         new ArrayList<>(Arrays.asList(0, 1, 7, 8))),
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0, 1, 4, 7, 8))),
                  new StartPosition(24, 15, StartRotation.SOUTH, 6,
-                         new ArrayList<>(Arrays.asList(0, 1, 7, 8))),
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0, 1, 6, 7, 8))),
                  new StartPosition(30, 10, StartRotation.WEST, 7,
-                         new ArrayList<>(Arrays.asList(0, 1)))
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0, 1, 7)))
          )));
          START_LOCATIONS.put("VOL1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(9, 2, StartRotation.NORTH, 0,
-                         3, 34, null),
+                         3, 34, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(2, 3, StartRotation.EAST, 0,
-                         3, 34, null),
+                         3, 34, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(16, 3, StartRotation.WEST, 0,
-                         3, 34, null)
+                         3, 34, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("VOL2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(9, 2, StartRotation.NORTH, 0)
+                 new StartPosition(9, 2, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("VOL3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(3, 3, StartRotation.NORTH, 0)
+                 new StartPosition(3, 3, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("CAV1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(11, 2, StartRotation.NORTH, 0,
                          3, 4, null,
-                         new ArrayList<>(Arrays.asList(1, 7))),
+                         new ArrayList<>(Arrays.asList(0, 1, 7))),
                  new StartPosition(3, 7, StartRotation.EAST, 2,
                          23, 4, null,
-                         new ArrayList<>(Arrays.asList(0, 1, 3))),
+                         new ArrayList<>(Arrays.asList(0, 1, 2, 3))),
                  new StartPosition(5, 22, StartRotation.SOUTH, 4,
                          27, 4, null,
-                         new ArrayList<>(Arrays.asList(3, 5))),
+                         new ArrayList<>(Arrays.asList(3, 4, 5))),
                  new StartPosition(15, 22, StartRotation.SOUTH, 4,
                          1, 4, null,
-                         new ArrayList<>(Arrays.asList(3, 5))),
+                         new ArrayList<>(Arrays.asList(3, 4, 5))),
                  new StartPosition(19, 7, StartRotation.WEST, 6,
                          22, 4, null,
-                         new ArrayList<>(Arrays.asList(0, 5, 7)))
+                         new ArrayList<>(Arrays.asList(0, 5, 6, 7)))
          )));
          START_LOCATIONS.put("CAV3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(13, 12, StartRotation.NORTH, 0,
-                        7,  2, null)
+                        7,  2, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("CAV4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(17, 5, StartRotation.NORTH, 0,
-                         4, 21, null), //
+                         4, 21, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(4, 16, StartRotation.EAST, 2,
-                         13, 21, null),
+                         13, 21, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(17, 17, StartRotation.NORTH, 4,
-                          7, 21, null),
+                          7, 21, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(6, 29, StartRotation.EAST, 7,
-                         24, 21, null),
+                         24, 21, null,
+                         new ArrayList<>(Arrays.asList(7))),
                  new StartPosition(23, 29, StartRotation.WEST, 7,
-                         23, 21, null),
+                         23, 21, null,
+                         new ArrayList<>(Arrays.asList(7))),
                  new StartPosition(16, 37, StartRotation.SOUTH, 8,
-                         17, 21, null)
+                         17, 21, null,
+                         new ArrayList<>(Arrays.asList(8)))
          )));
          START_LOCATIONS.put("SKY1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(20, 15, StartRotation.NORTH, 0,
                          0, 2, null,
-                         new ArrayList<>(Arrays.asList(1))),
+                         new ArrayList<>(Arrays.asList(0, 1))),
                  new StartPosition(10, 30, StartRotation.EAST, 2,
                          0, 2, null,
-                         new ArrayList<>(Arrays.asList(1))),
+                         new ArrayList<>(Arrays.asList(1, 2))),
                  new StartPosition(30, 13, StartRotation.NORTH, 4,
-                         0, 2, null),
+                         0, 2, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(32, 31, StartRotation.SOUTH, 5,
-                         0, 2, null)
+                         0, 2, null,
+                         new ArrayList<>(Arrays.asList(5)))
          )));
          START_LOCATIONS.put("SKY2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(23, 8, StartRotation.NORTH, 0)
+                 new StartPosition(23, 8, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SKY3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(3, 9, StartRotation.NORTH, 0)
+                 new StartPosition(3, 9, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SKY4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(23, 18, StartRotation.NORTH, 0)
+                 new StartPosition(23, 18, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SWP1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 10, StartRotation.NORTH, 0)
+                 new StartPosition(10, 10, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SWP2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition(10, 10, StartRotation.NORTH, 0)
+                 new StartPosition(10, 10, StartRotation.NORTH, 0,
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SWP3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(15, 4, StartRotation.NORTH, 0,
-                         -1, -1, null), //ignoring since too complicated to overwrite and mostly out of view anyway
+                         -1, -1, null,
+                         new ArrayList<>(Arrays.asList(0))), //ignoring since too complicated to overwrite and mostly out of view anyway
                  new StartPosition(13, 17, StartRotation.NORTH, 1,
-                         1, 258, null), //TODO: Check if need to move so camera doesn't flip out
+                         1, 258, null,
+                         new ArrayList<>(Arrays.asList(1))), //TODO: Check if need to move so camera doesn't flip out
                  new StartPosition(17, 17, StartRotation.NORTH, 3,
-                         15, 258, null) //TODO: Check if need to move so camera doesn't flip out
+                         15, 258, null,
+                         new ArrayList<>(Arrays.asList(3))) //TODO: Check if need to move so camera doesn't flip out
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(14, 12, StartRotation.NORTH, 0,
-                         44, 66, null),
+                         44, 66, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(11, 15, StartRotation.EAST, 0,
-                         44, 66, null),
+                         44, 66, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(17, 15, StartRotation.WEST, 0,
-                         44, 66, null)
+                         44, 66, null,
+                         new ArrayList<>(Arrays.asList(0)))
          )));
          START_LOCATIONS.put("SWP5.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(25, 5, StartRotation.NORTH, 0,
-                         4, 58, null),
+                         4, 58, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(15, 3, StartRotation.NORTH, 1,
-                         3, 58, null),
+                         3, 58, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(26, 30, StartRotation.WEST, 3,
-                         2, 58, null),
+                         2, 58, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(15, 27, StartRotation.EAST, 5,
-                         4, 58, null),
+                         4, 58, null,
+                         new ArrayList<>(Arrays.asList(5))),
                  new StartPosition(9, 26, StartRotation.NORTH, 6,
                          35, 58, null,
-                         new ArrayList<>(Arrays.asList(8))),
+                         new ArrayList<>(Arrays.asList(6, 8))),
                  new StartPosition(3, 34, StartRotation.SOUTH, 6,
                          35, 58, null,
-                         new ArrayList<>(Arrays.asList(8)))
+                         new ArrayList<>(Arrays.asList(6, 8)))
          )));
          START_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(21, 8, StartRotation.NORTH, 0,
-                         1, 88, null), //
+                         1, 88, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(7, 15, StartRotation.EAST, 1,
-                         11, 88, null),
+                         11, 88, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(21, 30, StartRotation.NORTH, 2,
-                         1, 88, null),
+                         1, 88, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(36, 15, StartRotation.WEST, 3,
-                         1, 88, null)
+                         1, 88, null,
+                         new ArrayList<>(Arrays.asList(3)))
          )));
          START_LOCATIONS.put("DES2.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(8, 9, StartRotation.NORTH, 0,
-                         0, 92, null), //
+                         0, 92, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(9, 28, StartRotation.EAST, 1,
-                         56, 92, null),
+                         56, 92, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(26, 15, StartRotation.NORTH, 3,
-                         38, 92, null),
+                         38, 92, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(30, 20, StartRotation.SOUTH, 4,
-                         30 , 92, null)
+                         30 , 92, null,
+                         new ArrayList<>(Arrays.asList(4)))
          )));
          START_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(6, 4, StartRotation.NORTH, 0,
-                         0, 80, null), //
+                         0, 80, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(6, 9, StartRotation.NORTH, 1,
-                         0, 80, null),
+                         0, 80, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(11, 4, StartRotation.EAST, 2,
-                         0, 80, null),
+                         0, 80, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(3, 24, StartRotation.EAST, 4,
-                         11, 80, null),
+                         11, 80, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(11, 32, StartRotation.SOUTH, 5,
-                         0, 80, null),
+                         0, 80, null,
+                         new ArrayList<>(Arrays.asList(5))),
                  new StartPosition(15, 20, StartRotation.NORTH, 6,
-                         15, 80, null)
+                         15, 80, null,
+                         new ArrayList<>(Arrays.asList(6)))
          )));
          START_LOCATIONS.put("DES4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(21, 8, StartRotation.NORTH, 0,
-                         5, 68, null), //
+                         5, 68, null,
+                         new ArrayList<>(Arrays.asList(0))), //
                  new StartPosition(7, 15, StartRotation.EAST, 1,
-                         11, 68, null),
+                         11, 68, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(21, 37, StartRotation.SOUTH, 2,
-                         39, 68, null),
+                         39, 68, null,
+                         new ArrayList<>(Arrays.asList(2))),
                  new StartPosition(36, 15, StartRotation.WEST, 4,
-                         5, 68, null),
+                         5, 68, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(22, 16, StartRotation.SOUTH, 4,
-                         5, 68, null)
+                         5, 68, null,
+                         new ArrayList<>(Arrays.asList(4)))
          )));
          START_LOCATIONS.put("DES5.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(8, 9, StartRotation.NORTH, 0,
                          0, 93, null, //
-                         new ArrayList<>(Arrays.asList(2))),
+                         new ArrayList<>(Arrays.asList(0, 2))),
                  new StartPosition(17, 19, StartRotation.WEST, 0,
-                         46, 93, null),
+                         46, 93, null,
+                         new ArrayList<>(Arrays.asList(0))),
                  new StartPosition(26, 15, StartRotation.NORTH, 1,
-                         36, 93, null),
+                         36, 93, null,
+                         new ArrayList<>(Arrays.asList(1))),
                  new StartPosition(7, 29, StartRotation.EAST, 3,
-                         14, 93, null),
+                         14, 93, null,
+                         new ArrayList<>(Arrays.asList(3))),
                  new StartPosition(17, 34, StartRotation.EAST, 4,
-                         0, 93, null),
+                         0, 93, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(28, 20, StartRotation.SOUTH, 4,
-                         14, 93, null),
+                         14, 93, null,
+                         new ArrayList<>(Arrays.asList(4))),
                  new StartPosition(18, 17, StartRotation.EAST, 6,
                          31, 93, null,
-                         new ArrayList<>(Arrays.asList(8))),
+                         new ArrayList<>(Arrays.asList(6, 8))),
                  new StartPosition(34, 20, StartRotation.SOUTH, 7,
-                         11, 93, null),
+                         11, 93, null,
+                         new ArrayList<>(Arrays.asList(7))),
                  new StartPosition(6, 17, StartRotation.EAST, 9,
                          0, 93, null,
-                         new ArrayList<>(Arrays.asList(8)))
+                         new ArrayList<>(Arrays.asList(8, 9)))
          )));
          START_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition(12, 3, StartRotation.NORTH, 0, //
                          44, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block
-                         null, new ArrayList<>(Arrays.asList(2))),
+                         null, new ArrayList<>(Arrays.asList(0, 2))),
                  new StartPosition(6, 3, StartRotation.NORTH, 1,
                          2, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
-                         new ArrayList<>(Arrays.asList(2))),
+                         new ArrayList<>(Arrays.asList(1, 2))),
                  new StartPosition(24, 17, StartRotation.WEST, 4,
                          24, 7,
                          new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
-                         new ArrayList<>(Arrays.asList(3, 5))),
+                         new ArrayList<>(Arrays.asList(3, 4, 5))),
                  new StartPosition(13, 15, StartRotation.SOUTH, 5,
                          24, 7,
                          new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
-                         new ArrayList<>(Arrays.asList(2, 4))),
+                         new ArrayList<>(Arrays.asList(2, 4, 5))),
                  new StartPosition(11, 20, StartRotation.SOUTH, 6,
-                         26, 7, null),
+                         26, 7, null,
+                         new ArrayList<>(Arrays.asList(6))),
                  new StartPosition(9, 25, StartRotation.WEST, 6,
                          28, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)}),
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ArrayList<>(Arrays.asList(6))),
                  new StartPosition(9, 29, StartRotation.NORTH, 7,
                          21, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)}),
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ArrayList<>(Arrays.asList(7))),
                  new StartPosition(19, 29, StartRotation.WEST, 9,
                          6, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
-                         new ArrayList<>(Arrays.asList(8, 10))),
+                         new ArrayList<>(Arrays.asList(8, 9, 10))),
                  new StartPosition(6, 34, StartRotation.NORTH, 10,
                          44, 7, null,
-                         new ArrayList<>(Arrays.asList(8, 9))),
+                         new ArrayList<>(Arrays.asList(8, 9, 10))),
                  new StartPosition(14, 38, StartRotation.SOUTH, 10,
                          44, 7, null,
-                         new ArrayList<>(Arrays.asList(8, 9)))
+                         new ArrayList<>(Arrays.asList(8, 9, 10)))
          )));
 
      }
