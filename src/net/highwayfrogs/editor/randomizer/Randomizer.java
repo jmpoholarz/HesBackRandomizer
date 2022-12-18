@@ -18,6 +18,7 @@ import net.highwayfrogs.editor.file.map.entity.data.MatrixData;
 import net.highwayfrogs.editor.file.map.entity.data.general.CheckpointEntity;
 import net.highwayfrogs.editor.file.map.grid.GridSquare;
 import net.highwayfrogs.editor.file.map.grid.GridStack;
+import net.highwayfrogs.editor.file.map.path.Path;
 import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyGT4;
 import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyTexture;
 import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
@@ -372,12 +373,19 @@ public class Randomizer {
 
                 }
             }
+
+            // Randomize lanes in Retro levels
+            if (mapName.contains("ORG")) {
+                RetroLaneShuffler rls = new RetroLaneShuffler(random);
+                rls.shuffleLanes(mapName, mf);
+            }
+
         }
 
 
 
         // Save the end result
-        /*SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
+        SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
         try {
             FileWriter writer = new FileWriter(new File(
                     GUIMain.EXE_CONFIG.getFolder(), "seed.txt"));
@@ -387,8 +395,8 @@ public class Randomizer {
         } catch (IOException e) {
             System.out.println("Unable to write seed to file. Error: ");
             e.printStackTrace();
-        }*/
-        //System.exit(0);
+        }
+        System.exit(0);
     }
 
 

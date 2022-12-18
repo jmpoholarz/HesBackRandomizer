@@ -82,4 +82,24 @@ public class LineSegment extends PathSegment {
     public SVector getStartPosition() {
         return getStart();
     }
+
+    public SVector getStart() {
+        return start;
+    }
+
+    public void setStart(SVector start) {
+        this.start = start;
+    }
+
+    public SVector getEnd() {
+        return end;
+    }
+
+    public void setEnd(SVector end) {
+        this.end = end;
+    }
+
+    public boolean isDirectedRight() {
+        return (end.getX() - start.getX()) > 0;
+    }
 }

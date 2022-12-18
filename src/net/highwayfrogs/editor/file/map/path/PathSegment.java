@@ -19,6 +19,10 @@ import java.lang.ref.WeakReference;
  */
 @Getter
 public abstract class PathSegment extends GameObject {
+    public void setType(PathType type) {
+        this.type = type;
+    }
+
     private PathType type;
     private int length;
     private transient WeakReference<TextField> lengthField;
