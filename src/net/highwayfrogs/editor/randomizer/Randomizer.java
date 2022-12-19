@@ -35,10 +35,10 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The main class for randomizing Frogger: He's Back
+ */
 public class Randomizer {
-    /*
-     * The main class for Randomizing Frogger He's Back
-     */
 
     String[] launchArgs;
     long randomizerSeed = -1;
@@ -67,14 +67,21 @@ public class Randomizer {
         }
     }
 
+    public Random loadRandomNumberGenerator() {
+        Random random;
+        if (randomizerSeed != -1) {
+            random = new Random(randomizerSeed);
+        }
+        else {
+            random = new Random();
+            randomizerSeed = random.nextInt(Integer.MAX_VALUE);
+            random.setSeed(randomizerSeed);
+        }
+        return random;
+    }
 
-    public void randomize(FroggerEXEInfo exeFile) {
-        parseLaunchArgs();
 
-        // Get MWD file loaded by GUI launch
-        MWDFile mwdFile = MainController.MAIN_WINDOW.getMwdFile();
-
-        // List to hold all of the map files to randomize
+    public ObservableList<GameFile> getMapFiles(MWDFile mwdFile) {
         ObservableList<GameFile> mapFiles = FXCollections.observableArrayList();
 
         // Iterate through all game files looking for MAP files
@@ -101,26 +108,25 @@ public class Randomizer {
                     });
                 }*/
 
-
-
-
-
-
-
                 mapFiles.add(gameFile);
             }
         }
+        return mapFiles;
+    }
+
+
+    public void randomize(FroggerEXEInfo exeFile) {
+        parseLaunchArgs();
+
+        // Get MWD file loaded by GUI launch
+        MWDFile mwdFile = MainController.MAIN_WINDOW.getMwdFile();
+
+        // List to hold all of the map files to randomize
+        ObservableList<GameFile> mapFiles = getMapFiles(mwdFile);
 
         // Init random number generator using provided seed if available
-        Random random;
-        if (randomizerSeed != -1) {
-            random = new Random(randomizerSeed);
-        }
-        else {
-            random = new Random();
-            randomizerSeed = random.nextInt(Integer.MAX_VALUE);
-            random.setSeed(randomizerSeed);
-        }
+        Random random = loadRandomNumberGenerator();
+
 
 
         /* Randomize Level Order */

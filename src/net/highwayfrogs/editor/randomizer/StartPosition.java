@@ -17,44 +17,46 @@ public class StartPosition {
     public int defaultTextureIndex; // index of the tile when not the target tile
     public ByteUV[] UVs; // UVs for the tile texture
 
+    @Deprecated
+    StartPosition(int x, int z, StartRotation rotation, int zone) {
+        this.x = (short) x;
+        this.z = (short) z;
+        this.rotation = rotation;
+        this.zone = zone;
+        bannedFrogZones = new ArrayList<>();
 
-//    StartPosition(int x, int z, StartRotation rotation, int zone) {
-//        this.x = (short) x;
-//        this.z = (short) z;
-//        this.rotation = rotation;
-//        this.zone = zone;
-//        bannedFrogZones = new ArrayList<>();
-//
-//        this.ringTextureIndex = -1;
-//        this.defaultTextureIndex = -1;
-//        this.UVs = null;
-//    }
+        this.ringTextureIndex = -1;
+        this.defaultTextureIndex = -1;
+        this.UVs = null;
+    }
 
-//    StartPosition(int x, int z, StartRotation rotation, int zone,
-//                  ArrayList<Integer> bannedFrogZones) {
-//        this.x = (short) x;
-//        this.z = (short) z;
-//        this.rotation = rotation;
-//        this.zone = zone;
-//        this.bannedFrogZones = bannedFrogZones;
-//
-//        this.ringTextureIndex = -1;
-//        this.defaultTextureIndex = -1;
-//        this.UVs = null;
-//    }
+    @Deprecated
+    StartPosition(int x, int z, StartRotation rotation, int zone,
+                  ArrayList<Integer> bannedFrogZones) {
+        this.x = (short) x;
+        this.z = (short) z;
+        this.rotation = rotation;
+        this.zone = zone;
+        this.bannedFrogZones = bannedFrogZones;
 
-//    StartPosition(int x, int z, StartRotation rotation, int zone,
-//                  int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
-//        this.x = (short) x;
-//        this.z = (short) z;
-//        this.rotation = rotation;
-//        this.zone = zone;
-//        bannedFrogZones = new ArrayList<>();
-//
-//        this.ringTextureIndex = ringTextureIndex;
-//        this.defaultTextureIndex = defaultTextureIndex;
-//        this.UVs = UVs;
-//    }
+        this.ringTextureIndex = -1;
+        this.defaultTextureIndex = -1;
+        this.UVs = null;
+    }
+
+    @Deprecated
+    StartPosition(int x, int z, StartRotation rotation, int zone,
+                  int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
+        this.x = (short) x;
+        this.z = (short) z;
+        this.rotation = rotation;
+        this.zone = zone;
+        bannedFrogZones = new ArrayList<>();
+
+        this.ringTextureIndex = ringTextureIndex;
+        this.defaultTextureIndex = defaultTextureIndex;
+        this.UVs = UVs;
+    }
 
     StartPosition(int x, int z, StartRotation rotation, int zone, int defaultTextureIndex,
                   int ringTextureIndex, ByteUV[] UVs, ArrayList<Integer> bannedFrogZones) {
