@@ -55,7 +55,7 @@ public class Randomizer {
 
     public void parseLaunchArgs() {
         for (String s : launchArgs) {
-            if (s.startsWith("--seed=")) {
+            if (s.startsWith("--seed=") && s.length() > 7) {
                 randomizerSeed = Long.parseLong(s.substring(7));
             }
 //            else if (s.startsWith("--randZones=")) {
