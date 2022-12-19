@@ -199,6 +199,7 @@ public class RetroLaneShuffler {
         Path deepestPath = null;
         Path nextDeepestPath = null;
         float largestZ = Float.NEGATIVE_INFINITY;
+        float nextLargestZ = Float.NEGATIVE_INFINITY;
         for (Path p : allPaths) {
             // Iterate through all paths and randomly flip direction of LINE type paths
             double value = random.nextDouble();
@@ -209,7 +210,13 @@ public class RetroLaneShuffler {
             if (p.getSegments().get(0).getStartPosition().getZ() > largestZ) {
                 nextDeepestPath = deepestPath;
                 deepestPath = p;
+                nextLargestZ = largestZ;
                 largestZ = p.getSegments().get(0).getStartPosition().getZ();
+            }
+            else if (nextDeepestPath != null
+                    && p.getSegments().get(0).getStartPosition().getZ() > nextLargestZ) {
+                nextDeepestPath = p;
+                nextLargestZ = p.getSegments().get(0).getStartPosition().getZ();
             }
         }
 

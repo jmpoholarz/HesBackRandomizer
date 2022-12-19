@@ -303,7 +303,7 @@ public class MapData {
                          24, 9, 0, 0, 21,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
                  new FrogPosition(167.9375, -29.9375, -87.6875, 0, -89.9, 9, 5,
-                         24, 7, 0, 0, 21,
+                         24, 6, 0, 0, 21,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)})
          )));
          FROG_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
