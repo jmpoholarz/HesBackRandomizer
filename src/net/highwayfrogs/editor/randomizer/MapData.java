@@ -120,7 +120,7 @@ public class MapData {
                  new FrogPosition(-24.0, -3.4375, -616.0, 0, 0, 0, 0,
                          22, 6, 0, 2, 47, null),
                  new FrogPosition(-104.0, -65.875, -520.0, 0, 89.9, 0, 0,
-                         17, 12, 1, 19, 47, null), //2nd layer
+                         17, 12, 1, 2, 47, null), //2nd layer
                  new FrogPosition(-56.0, -70.25, -376.0, 0, -89.9, 0, 1,
                          20, 21, 1, 2, 47, null), //2nd layer
                  new FrogPosition(-170.3125, -67.6875, -295.875, 0, 89.9, 0, 1,
