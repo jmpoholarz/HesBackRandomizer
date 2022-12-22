@@ -4,6 +4,7 @@ Powered by<br>
 </p>
 
 # Frogger He's Back Randomizer
+![Randomizer screenshot collage](media/HBRandoAlpha2Screen1.png)
 ## How does it work?
 The randomizer scrambles player starting position and froglet 
 locations in each level allowing you to experience the levels
