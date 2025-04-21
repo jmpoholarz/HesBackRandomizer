@@ -316,12 +316,11 @@ public class Randomizer {
                 }
             }
 
-
-            // Remove same zone frogs from frogPositions
-            //frogPositions.removeIf(frog -> frog.zone == startPos.zone);
-
             // Remove banned zone frogs from frogPositions
-            frogPositions.removeIf(frog -> startPos.bannedFrogZones.contains(frog.zone));
+            //frogPositions.removeIf(frog -> startPos.bannedFrogZones.contains(frog.zone));
+
+            // Remove all frogs that aren't in list provided to this startPosition
+            frogPositions.removeIf(frogletPos -> startPos.bannedFroglets.contains(frogletPos.id));
 
             // Randomize frog locations by moving the entities
             List<Entity> entities = mf.getEntities();
