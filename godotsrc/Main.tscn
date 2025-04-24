@@ -1,271 +1,188 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=3 format=3 uid="uid://e6k6arfksh4o"]
 
-[ext_resource path="res://Main.gd" type="Script" id=1]
-[ext_resource path="res://logo.png" type="Texture" id=2]
+[ext_resource type="Script" path="res://Main.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://cus6d0ce8g6sj" path="res://logo.png" id="2"]
 
 [node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-script = ExtResource( 1 )
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
 
-[node name="pnlWindow" type="Panel" parent="."]
+[node name="MainWindow" type="Panel" parent="."]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MarginContainer" type="MarginContainer" parent="pnlWindow"]
+[node name="MarginContainer" type="MarginContainer" parent="MainWindow"]
+layout_mode = 0
 anchor_right = 1.0
 anchor_bottom = 1.0
-custom_constants/margin_right = 16
-custom_constants/margin_top = 16
-custom_constants/margin_left = 16
-custom_constants/margin_bottom = 16
-__meta__ = {
-"_edit_use_anchors_": false
-}
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
 
-[node name="vbxMainLayout" type="VBoxContainer" parent="pnlWindow/MarginContainer"]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 784.0
-margin_bottom = 584.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MainWindow/MarginContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="txrctFroggerLogo" type="TextureRect" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_left = 286.0
-margin_right = 482.0
-margin_bottom = 100.0
+[node name="FroggerLogo" type="TextureRect" parent="MainWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 6
-texture = ExtResource( 2 )
+texture = ExtResource("2")
 
-[node name="lblTitle" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_top = 104.0
-margin_right = 768.0
-margin_bottom = 474.0
+[node name="TitleLabel" type="Label" parent="MainWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
 size_flags_vertical = 7
 text = "Frogger: He's Back Randomizer
-v0.0.2"
-align = 1
+v0.2"
+horizontal_alignment = 1
 
-[node name="hboxEnterSeed" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_top = 478.0
-margin_right = 768.0
-margin_bottom = 502.0
+[node name="HboxContainerSeed" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
-[node name="lblEnterSeed" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed"]
-margin_top = 5.0
-margin_right = 382.0
-margin_bottom = 19.0
+[node name="Label" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/HboxContainerSeed"]
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Enter Seed (leave blank for random) :"
-align = 2
+horizontal_alignment = 2
 
-[node name="lnedtEnterSeed" type="LineEdit" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed"]
-margin_left = 386.0
-margin_right = 768.0
-margin_bottom = 24.0
+[node name="SeedEntry" type="LineEdit" parent="MainWindow/MarginContainer/VBoxContainer/HboxContainerSeed"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 3
 max_length = 19
 
-[node name="hboxSettings" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_top = 506.0
-margin_right = 768.0
-margin_bottom = 520.0
+[node name="Settings" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
-[node name="lblEmpty" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings"]
-margin_right = 768.0
-margin_bottom = 14.0
+[node name="EmptyLabel" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/Settings"]
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="vboxSettings" type="VBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings"]
+[node name="VboxContainer" type="VBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer/Settings"]
 visible = false
-margin_left = 386.0
-margin_right = 768.0
-margin_bottom = 80.0
+layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="chkbxLevelOrder" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
-margin_right = 382.0
-margin_bottom = 24.0
+[node name="chkbxLevelOrder" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
+layout_mode = 2
 disabled = true
 text = "Randomize level order"
 
-[node name="chkbxZoneOrder" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
-margin_top = 28.0
-margin_right = 382.0
-margin_bottom = 52.0
-hint_tooltip = "Note: Gold Frog locations in the level stack may not match up properly."
+[node name="ZoneOrderCheckbox" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+tooltip_text = "Note: Gold Frog locations in the level stack may not match up properly."
 mouse_default_cursor_shape = 2
 disabled = true
 text = "Randomize zone order"
 
-[node name="chkbxMixAcrossZones" type="CheckBox" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings"]
-margin_top = 56.0
-margin_right = 382.0
-margin_bottom = 80.0
+[node name="chkbxMixAcrossZones" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
+layout_mode = 2
 disabled = true
 text = "Mix levels across zones"
 
-[node name="hboxPickJar" type="HBoxContainer" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_top = 524.0
-margin_right = 768.0
-margin_bottom = 544.0
-rect_pivot_offset = Vector2( -279, -519 )
+[node name="HBoxContainer" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+layout_mode = 2
 
-[node name="labelPickJar" type="Label" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar"]
-margin_top = 3.0
-margin_right = 382.0
-margin_bottom = 17.0
+[node name="Label" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
 size_flags_horizontal = 3
 text = "Froglord.Jar : "
-align = 2
+horizontal_alignment = 2
 
-[node name="btnPickJar" type="Button" parent="pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar"]
-margin_left = 386.0
-margin_right = 768.0
-margin_bottom = 20.0
+[node name="PickJarButton" type="Button" parent="MainWindow/MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_horizontal = 3
 text = "None"
+alignment = 2
+clip_text = true
 
-[node name="btnRandomize" type="Button" parent="pnlWindow/MarginContainer/vbxMainLayout"]
-margin_top = 548.0
-margin_right = 768.0
-margin_bottom = 568.0
+[node name="RandomizeButton" type="Button" parent="MainWindow/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 disabled = true
 text = "Randomize"
 
-[node name="fdlPickJar" type="FileDialog" parent="pnlWindow"]
-margin_left = 8.0
-margin_top = 572.0
-margin_right = 315.0
-margin_bottom = 702.0
-window_title = "Open a File"
-mode = 0
+[node name="PickJarDialog" type="FileDialog" parent="MainWindow"]
+unique_name_in_owner = true
+title = "Open a File"
+ok_button_text = "Open"
+file_mode = 0
 access = 2
-filters = PoolStringArray( "*.jar" )
+filters = PackedStringArray("*.jar")
 
-[node name="popupErrorInvalidSeed" type="AcceptDialog" parent="pnlWindow"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -120.0
-margin_top = -80.0
-margin_right = 120.0
-margin_bottom = 80.0
-popup_exclusive = true
-window_title = "Error"
+[node name="SeedErrorPopup" type="AcceptDialog" parent="MainWindow"]
+unique_name_in_owner = true
 dialog_autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupErrorInvalidSeed"]
+[node name="MarginContainer" type="MarginContainer" parent="MainWindow/SeedErrorPopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -36.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="pnlWindow/popupErrorInvalidSeed/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 216.0
-margin_bottom = 108.0
+[node name="Label" type="Label" parent="MainWindow/SeedErrorPopup/MarginContainer"]
+layout_mode = 2
 size_flags_vertical = 3
 text = "Invalid seed.  
-Must be a number between 0 and 2,147,483,647."
-autowrap = true
+Must be a number between 0 and 2147483647."
 
-[node name="popupErrorRandomizer" type="AcceptDialog" parent="pnlWindow"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -120.0
-margin_top = -80.0
-margin_right = 120.0
-margin_bottom = 80.0
-popup_exclusive = true
-window_title = "Error"
+[node name="ErrorPopup" type="AcceptDialog" parent="MainWindow"]
+unique_name_in_owner = true
 dialog_autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupErrorRandomizer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainWindow/ErrorPopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -36.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="pnlWindow/popupErrorRandomizer/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 216.0
-margin_bottom = 108.0
+[node name="ErrorLabel" type="Label" parent="MainWindow/ErrorPopup/MarginContainer"]
+unique_name_in_owner = true
+layout_mode = 2
 size_flags_vertical = 3
-autowrap = true
 
-[node name="popupSuccessRandomizer" type="AcceptDialog" parent="pnlWindow"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-margin_left = -120.0
-margin_top = -80.0
-margin_right = 120.0
-margin_bottom = 80.0
-popup_exclusive = true
-window_title = "Success!"
+[node name="SuccessPopup" type="AcceptDialog" parent="MainWindow"]
+unique_name_in_owner = true
 dialog_autowrap = true
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
-[node name="MarginContainer" type="MarginContainer" parent="pnlWindow/popupSuccessRandomizer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainWindow/SuccessPopup"]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
-custom_constants/margin_right = 8
-custom_constants/margin_top = 8
-custom_constants/margin_left = 8
-custom_constants/margin_bottom = 8
-__meta__ = {
-"_edit_use_anchors_": false
-}
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -36.0
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="Label" type="Label" parent="pnlWindow/popupSuccessRandomizer/MarginContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 216.0
-margin_bottom = 108.0
+[node name="Label" type="Label" parent="MainWindow/SuccessPopup/MarginContainer"]
+layout_mode = 2
 size_flags_vertical = 3
 text = "Game randomized.
 
@@ -273,6 +190,5 @@ Updated files:
   frogger.exe
   frogpsx.mwd
   seed.txt"
-autowrap = true
 
-[connection signal="file_selected" from="pnlWindow/fdlPickJar" to="." method="_on_fdlPickJar_file_selected"]
+[connection signal="file_selected" from="MainWindow/PickJarDialog" to="." method="_on_pick_jar_dialog_file_selected"]

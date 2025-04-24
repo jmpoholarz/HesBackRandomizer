@@ -1,79 +1,74 @@
 extends Control
 
-onready var lnedtEnterSeed = \
-	$pnlWindow/MarginContainer/vbxMainLayout/hboxEnterSeed/lnedtEnterSeed
-onready var chkbxZoneOrder = \
-	$pnlWindow/MarginContainer/vbxMainLayout/hboxSettings/vboxSettings/chkbxZoneOrder
-onready var btnPickJar = \
-	$pnlWindow/MarginContainer/vbxMainLayout/hboxPickJar/btnPickJar
+@onready var seed_entry: LineEdit = %SeedEntry
+@onready var seed_error_popup: AcceptDialog = %SeedErrorPopup
 
-onready var btnRandomize = \
-	$pnlWindow/MarginContainer/vbxMainLayout/btnRandomize
-onready var popupErrorInvalid = $pnlWindow/popupErrorInvalidSeed
-onready var fdlPickJar = $pnlWindow/fdlPickJar
+@onready var zone_order_checkbox: CheckBox = %ZoneOrderCheckbox
 
-onready var popupErrorRandomizer = $pnlWindow/popupErrorRandomizer
-onready var popupErrorRandText = \
-	$pnlWindow/popupErrorRandomizer/MarginContainer/Label
-onready var popupErrorSuccess = $pnlWindow/popupSuccessRandomizer
+@onready var pick_jar_button: Button = %PickJarButton
+
+@onready var randomize_button: Button = %RandomizeButton
+@onready var pick_jar_dialog: FileDialog = %PickJarDialog
+
+@onready var error_popup: AcceptDialog = %ErrorPopup
+@onready var error_popup_label: Label = %ErrorLabel
+@onready var success_popup: AcceptDialog = %SuccessPopup
 
 var randomizer_seed = ""
 var froglord_jar_path := ""
 
-
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	lnedtEnterSeed.connect(
-		"text_changed", self, "_on_lnedtEnterSeed_text_changed")
-	btnPickJar.connect("pressed", self, "_on_btnPickJar_pressed")
-	btnRandomize.connect("pressed", self, "_on_btnRandomize_pressed")
-
-
-
-func _on_lnedtEnterSeed_text_changed(new_text):
-	randomizer_seed = new_text
-	print(randomizer_seed)
-
-
-
-func _on_btnPickJar_pressed() -> void:
-	fdlPickJar.popup_centered(Vector2(640, 480))
-
-func _on_fdlPickJar_file_selected(path: String) -> void:
-	print("file selected : " + path)
-	froglord_jar_path = path
-	btnPickJar.text = path
-	btnRandomize.disabled = false
-
-
-func _on_btnRandomize_pressed() -> void:
-	if not is_valid_seed(randomizer_seed):
-		popupErrorInvalid.popup_centered()
-		return
-	var args = [
-		"-jar", froglord_jar_path, 
-		"--seed="+randomizer_seed, 
-		"--randZones="+str(chkbxZoneOrder.pressed),
-		"1>", "out.txt", "2>&1"
-	]
-	print("Args: " + str(args))
-	var exit_code = OS.execute("java", args, true)
-	if exit_code == 0:
-		popupErrorSuccess.popup_centered()
-	else:
-		popupErrorRandText.text = (
-			"Could not randomize.  Error code " + str(exit_code))
-		popupErrorRandomizer.popup_centered()
-
-
-
-
+##
 func is_valid_seed(value) -> bool:
 	if value == "":
 		return true
-	if not value.is_valid_integer():
+	if not value.is_valid_int():
 		return false
 	value = int(value)
 	if value < 0 || value > 2147483647:
 		return false
 	return true
+
+
+func _ready() -> void:
+	seed_entry.text_changed.connect(_on_seed_entry_text_changed)
+	pick_jar_button.pressed.connect(_on_pick_jar_button_pressed)
+	randomize_button.pressed.connect(_on_randomize_button_pressed)
+
+
+func _on_seed_entry_text_changed(new_text):
+	randomizer_seed = new_text
+	print(randomizer_seed)
+
+
+func _on_pick_jar_button_pressed() -> void:
+	pick_jar_dialog.popup_centered(Vector2(640, 480))
+
+
+func _on_pick_jar_dialog_file_selected(path: String) -> void:
+	print("file selected : " + path)
+	froglord_jar_path = path
+	pick_jar_button.text = path
+	randomize_button.disabled = false
+
+
+func _on_randomize_button_pressed() -> void:
+	if not is_valid_seed(randomizer_seed):
+		seed_error_popup.popup_centered()
+		return
+	var args = [
+		"-jar", froglord_jar_path, 
+		"--seed="+randomizer_seed, 
+		"--randZones="+str(zone_order_checkbox.button_pressed),
+		"1>", "out.txt", "2>&1"
+	]
+	print("Args: " + str(args))
+	var output = []
+	var exit_code = OS.execute("java", args, output, true)
+	print(output)
+	if exit_code == 0:
+		success_popup.popup_centered()
+	else:
+		error_popup_label.text = (
+			"Could not randomize.  Error code " + str(exit_code) + " " + str(output)
+		)
+		error_popup.popup_centered()

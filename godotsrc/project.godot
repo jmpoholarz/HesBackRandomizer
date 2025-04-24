@@ -6,23 +6,20 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[  ]
-_global_script_class_icons={
-}
+config_version=5
 
 [application]
 
 config/name="HesBackRandomizerGUI"
 config/description="A graphical interface to trigger the randomizer for Frogger: He's Back (1997)."
 run/main_scene="res://Main.tscn"
+config/features=PackedStringArray("4.3")
 config/icon="res://bluefrog.ico"
 
 [display]
 
-window/size/width=800
+window/size/viewport_width=800
 
 [rendering]
 
-environment/default_environment="res://default_env.tres"
+environment/defaults/default_environment="res://default_env.tres"
