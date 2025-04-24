@@ -19,8 +19,11 @@ import net.highwayfrogs.editor.utils.MathUtils;
  */
 @Getter
 public class FroggerPathSegmentLine extends FroggerPathSegment {
-    private final SVector start = new SVector();
-    private final SVector end = new SVector();
+    /*
+     * Randomizer : Make not final, so they can be changed by the randomizer
+     */
+    private SVector start = new SVector();
+    private SVector end = new SVector();
 
     public FroggerPathSegmentLine(FroggerPath path) {
         super(path, FroggerPathSegmentType.LINE);
@@ -96,5 +99,29 @@ public class FroggerPathSegmentLine extends FroggerPathSegment {
     @Override
     public SVector getStartPosition() {
         return getStart();
+    }
+
+
+    /*
+     * Randomizer Helper Functions
+     */
+    public SVector getStart() {
+        return start;
+    }
+
+    public void setStart(SVector start) {
+        this.start = start;
+    }
+
+    public SVector getEnd() {
+        return end;
+    }
+
+    public void setEnd(SVector end) {
+        this.end = end;
+    }
+
+    public boolean isDirectedRight() {
+        return (end.getX() - start.getX()) > 0;
     }
 }

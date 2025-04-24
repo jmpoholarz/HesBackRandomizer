@@ -1,11 +1,11 @@
 package net.highwayfrogs.editor.randomizer;
 
 import net.highwayfrogs.editor.file.map.MAPFile;
-import net.highwayfrogs.editor.file.map.path.Path;
-import net.highwayfrogs.editor.file.map.path.PathSegment;
-import net.highwayfrogs.editor.file.map.path.PathType;
-import net.highwayfrogs.editor.file.map.path.data.LineSegment;
 import net.highwayfrogs.editor.file.standard.SVector;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.path.FroggerPath;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.path.FroggerPathSegmentType;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.path.segments.FroggerPathSegment;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.path.segments.FroggerPathSegmentLine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,35 +40,35 @@ public class RetroLaneShuffler {
      * @param pathIndex The index of the path in the list of all paths
      * @param path The path object from the list of paths
      */
-    private void resolvePath(String levelName, int pathIndex, Path path) {
-        List<PathSegment> segments = path.getSegments();
-        if (segments.get(0).getType() != PathType.SPLINE) {
+    private void resolvePath(String levelName, int pathIndex, FroggerPath path) {
+        List<FroggerPathSegment> segments = path.getSegments();
+        if (segments.get(0).getType() != FroggerPathSegmentType.SPLINE) {
             return;
         }
 
-        LineSegment ls;
+        FroggerPathSegmentLine ls;
         if (levelName.equals("ORG1.MAP") && pathIndex == 6) {
-            ls = new LineSegment(path);
+            ls = new FroggerPathSegmentLine(path);
             ls.setStart(new SVector(161.5f,-11.0f,8.5f));
             ls.setEnd(new SVector(-152.0f,-11.0f,8.0f));
         }
         else if (levelName.equals("ORG1.MAP") && pathIndex == 7) {
-            ls = new LineSegment(path);
+            ls = new FroggerPathSegmentLine(path);
             ls.setStart(new SVector(159.0f,-11.0f,56.0f));
             ls.setEnd(new SVector(-145.0f,-11.0f,55.5f));
         }
         else if (levelName.equals("ORG3.MAP") && pathIndex == 10) {
-            ls = new LineSegment(path);
+            ls = new FroggerPathSegmentLine(path);
             ls.setStart(new SVector(-322.0f,-11.0f,39.5f));
             ls.setEnd(new SVector(294.5f,-10.0f,39.5f));
         }
         else if (levelName.equals("ORG4.MAP") && pathIndex == 2) {
-            ls = new LineSegment(path);
+            ls = new FroggerPathSegmentLine(path);
             ls.setStart(new SVector(152.0f,-11.0f,8.0f));
             ls.setEnd(new SVector(-152.0f,-11.0f,8.0f));
         }
         else if (levelName.equals("ORG5.MAP") && pathIndex == 0) {
-            ls = new LineSegment(path);
+            ls = new FroggerPathSegmentLine(path);
             ls.setStart(new SVector(304.0f,-16.0f,-24.0f));
             ls.setEnd(new SVector(-305.0f,-16.0f,-24.0f));
         }
@@ -132,8 +132,8 @@ public class RetroLaneShuffler {
      * @param allPaths List of paths to filter
      * @return List of paths from the input indices
      */
-    private List<Path> getPathsAtIndexes(int[] indexes, List<Path> allPaths) {
-        ArrayList<Path> filteredList = new ArrayList<>();
+    private List<FroggerPath> getPathsAtIndexes(int[] indexes, List<FroggerPath> allPaths) {
+        ArrayList<FroggerPath> filteredList = new ArrayList<>();
         for (int i = 0; i < indexes.length; i++) {
             filteredList.add(allPaths.get(indexes[i]));
         }
@@ -145,11 +145,11 @@ public class RetroLaneShuffler {
      * Swap start and end points of a given LINE type path.  Do nothing for other path types.
      * @param p Path to swap direction of
      */
-    private void flipPathDirection(Path p) {
-        if (p.getSegments().get(0).getType() != PathType.LINE) {
+    private void flipPathDirection(FroggerPath p) {
+        if (p.getSegments().get(0).getType() != FroggerPathSegmentType.LINE) {
             return;
         }
-        LineSegment segment = (LineSegment) p.getSegments().get(0);
+        FroggerPathSegmentLine segment = (FroggerPathSegmentLine) p.getSegments().get(0);
         SVector temp = segment.getStart();
         segment.setStart(segment.getEnd());
         segment.setEnd(temp);
@@ -161,9 +161,9 @@ public class RetroLaneShuffler {
      * @param a The first Path object to swap
      * @param b The second Path object to swap
      */
-    public void swapPaths(Path a, Path b) {
-        LineSegment aSegment = (LineSegment) a.getSegments().get(0);
-        LineSegment bSegment = (LineSegment) b.getSegments().get(0);
+    public void swapPaths(FroggerPath a, FroggerPath b) {
+        FroggerPathSegmentLine aSegment = (FroggerPathSegmentLine) a.getSegments().get(0);
+        FroggerPathSegmentLine bSegment = (FroggerPathSegmentLine) b.getSegments().get(0);
 
         SVector tempStart = aSegment.getStart();
         SVector tempEnd = aSegment.getEnd();
@@ -182,25 +182,25 @@ public class RetroLaneShuffler {
      * @param mapFile File for the input map to edit path data of
      */
     public void shuffleLanes(String mapName, MAPFile mapFile) {
-        List<Path> allPaths = mapFile.getPaths();
+        List<FroggerPath> allPaths = mapFile.getPaths();
         for (int i = 0; i < allPaths.size(); i++) {
             resolvePath(mapName, i, allPaths.get(i));
         }
-        List<Path> trafficPaths = getPathsAtIndexes(getMotorLaneIndexes(mapName), allPaths);
+        List<FroggerPath> trafficPaths = getPathsAtIndexes(getMotorLaneIndexes(mapName), allPaths);
         for (int i = 0; i < 5; i++) {
             swapPaths(trafficPaths.get(random.nextInt(5)),
                     trafficPaths.get(random.nextInt(5)));
         }
-        List<Path> waterPaths = getPathsAtIndexes(getWaterLaneIndexes(mapName), allPaths);
+        List<FroggerPath> waterPaths = getPathsAtIndexes(getWaterLaneIndexes(mapName), allPaths);
         for (int i = 0; i < 5; i++) {
             swapPaths(waterPaths.get(random.nextInt(5)),
                     waterPaths.get(random.nextInt(5)));
         }
-        Path deepestPath = null;
-        Path nextDeepestPath = null;
+        FroggerPath deepestPath = null;
+        FroggerPath nextDeepestPath = null;
         float largestZ = Float.NEGATIVE_INFINITY;
         float nextLargestZ = Float.NEGATIVE_INFINITY;
-        for (Path p : allPaths) {
+        for (FroggerPath p : allPaths) {
             // Iterate through all paths and randomly flip direction of LINE type paths
             double value = random.nextDouble();
             if (value > CHANCE_TO_FLIP_DIRECTION) {
@@ -222,8 +222,8 @@ public class RetroLaneShuffler {
 
         // Ensure 4th and 5th are always opposite directions in water
         if (deepestPath != null && nextDeepestPath != null) {
-            LineSegment deepestSegment = (LineSegment) deepestPath.getSegments().get(0);
-            LineSegment nextDeepestSegment = (LineSegment) nextDeepestPath.getSegments().get(0);
+            FroggerPathSegmentLine deepestSegment = (FroggerPathSegmentLine) deepestPath.getSegments().get(0);
+            FroggerPathSegmentLine nextDeepestSegment = (FroggerPathSegmentLine) nextDeepestPath.getSegments().get(0);
             if (deepestSegment.isDirectedRight() == nextDeepestSegment.isDirectedRight()) {
                 flipPathDirection(deepestPath);
             }
