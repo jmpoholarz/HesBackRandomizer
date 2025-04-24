@@ -2,12 +2,13 @@ package net.highwayfrogs.editor.file.config.exe;
 
 import lombok.Getter;
 import lombok.Setter;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
 import net.highwayfrogs.editor.file.config.data.MAPLevel;
 import net.highwayfrogs.editor.file.config.data.WorldId;
-import net.highwayfrogs.editor.file.map.MAPTheme;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapTheme;
 
 /**
  * Holds information about each level.
@@ -34,12 +35,19 @@ public class LevelInfo extends ExeStruct {
     private static final int RUNTIME_DATA_SIZE = 44;
     private static final int TERMINATOR_LEVEL_ID = -1;
 
+    public LevelInfo(FroggerGameInstance instance) {
+        super(instance);
+    }
+
     @Override
     public void load(DataReader reader) {
         this.level = reader.readInt();
         this.world = WorldId.values()[reader.readInt()];
-        this.stackPosition = reader.readInt();
-        this.theme = reader.readInt();
+        if (!getConfig().isAtOrBeforeBuild20()) // TODO: Flip these checks so they make more sense. Eg: "isAtLeastBuild21" or "isAfterBuild20".
+            this.stackPosition = reader.readInt();
+        if (!getConfig().isAtOrBeforeBuild21())
+            this.theme = reader.readInt();
+
         this.localLevelId = reader.readInt();
         this.levelsInWorld = reader.readInt();
         this.worldImageSelectablePointer = reader.readUnsignedIntAsLong();
@@ -55,8 +63,10 @@ public class LevelInfo extends ExeStruct {
     public void save(DataWriter writer) {
         writer.writeInt(this.level);
         writer.writeInt(this.world.ordinal());
-        writer.writeInt(this.stackPosition);
-        writer.writeInt(this.theme);
+        if (!getConfig().isAtOrBeforeBuild20())
+            writer.writeInt(this.stackPosition);
+        if (!getConfig().isAtOrBeforeBuild21())
+            writer.writeInt(this.theme);
         writer.writeInt(this.localLevelId);
         writer.writeInt(this.levelsInWorld);
         writer.writeUnsignedInt(this.worldImageSelectablePointer);
@@ -74,7 +84,7 @@ public class LevelInfo extends ExeStruct {
     }
 
     @Override
-    public boolean isEntry(FileEntry test) {
+    public boolean isEntry(SCGameFile<?> file) {
         return false;
     }
 
@@ -98,15 +108,15 @@ public class LevelInfo extends ExeStruct {
      * Gets the MapTheme this info represents.
      * @return mapLevel
      */
-    public MAPTheme getTheme() {
-        return isTerminator() ? null : MAPTheme.values()[this.theme];
+    public FroggerMapTheme getTheme() {
+        return isTerminator() ? null : FroggerMapTheme.values()[this.theme];
     }
 
     /**
      * Set the theme of this level.
      * @param theme The new theme.
      */
-    public void setTheme(MAPTheme theme) {
+    public void setTheme(FroggerMapTheme theme) {
         this.theme = theme != null ? theme.ordinal() : -1;
     }
 

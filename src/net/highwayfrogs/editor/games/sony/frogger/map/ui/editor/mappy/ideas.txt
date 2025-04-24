@@ -1,0 +1,195 @@
+PT Model Support + Animations
+Saving PSX game wads / non-frogger games.
+Rewrite Frogger file support.
+Map Editor MVP
+ - Track Polygons per vertex.
+ - The grid is the most fundamental concept.
+  - Grid tile has polygons plus the main one.
+  - Editing UI is based around the idea of a tile being a fixed size.
+   - Extension mode will never create new things on the grid, but expansion mode will.
+ - Welcome tab is the default tab in the mesh editor and will explain how to edit a map.
+ - Material-based.
+ - How will we support multiple layers? From a UX perspective I say it'll know what part of the grid is highlighted when we do an expansion over an existing area, so I'm not sure we need to do anything.
+ - How will we handle stretched textures vs single textures?
+  - While extending, the uvs shouldn't change
+  - While expanding... I think we should have a flag on the material which controls this.
+ - Build towards a 1.0.0 release. It doesn't need to be perfect, just good enough.
+
+Questions:
+ - How will UVs work when we split polygons?
+
+Future Features:
+ - Lighting
+ - Static Model Import
+ - Polygon splitting
+
+v1.0 Release:
+ - Editor MVP
+ - Automatic version detection + Drag & Drop support on game selection menu.
+ - Fix the memory leak seen displaying MediEvil (MediEvil 2?) maps.
+ - Ensure TGQ saves a playable version of the game.
+ - Make those UI buttons on the main menu do something.
+ - UI Todos.
+ - Make it more user friendly.
+ - Figure out a basic workflow for integration with decomp.
+  - Ideally we can setup one-click run.
+  - Manually editing the executable may no longer be necessary / desirable.
+  - Do we want an extracted style-system, where we can configure a list of files to apply, or actions like importing images from directory?
+  - We should probably include searchable written documentation too.
+
+How do the sky maps work? Eg: What's the behavior for when there's no grid square? Fall off map?
+Consider water wibble, and what considerations we need to support that.
+
+General Data:
+
+Animations:
+ - Animations will be part of a material.
+ - Editor can be pretty simple.
+ - Animations should update / render in real-time. Double bind this check box to also show up under a "Preview" tab.
+
+Entities:
+ - SELECTION SYSTEM: Gizmo Position & Rotation
+ - Allow adding a new one to the map by dragging an entity to a position. If path-based, highlight red unless hovering near a path, in which case snap to the path and show green.
+ - Allow path visualization. Double bind this check box to also show up under a "Preview" tab.
+
+Forms:
+ - Allow popping out a new window which gives a 3D preview of a form on the model.
+ - Selection System: Form Grid. [Position Gizmo, allow selecting multiple, with only Y axis control]
+ - Allow selecting the base position as well, with an XYZ position gizmo.
+ - Allow selecting between all unique model files which are seen to be used by the given form.
+ - I'd like to allow saving forms on a per-mof basis. Eg: All unique forms should be saved somewhere, so they can be used independently of level.
+
+Group:
+ - I'd like to make groups as automated as possible, and as close to the original as possible.
+ - This means spending some time trying different algorithms to generate groups and comparing the outputs to the original, both in terms of bytes, but also in terms of parsed data (which will be faster to debug).
+ - Potentially change the preview of this into a mesh, instead of a bunch of boxes. (Improve performance)
+ -
+
+Grid:
+ - Change the preview of this into a mesh, instead of a bunch of boxes. (Improve performance)
+ - Make sure to look at the collision grid to understand what we're up against. (Usage of tris?)
+ - The grid will be the core of the terrain mesh editor.
+ - At the start, we will have very tools for adding terrain inside a grid, and working with grid edges is preferred instead. Make sure to communicate this to the user.
+ - There's still the question of how the square height is calculated, but with it only being used for cliff height it may not desperately matter.
+
+Light:
+ - New editor needs to be 3D based.
+ - Include information in the baked editor about how lighting will only impact entities, but how this restriction does not apply to the new editor.
+ - There can only be one ambient light, and it's a global scene property basically.
+ - PointLight - location (vec)
+ - DirectionalLight - direction
+ - SpotLight: location (vec), direction (vec), dropOffRate (float 0.0 -> 1.0), cutOffAngle (angle in radians, outside of which light intensity is 0)
+ - /Desktop/Frogger/Frogger/open-inventor-windows/iv-doc/Inventor%20Mentor/ch04.html#id13751
+
+Path:
+ - The new editor should be 3D based.
+ - When creating the first position of a path, allow dragging a sphere around the map to place it. [Disable the full left UI panel when doing this]
+
+Zone:
+ - ?
+
+Materials:
+ Properties:
+  - Texture ID (Or Not)
+  - Flat Shading Color
+  - Perhaps a toggle for if the material should be gouraud. (SHOuLD LOOK AT GAME MAPS FIRST TO SEE IF POLYGON TYPE SEEMS CONSISTENT PER MATERIAL)
+  - Animation Data
+  - Default Grid Flags (Still overridable per-polygon, though the polygon should track if it overrides a value or not)
+  - I think this should allow texture rotation. (How did they make this work in CAV1.MAP's walls?)
+   -> I say this because the vertex ordering of the walls still appears ordered the same non-wall grid tiles, which suggests some kind of texture rotation feature.
+  - Allow specifying per-material coloring which can override vertex coloring, or blend with it based on a toggle. Uncanny Crusher shows why.
+ - The reason lighting seems weird on some levels is because each material also needs lighting properties that define how lights interact with it.
+ - Refer to "Material Node" in /Desktop/Frogger/Frogger/open-inventor-windows/iv-doc/Inventor%20Mentor/ch05.html#id16293 for more info.
+  -> Quote "Note: In Inventor, shading (such as Gouraud or flat) is dictated by the combination of the material specification of the object, the lighting model, and the normal bindings. A shading model is not explicitly specified."
+  -> OK!!!! That's HUGE. So this means it was indeed automatically choosing polygon type based on material specification, lighting, etc. Can we figure out the criteria it used?
+  -> INTERESTINGLY... SoMaterial doesn't seem to include a texture by default. That'd be awfully weird though, I'm still like 99% sure the materials they used had the texture set, it's just the SoMaterial base class which didn't define it.
+  -> Materials are most likely SoMaterialBinding::PER_FACE_INDEXED, since that allows each vertex of each face to have a different material
+   -> This is why the lighting system works. On VOL2, the reason the polygons which got the purple lighting got it, and nothing else, is because they're metallic, and were configured as such.
+   -> Where-as, the kitchen tiles, lava, etc, were not configured to show such lighting.
+   -> I don't know if this is a feature we care to keep or not, but I suppose it doesn't hurt.
+  -> It was possible to use a raw color instead of a full material when you wanted to only change the diffuse color.
+
+TODO: Are frogger materials per-index or per-face?
+ -> Vertex coloring exists so it seems per-vertex.
+ -> BUT, textures apply to a collection of vertices, and they have material impacts on a per-face basis.
+ -> It looks like materials are usually per-vertex, and textures are per-face.
+ -> Maybe this isn't fully right, since sometimes there are vertices with different colors on different faces, however this may just be the reaction to lighting.
+ -> Texture UVs are definitely per-face, even though I'm struggling to fully understand the way it works in Open Inventor.
+ -> Hmm, this is interesting. I think we'll need to think about how we want materials to work with lighting.
+
+TODO: Reverse engineer texture names further.
+
+Questions:
+ - How do textures work with materials?
+ - How do the data structures work? map form
+ - What does MF stand for?
+
+Polygon:
+ - Vertices
+ - Texture UVs [If textured]
+ - Material [Need to deal with a material getting stretched over multiple polygons. I think we just stretch & split, I don't think we ever stretch a texture on the ground, just on walls.]
+ - If Collision [Collision Overriden Flags, Collision Overriden Flag list]
+  -> Actually, this probably belongs on the grid stack layer, not on the polygon itself.
+ - Splitting behavior configuration?
+ - [If desirable] -> Override is gouraud flag?
+ - Is visible Y/N? (Or should this be on the material? Unsure!)
+ -> Make sure to look at the collision grid to understand what we're up against. (Usage of tris?)
+
+Vertex:
+ - Position, Color
+
+Our editor centers around the concept of a HeightField.
+A height-field could be a layer of water, the main collision grid, the star polygon layer in the jungle level, etc.
+This height-field is a connected grid. However, not all grid entries are just a single polygon.
+Every height field grid entry has a root vertex, which is what by default the grid polygons are connected to.
+Quads can be extended in the direction of their face (but not tri's). Doing so will add new wall/display polygons, but not change the original vertex.
+Moving vertices (multiple of which can be selected at once) is different, since only vertex positions change.
+ -> Moving vertices will have different shapes / modes (Eg: Spherical pull with fall off)
+ -> There should also be very nice ways of selecting vertices, like a 2D selection rectangle, which could select either face or vertex depending on which keybind was used.
+The reason we model this as a heightfield, and not something else is because of the ability to raise and lower the terrain.
+Consider the big cave land masses in Webs Cavern. If they wanted to LOWER those land masses (as they did during development!!),
+they would need to somehow dynamically figure out which polygons were part of the wall/floor in order to figure out if they should collapse them or create a new wall.
+But with the idea of a grid, these wall vertices are tracked already and can be collapsed just by checking when the height of the connected faces drops below the vertex.
+I believe all collision grid polygons are quads, even if they CAN be split into non-quads.
+
+Peli's Island Feature Showcase:
+ - Both vertex movement and terrain generation from vertex movement.
+ - Static model baking
+ - Vertex coloring (And its ability to not carry over to certain faces)
+ - Splitting quads into tris
+ - Weirdly sized squares which are part of the grid (this feature wasn't actually used by the retail game I think? I wonder if it's still enabled. Probably not)
+ - The ability to add new arbitrary map polygons by connecting existing vertices.
+TODO: It seems like grid squares ARE always quads even if their displayed polygon is split up. (Huh? Is this right?)
+ -> I guess this isn't guaranteed, but perhaps we can start from this assumption.
+
+TODO: Document the different operations I want to be able to perform.
+
+Grid Stack:
+ - Vertices.
+ - Grid Squares
+ - Non-collision polygons.
+
+Grid Square:
+ - Collision Flags
+ - Polygon
+
+Future Features:
+ - Importing static models.
+  -> Questions about how they will interact with the grid.
+  -> Questions about what format we'd use. We definitely need to support XMR, and mm3d could probably work. I like obj as well, but vertex coloring is a question. Can we use Assimp?
+  -> Ensure these models are impacted by lighting, etc.
+  -> Remember how few polygons of a given type can exist in a map group. 255 max. We need to warn if we go above this limit.
+
+Go over all packets, and look at the data types used. Which ones are at the highest risk of overflow? What precautions do we need to take to ensure we don't exceed this limit?
+
+One day, could I add these features to JavaFX?
+Pretty much everything seen in Open Inventor I'd like ported to JavaFX.
+
+Key Things:
+ - Texture Wrapping Settings (wrapS / wrapT -> REPEAT vs CLAMP)
+ - Vertex Ordering (Might be tough when we consider the auto-generation of meshes like spheres, etc)
+ - Cone shape
+ - Arrow shape
+
+Materials
+Vertex coloring

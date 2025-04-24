@@ -1,13 +1,25 @@
 package net.highwayfrogs.editor.file.config.exe;
 
-import net.highwayfrogs.editor.file.GameObject;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
+import net.highwayfrogs.editor.games.sony.SCGameData;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerConfig;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
 
 /**
  * A struct found in the frogger exe.
+ * TODO: Rewrite this at some point.
  * Created by Kneesnap on 1/27/2019.
  */
-public abstract class ExeStruct extends GameObject {
+public abstract class ExeStruct extends SCGameData<FroggerGameInstance> {
+    public ExeStruct(FroggerGameInstance instance) {
+        super(instance);
+    }
+
+    @Override
+    public FroggerConfig getConfig() {
+        return (FroggerConfig) super.getConfig();
+    }
+
     /**
      * Handle a manual correction.
      * @param args The arguments supplied.
@@ -25,9 +37,9 @@ public abstract class ExeStruct extends GameObject {
     }
 
     /**
-     * Test if a file entry is held by this struct.
-     * @param test The entry to test.
+     * Test if a file is held by this struct.
+     * @param file The file to test.
      * @return isEntry
      */
-    public abstract boolean isEntry(FileEntry test);
+    public abstract boolean isEntry(SCGameFile<?> file);
 }

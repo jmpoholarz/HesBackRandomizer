@@ -4,7 +4,6 @@ import javafx.scene.shape.TriangleMesh;
 import javafx.scene.shape.VertexFormat;
 import lombok.Getter;
 import lombok.Setter;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
 import net.highwayfrogs.editor.file.map.view.TextureMap.TextureSource;
 import net.highwayfrogs.editor.file.map.view.TextureMap.TextureTreeNode;
 import net.highwayfrogs.editor.file.standard.Vector;
@@ -26,10 +25,10 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Getter
 public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extends TriangleMesh {
-    private Map<Integer, T> facePolyMap = new HashMap<>();
-    private Map<T, Integer> polyFaceMap = new HashMap<>();
-    private TextureMap textureMap;
-    private MeshManager manager;
+    private final Map<Integer, T> facePolyMap = new HashMap<>();
+    private final Map<T, Integer> polyFaceMap = new HashMap<>();
+    private final TextureMap textureMap;
+    private final MeshManager manager;
     private int faceCount;
     private int textureCount;
     @Setter private int verticeStart;
@@ -48,9 +47,9 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
     public void addPolygon(T prim, AtomicInteger texId) {
         int vertCount = prim.getVerticeCount();
 
-        if (vertCount == MAPPolygon.TRI_SIZE) {
+        if (vertCount == 3) {
             addTriangle(prim, texId);
-        } else if (vertCount == MAPPolygon.QUAD_SIZE) {
+        } else if (vertCount == 4) {
             addRectangle(prim, texId);
         } else {
             throw new RuntimeException("Cannot handle " + vertCount + " vertices");
@@ -63,7 +62,7 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
      * @param poly The rectangle polygon.
      */
     public void addRectangle(T poly, AtomicInteger texCoord) {
-        Utils.verify(poly.getVerticeCount() == MAPPolygon.QUAD_SIZE, "This polygon has %d vertices!", poly.getVerticeCount());
+        Utils.verify(poly.getVerticeCount() == 4, "This polygon has %d vertices!", poly.getVerticeCount());
 
         int[] verts = poly.getVertices();
         int face = getFaces().size() / getFaceElementSize();
@@ -82,7 +81,7 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
      */
     public void addRectangle(TextureTreeNode entry, int v1, int v2, int v3, int v4, int v5, int v6) {
         int texId = getTexCoords().size() / getTexCoordElementSize();
-        entry.applyMesh(this, MAPPolygon.QUAD_SIZE);
+        entry.applyMesh(this, 4);
         getFaces().addAll(v1 + getVerticeStart(), texId, v2 + getVerticeStart(), texId + 2, v3 + getVerticeStart(), texId + 1);
         getFaces().addAll(v4 + getVerticeStart(), texId + 1, v5 + getVerticeStart(), texId + 2, v6 + getVerticeStart(), texId + 3);
     }
@@ -92,7 +91,7 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
      * @param poly The triangle polygon.
      */
     public void addTriangle(T poly, AtomicInteger texCoord) {
-        Utils.verify(poly.getVerticeCount() == MAPPolygon.TRI_SIZE, "This polygon has %d vertices!", poly.getVerticeCount());
+        Utils.verify(poly.getVerticeCount() == 3, "This polygon has %d vertices!", poly.getVerticeCount());
 
         int[] verts = poly.getVertices();
         int face = getFaces().size() / getFaceElementSize();
@@ -109,7 +108,7 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
      */
     public void addTriangle(TextureTreeNode entry, int v1, int v2, int v3) {
         int texId = getTexCoords().size() / getTexCoordElementSize();
-        entry.applyMesh(this, MAPPolygon.TRI_SIZE);
+        entry.applyMesh(this, 3);
         getFaces().addAll(v1 + getVerticeStart(), texId + 2, v2 + getVerticeStart(), texId + 1, v3 + getVerticeStart(), texId);
     }
 
@@ -123,8 +122,9 @@ public abstract class FrogMesh<T extends PSXGPUPrimitive & TextureSource> extend
         texCoord.addAndGet(texCount);
         TextureTreeNode entry = source.getTreeNode(textureMap);
         if (entry == null) {
-            System.out.println("There was a texture on this " + getClass().getSimpleName() + " which was not found in the TextureMap! (ID: " + poly.getGameImage(getTextureMap()).getTextureId() + ")");
-            entry = textureMap.getNode(UnknownTextureSource.INSTANCE);
+            GameImage searchImage = poly.getGameImage(getTextureMap());
+            System.out.println("There was a texture on this " + getClass().getSimpleName() + " which was not found in the TextureMap! (ID: " + (searchImage != null ? searchImage.getTextureId() : "null") + ")");
+            entry = textureMap.getNode(UnknownTextureSource.MAGENTA_INSTANCE);
             if (entry == null)
                 throw new RuntimeException("The default unknown texture was not found in the TextureMap.");
         }

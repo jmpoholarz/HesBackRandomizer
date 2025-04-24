@@ -1,7 +1,7 @@
 package net.highwayfrogs.editor.file.config;
 
 import lombok.Getter;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.generic.IGameType;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -11,13 +11,14 @@ import java.util.function.BiFunction;
  * Created by Kneesnap on 2/24/2019.
  */
 public class NameBank {
-    @Getter private Config config;
-    @Getter private List<String> names = new ArrayList<>();
-    private Map<String, NameBank> subBanks = new HashMap<>();
+    @Getter private final Config config;
+    @Getter private final List<String> names = new ArrayList<>();
+    private final Map<String, NameBank> subBanks = new HashMap<>();
     private BiFunction<NameBank, Integer, String> unknownMaker;
     private int spoofSize;
 
-    private static final NameBank EMPTY_BANK = new NameBank(null, new ArrayList<>(), null);
+    public static final NameBank EMPTY_BANK = new NameBank(null, new ArrayList<>(), null);
+    private static final NameBank EMPTY_MODIFIABLE_BANK = new NameBank(null, new ArrayList<>(), null);
 
     private NameBank(Config config, Collection<String> loadValues, BiFunction<NameBank, Integer, String> unknownMaker) {
         this.config = config;
@@ -40,7 +41,7 @@ public class NameBank {
      * @return defaultName
      */
     public String getDefaultNameFor(int id) {
-        return unknownMaker != null ? unknownMaker.apply(this, id) : "????????";
+        return unknownMaker != null ? unknownMaker.apply(this, id) : "???? (Entry #" + id + " is not configured)";
     }
 
     /**
@@ -49,9 +50,9 @@ public class NameBank {
      * @return defaultName
      */
     public String getEmptyChildNameFor(int id, int size) {
-        EMPTY_BANK.unknownMaker = unknownMaker;
-        EMPTY_BANK.spoofSize = size;
-        return EMPTY_BANK.getDefaultNameFor(id);
+        EMPTY_MODIFIABLE_BANK.unknownMaker = unknownMaker;
+        EMPTY_MODIFIABLE_BANK.spoofSize = size;
+        return EMPTY_MODIFIABLE_BANK.getDefaultNameFor(id);
     }
 
     /**
@@ -95,7 +96,7 @@ public class NameBank {
     }
 
     private boolean isEmpty() {
-        return this == EMPTY_BANK;
+        return this == EMPTY_BANK || this == EMPTY_MODIFIABLE_BANK;
     }
 
     /**
@@ -105,15 +106,15 @@ public class NameBank {
      * @param unknownMaker What to return when an id wasn't found. Null is allowed.
      * @return newBank
      */
-    public static NameBank readBank(String folder, String configName, BiFunction<NameBank, Integer, String> unknownMaker) {
-        Config config = new Config(Utils.getResourceStream("banks/" + folder + "/" + configName + ".cfg"));
+    public static NameBank readBank(IGameType gameType, String folder, String configName, boolean addChildrenToMainBank, BiFunction<NameBank, Integer, String> unknownMaker) {
+        Config config = new Config(gameType.getEmbeddedResourceStream( folder + "/" + configName + ".cfg"));
         NameBank bank = new NameBank(config, config.getText(), unknownMaker);
 
-        for (String childName : config.getOrderedChildren()) {
-            Config childConfig = config.getChild(childName);
+        for (Config childConfig : config.getOrderedChildren()) {
             List<String> childData = childConfig.getText();
-            bank.subBanks.put(childName, new NameBank(childConfig, childData, unknownMaker));
-            bank.names.addAll(childData);
+            bank.subBanks.put(childConfig.getName(), new NameBank(childConfig, childData, unknownMaker));
+            if (addChildrenToMainBank)
+                bank.names.addAll(childData);
         }
 
         return bank;

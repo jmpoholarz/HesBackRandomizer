@@ -7,13 +7,21 @@ debug/
 FrogLord.jar
 /nbproject/
 /build/
+/.gradle/
 /dist/
 target/
 build.xml
-/.idea/workspace.xml
 .DS_Store
-**/.idea/workspace.xml
-**/.idea/tasks.xml
+
+RescueOutput/
+
+*/nppBackup
+nppBackup
+
+# https://intellij-support.jetbrains.com/hc/en-us/articles/206544839-How-to-manage-projects-under-Version-Control-Systems
+/.idea/workspace.xml
+/.idea/usage.statistics.xml
+/.idea/shelf/
 
 # Godot 4+ specific ignores
 .godot/

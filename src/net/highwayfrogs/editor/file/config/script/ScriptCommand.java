@@ -1,19 +1,24 @@
 package net.highwayfrogs.editor.file.config.script;
 
 import lombok.Getter;
-import net.highwayfrogs.editor.file.GameObject;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.sony.SCGameData;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.utils.StringUtils;
 
 /**
  * Represents a Frogger script command and its data.
  * Created by Kneesnap on 8/1/2019.
  */
 @Getter
-public class ScriptCommand extends GameObject {
+public class ScriptCommand extends SCGameData<FroggerGameInstance> {
     private ScriptCommandType commandType;
     private int[] arguments;
+
+    public ScriptCommand(FroggerGameInstance instance) {
+        super(instance);
+    }
 
     @Override
     public void load(DataReader reader) {
@@ -35,7 +40,7 @@ public class ScriptCommand extends GameObject {
         StringBuilder builder = new StringBuilder();
         builder.append(getCommandType().name());
         for (int i = 0; i < this.arguments.length; i++)
-            builder.append(" ").append(this.commandType.getFormatters()[i].numberToString(this.arguments[i]));
+            builder.append(" ").append(this.commandType.getFormatters()[i].numberToString(getGameInstance(), this.arguments[i]));
         return builder.toString();
     }
 
@@ -53,8 +58,8 @@ public class ScriptCommand extends GameObject {
      * @param inputLine The string to parse.
      * @return command
      */
-    public static ScriptCommand readCommandFromString(String inputLine) {
-        inputLine = Utils.removeDuplicateSpaces(inputLine);
+    public static ScriptCommand readCommandFromString(FroggerGameInstance instance, String inputLine) {
+        inputLine = StringUtils.removeDuplicateSpaces(inputLine);
         if (inputLine.isEmpty())
             return null;
 
@@ -67,9 +72,9 @@ public class ScriptCommand extends GameObject {
 
         int[] arguments = new int[commandType.getArgumentCount()];
         for (int i = 0; i < arguments.length; i++)
-            arguments[i] = commandType.getFormatters()[i].stringToNumber(split[i + 1]);
+            arguments[i] = commandType.getFormatters()[i].stringToNumber(instance, split[i + 1]);
 
-        ScriptCommand newCommand = new ScriptCommand();
+        ScriptCommand newCommand = new ScriptCommand(instance);
         newCommand.commandType = commandType;
         newCommand.arguments = arguments;
         return newCommand;

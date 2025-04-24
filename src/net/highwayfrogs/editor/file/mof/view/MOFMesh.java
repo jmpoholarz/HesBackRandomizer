@@ -3,7 +3,6 @@ package net.highwayfrogs.editor.file.mof.view;
 import javafx.scene.shape.VertexFormat;
 import lombok.Getter;
 import lombok.Setter;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
 import net.highwayfrogs.editor.file.map.view.FrogMesh;
 import net.highwayfrogs.editor.file.map.view.TextureMap.TextureSource;
 import net.highwayfrogs.editor.file.map.view.TextureMap.TextureTreeNode;
@@ -21,7 +20,9 @@ import net.highwayfrogs.editor.file.standard.Vector;
 import net.highwayfrogs.editor.file.standard.psx.PSXMatrix;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -30,11 +31,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 @Getter
 public class MOFMesh extends FrogMesh<MOFPolygon> {
-    private MOFHolder mofHolder;
+    private final MOFHolder mofHolder;
     private int animationId;
     private int frameCount;
-    private List<Vector> verticeCache = new ArrayList<>();
+    private final List<Vector> verticeCache = new ArrayList<>();
     @Setter private boolean showOverlay;
+    private final Set<MOFPart> hiddenParts = new HashSet<>();
 
     public MOFMesh(MOFHolder holder) {
         super(holder.makeTextureMap(), VertexFormat.POINT_TEXCOORD);
@@ -47,7 +49,7 @@ public class MOFMesh extends FrogMesh<MOFPolygon> {
         AtomicInteger texId = new AtomicInteger();
 
         for (MOFPart part : getMofHolder().asStaticFile().getParts()) {
-            if (part.shouldHide())
+            if (this.hiddenParts.contains(part))
                 continue;
 
             part.getMofPolygons().values().forEach(list -> list.forEach(poly -> addPolygon(poly, texId)));
@@ -82,18 +84,25 @@ public class MOFMesh extends FrogMesh<MOFPolygon> {
     public List<Vector> getVertices() {
         this.verticeCache.clear();
         for (MOFPart part : getMofHolder().asStaticFile().getParts()) {
-            if (part.shouldHide())
+            if (this.hiddenParts.contains(part))
                 continue;
 
             MOFPartcel partcel = hasEnabledAnimation() ? part.getCel(getAction(), getFrame()) : part.getStaticPartcel();
             if (getMofHolder().isAnimatedMOF() && hasEnabledAnimation()) {
+                boolean useInterpolation = getMofHolder().getAnimatedFile().getAnimationById(getAction()).isInterpolationEnabled();
                 TransformObject transform = getMofHolder().getAnimatedFile().getTransform(part, getAction(), getFrame());
+                PSXMatrix partTransform = transform.calculatePartTransform(useInterpolation);
                 for (SVector vertex : partcel.getVertices())
-                    this.verticeCache.add(PSXMatrix.MRApplyMatrix(transform.calculatePartTransform(), vertex, new IVector()));
+                    this.verticeCache.add(PSXMatrix.MRApplyMatrix(partTransform, vertex, new IVector()));
             } else {
                 this.verticeCache.addAll(partcel.getVertices());
             }
         }
+
+        // Incomplete mofs (Primarily in prototypes) have a weird vertex
+        if (getMofHolder().isWeirdFrogMOF())
+            this.verticeCache.add(new SVector(0, 0, 0));
+
         return this.verticeCache;
     }
 
@@ -149,7 +158,7 @@ public class MOFMesh extends FrogMesh<MOFPolygon> {
             if (part.getFlipbook() != null && part.getFlipbook().getActions().size() <= actionId)
                 return;
 
-        if (actionId >= getMofHolder().getMaxAnimation())
+        if (actionId >= getMofHolder().getAnimationCount())
             return;
 
         this.animationId = actionId;
@@ -186,7 +195,7 @@ public class MOFMesh extends FrogMesh<MOFPolygon> {
     public void renderOverPolygon(MOFPolygon targetPoly, TextureSource source) {
         setVerticeStart(0);
         int increment = getVertexFormat().getVertexIndexSize();
-        boolean isQuad = (targetPoly.getVerticeCount() == MAPPolygon.QUAD_SIZE);
+        boolean isQuad = (targetPoly.getVerticeCount() == 4);
 
         int face = getPolyFaceMap().get(targetPoly) * getFaceElementSize();
         int v1 = getFaces().get(face);

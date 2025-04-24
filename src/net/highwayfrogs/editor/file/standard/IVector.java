@@ -8,7 +8,7 @@ import net.highwayfrogs.editor.Constants;
 import net.highwayfrogs.editor.file.GameObject;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.utils.DataUtils;
 
 /**
  * Vector comprised of integers.
@@ -26,6 +26,10 @@ public class IVector extends GameObject implements Vector {
     public static final int UNPADDED_BYTE_SIZE = 3 * Constants.INTEGER_SIZE;
     public static final int PADDED_BYTE_SIZE = UNPADDED_BYTE_SIZE + Constants.INTEGER_SIZE;
 
+    public IVector(IVector other) {
+        this(other.x, other.y, other.z);
+    }
+
     @Override
     public void load(DataReader reader) {
         this.x = reader.readInt();
@@ -39,7 +43,7 @@ public class IVector extends GameObject implements Vector {
      */
     public void loadWithPadding(DataReader reader) {
         this.load(reader);
-        reader.skipInt();
+        reader.skipBytesRequireEmpty(Constants.INTEGER_SIZE);
     }
 
     @Override
@@ -56,6 +60,58 @@ public class IVector extends GameObject implements Vector {
     public void saveWithPadding(DataWriter writer) {
         save(writer);
         writer.writeNull(Constants.INTEGER_SIZE);
+    }
+
+    /**
+     * Calculates the dot product between this vector and another vector.
+     * @param other the other vector
+     * @return dotProduct
+     */
+    public int dotProduct(IVector other) {
+        return (this.x * other.x) + (this.y * other.y) + (this.z * other.z);
+    }
+
+    /**
+     * Clears the contents of the vector.
+     */
+    public void clear() {
+        this.x = 0;
+        this.y = 0;
+        this.z = 0;
+    }
+
+    /**
+     * Set the values of this vector.
+     * @param copyVector the vector to copy values from
+     */
+    public void setValues(IVector copyVector) {
+        this.x = copyVector.x;
+        this.y = copyVector.y;
+        this.z = copyVector.z;
+    }
+
+    /**
+     * Set the values of this vector.
+     * @param x The x value to set.
+     * @param y The y value to set.
+     * @param z The z value to set.
+     */
+    public void setValues(int x, int y, int z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    /**
+     * Set the values of this vector.
+     * @param x The x value to set.
+     * @param y The y value to set.
+     * @param z The z value to set.
+     */
+    public void setValues(float x, float y, float z, int bits) {
+        this.x = DataUtils.floatToFixedPointInt(x, bits);
+        this.y = DataUtils.floatToFixedPointInt(y, bits);
+        this.z = DataUtils.floatToFixedPointInt(z, bits);
     }
 
     /**
@@ -90,18 +146,18 @@ public class IVector extends GameObject implements Vector {
             throw new RuntimeException("Tried to normalise a vector which exceeded the limit! " + added);
          */
 
-        double tmpX = Utils.fixedPointIntToFloatNBits(this.x, 12);
-        double tmpY = Utils.fixedPointIntToFloatNBits(this.y, 12);
-        double tmpZ = Utils.fixedPointIntToFloatNBits(this.z, 12);
+        double tmpX = DataUtils.fixedPointIntToFloatNBits(this.x, 12);
+        double tmpY = DataUtils.fixedPointIntToFloatNBits(this.y, 12);
+        double tmpZ = DataUtils.fixedPointIntToFloatNBits(this.z, 12);
 
         double res = Math.sqrt((tmpX * tmpX) + (tmpY * tmpY) + (tmpZ * tmpZ));
         tmpX /= res;
         tmpY /= res;
         tmpZ /= res;
 
-        this.x = Utils.floatToFixedPointInt((float) tmpX, 12);
-        this.y = Utils.floatToFixedPointInt((float) tmpY, 12);
-        this.z = Utils.floatToFixedPointInt((float) tmpZ, 12);
+        this.x = DataUtils.floatToFixedPointInt((float) tmpX, 12);
+        this.y = DataUtils.floatToFixedPointInt((float) tmpY, 12);
+        this.z = DataUtils.floatToFixedPointInt((float) tmpZ, 12);
         return this;
     }
 
@@ -143,32 +199,32 @@ public class IVector extends GameObject implements Vector {
 
     @Override
     public float getFloatX(int bits) {
-        return Utils.fixedPointIntToFloatNBits(getX(), bits);
+        return DataUtils.fixedPointIntToFloatNBits(getX(), bits);
     }
 
     @Override
     public float getFloatY(int bits) {
-        return Utils.fixedPointIntToFloatNBits(getY(), bits);
+        return DataUtils.fixedPointIntToFloatNBits(getY(), bits);
     }
 
     @Override
     public float getFloatZ(int bits) {
-        return Utils.fixedPointIntToFloatNBits(getZ(), bits);
+        return DataUtils.fixedPointIntToFloatNBits(getZ(), bits);
     }
 
     @Override
     public void setFloatX(float xVal, int bits) {
-        this.x = Utils.floatToFixedPointInt(xVal, bits);
+        this.x = DataUtils.floatToFixedPointInt(xVal, bits);
     }
 
     @Override
     public void setFloatY(float yVal, int bits) {
-        this.y = Utils.floatToFixedPointInt(yVal, bits);
+        this.y = DataUtils.floatToFixedPointInt(yVal, bits);
     }
 
     @Override
     public void setFloatZ(float zVal, int bits) {
-        this.z = Utils.floatToFixedPointInt(zVal, bits);
+        this.z = DataUtils.floatToFixedPointInt(zVal, bits);
     }
 
     /**

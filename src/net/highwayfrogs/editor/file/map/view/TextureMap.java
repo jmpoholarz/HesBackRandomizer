@@ -6,9 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.highwayfrogs.editor.Constants;
-import net.highwayfrogs.editor.file.map.MAPFile;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyTexture;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
 import net.highwayfrogs.editor.file.mof.MOFHolder;
 import net.highwayfrogs.editor.file.mof.MOFPart;
 import net.highwayfrogs.editor.file.mof.poly_anim.MOFPartPolyAnimEntry;
@@ -19,8 +16,13 @@ import net.highwayfrogs.editor.file.vlo.GameImage;
 import net.highwayfrogs.editor.file.vlo.ImageFilterSettings;
 import net.highwayfrogs.editor.file.vlo.ImageFilterSettings.ImageState;
 import net.highwayfrogs.editor.file.vlo.VLOArchive;
-import net.highwayfrogs.editor.gui.editor.MOFController;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.sony.SCGameInstance;
+import net.highwayfrogs.editor.games.sony.SCGameObject.SCSharedGameObject;
+import net.highwayfrogs.editor.games.sony.shared.ui.file.MOFController;
+import net.highwayfrogs.editor.utils.FXUtils;
+import net.highwayfrogs.editor.utils.MathUtils;
+import net.highwayfrogs.editor.utils.Scene3DUtils;
+import net.highwayfrogs.editor.utils.StringUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,18 +39,19 @@ import java.util.*;
  * - http://www.gamedev.net/community/forums/topic.asp?topic_id=392413
  *
  * Future Ideas:
- * 1. Instead of putting all of the vertex colors in the corner, we could just add them to the tree, though preferably after all of the textures have been added. This would ensure they don't overlap with textures, and it would ensure as many vertex colors as possible are stored. This would also allow for pages of different sizes to be used.
+ * 1. Instead of putting the vertex colors in the corner, we could just add them to the tree, though preferably after all of the textures have been added. This would ensure they don't overlap with textures, and it would ensure as many vertex colors as possible are stored. This would also allow for pages of different sizes to be used.
  *
  * Created by Kneesnap on 11/28/2018.
  */
 @Getter
-public class TextureMap {
-    private VLOArchive vloArchive;
-    private List<Short> remapList;
+public class TextureMap extends SCSharedGameObject {
+    private final VLOArchive vloArchive;
+    private final List<Short> remapList;
     private PhongMaterial material;
-    private TextureTree textureTree;
-    @Setter private ShaderMode mode;
-    private Map<Short, Set<BigInteger>> mapTextureList = new HashMap<>();
+    private PhongMaterial highlightedMaterial;
+    private final TextureTree textureTree;
+    @Setter private ShadingMode mode;
+    private final Map<Short, Set<BigInteger>> mapTextureList = new HashMap<>();
     private final ImageFilterSettings displaySettings = new ImageFilterSettings(ImageState.EXPORT).setAllowTransparency(true); // This is not static because we want it to be gc'd when the TextureMap is.
     private int width;
     private int height;
@@ -56,7 +59,8 @@ public class TextureMap {
 
     // The largest VLO is the SWP VLO, on the PS1. The texture map with the most used space is SUB1.
 
-    private TextureMap(VLOArchive vlo, List<Short> remapList, ShaderMode mode, int width, int height) {
+    private TextureMap(SCGameInstance instance, VLOArchive vlo, List<Short> remapList, ShadingMode mode, int width, int height) {
+        super(instance);
         this.vloArchive = vlo;
         this.remapList = remapList;
         this.textureTree = new TextureTree(this);
@@ -69,20 +73,10 @@ public class TextureMap {
      * Create a new texture map from an existing MOF.
      * @return newTextureMap
      */
-    public static TextureMap newTextureMap(MOFHolder mofHolder, ShaderMode mode) {
-        TextureMap newMap = new TextureMap(mofHolder.getVloFile(), null, mode, 0, 0);
+    public static TextureMap newTextureMap(MOFHolder mofHolder, ShadingMode mode) {
+        TextureMap newMap = new TextureMap(mofHolder.getGameInstance(), mofHolder.getVloFile(), null, mode, 0, 0);
         newMap.setUseModelTextureAnimation(true);
         newMap.updateModel(mofHolder, mode);
-        return newMap;
-    }
-
-    /**
-     * Create a new texture map from an existing VLOArchive.
-     * @return newTextureMap
-     */
-    public static TextureMap newTextureMap(MAPFile mapFile, ShaderMode mode) {
-        TextureMap newMap = new TextureMap(mapFile.getVlo(), mapFile.getRemapTable(), mode, 1024, 1024);
-        newMap.updateMap(mapFile, mode);
         return newMap;
     }
 
@@ -103,7 +97,7 @@ public class TextureMap {
      * @return remap
      */
     public Short getRemap(short index) {
-        return this.remapList != null ? this.remapList.get(index) : index;
+        return this.remapList != null && this.remapList.size() > index && index >= 0 ? this.remapList.get(index) : index;
     }
 
     /**
@@ -112,8 +106,42 @@ public class TextureMap {
      */
     public PhongMaterial getDiffuseMaterial() {
         if (this.material == null)
-            this.material = Utils.makeDiffuseMaterial(Utils.toFXImage(getTextureTree().getImage(), false));
+            this.material = Scene3DUtils.makeUnlitSharpMaterial(FXUtils.toFXImage(getTextureTree().getImage(), false));
         return this.material;
+    }
+
+    private BufferedImage makeHighlightedImage() {
+        BufferedImage originalImage = getTextureTree().getImage();
+        BufferedImage newImage = new BufferedImage(originalImage.getWidth(), originalImage.getHeight(), originalImage.getType());
+
+        // Setup graphics.
+        Graphics2D g = newImage.createGraphics();
+
+        try {
+            // Clean image.
+            g.setBackground(new Color(255, 255, 255, 0));
+            g.clearRect(0, 0, newImage.getWidth(), newImage.getHeight());
+
+            // Draw new image.
+            g.drawImage(originalImage, 0, 0, originalImage.getWidth(), originalImage.getHeight(), null);
+            g.setColor(new Color(200, 200, 0, 127));
+            g.fillRect(0, 0, originalImage.getWidth(), originalImage.getHeight());
+        } finally {
+            g.dispose();
+        }
+
+        return newImage;
+    }
+
+    /**
+     * Gets the 3D PhongMaterial (diffuse components only, affected by lighting).
+     * @return phongMaterial
+     */
+    public PhongMaterial getDiffuseHighlightedMaterial() {
+        if (this.highlightedMaterial == null)
+            this.highlightedMaterial = Scene3DUtils.makeLitBlurryMaterial(FXUtils.toFXImage(makeHighlightedImage(), false));
+
+        return this.highlightedMaterial;
     }
 
     /**
@@ -122,23 +150,18 @@ public class TextureMap {
      */
     public void updateTree(Map<BigInteger, TextureSource> sourceMap) {
         this.textureTree.rebuildTree(sourceMap);
-        if (this.material == null)
-            this.material = getDiffuseMaterial();
 
-        Image image = Utils.toFXImage(getTextureTree().getImage(), false);
-        this.material.setDiffuseMap(image);
-        this.material.setSpecularMap(image); // Fixes polygon lighting.
-    }
+        if (this.material != null) {
+            Image image = FXUtils.toFXImage(getTextureTree().getImage(), false);
+            this.material.setDiffuseMap(image);
+            this.material.setSpecularMap(image); // Fixes polygon lighting.
+        }
 
-    /**
-     * Updates this map texture map.
-     * @param mapFile The map file to update for.
-     * @param newMode The shading mode to use.
-     */
-    public void updateMap(MAPFile mapFile, ShaderMode newMode) {
-        if (newMode != null)
-            this.mode = newMode;
-        updateTree(createSourceMap(mapFile));
+        if (this.highlightedMaterial != null) {
+            Image image = FXUtils.toFXImage(makeHighlightedImage(), false);
+            this.highlightedMaterial.setDiffuseMap(image); // Fixes polygon lighting.
+            this.highlightedMaterial.setSpecularMap(image); // Fixes polygon lighting.
+        }
     }
 
     /**
@@ -146,7 +169,7 @@ public class TextureMap {
      * @param mof     The model to update for.
      * @param newMode The shading mode to use.
      */
-    public void updateModel(MOFHolder mof, ShaderMode newMode) {
+    public void updateModel(MOFHolder mof, ShadingMode newMode) {
         if (newMode != null)
             this.mode = newMode;
 
@@ -157,7 +180,7 @@ public class TextureMap {
         // Dynamic resizing to keep it small.
         int totalArea = 0;
         double toBase2 = Math.log10(10) / Math.log10(2);
-        final int vertexArea = (MAPFile.VERTEX_COLOR_IMAGE_SIZE * MAPFile.VERTEX_COLOR_IMAGE_SIZE);
+        final int vertexArea = (CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE * CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE);
         for (TextureSource source : sourceMap.values()) {
             GameImage gameImage = source.getGameImage(this);
 
@@ -168,7 +191,7 @@ public class TextureMap {
             }
         }
 
-        int newSize = Utils.power(2, (int) (Math.log10(Math.sqrt(totalArea * 2)) * toBase2) + 1); // One size up, because it won't be stored completely optimally.
+        int newSize = MathUtils.power(2, (int) (Math.log10(Math.sqrt(totalArea * 2)) * toBase2) + 1); // One size up, because it won't be stored completely optimally.
         this.width = (int) (newSize / getMode().getWidthMultiplier());
         this.height = (int) (newSize / getMode().getHeightMultiplier());
 
@@ -176,48 +199,6 @@ public class TextureMap {
         updateTree(sourceMap);
         if (oldModelTextureState)
             this.useModelTextureAnimation = true; // Enables the use of animated textures.
-    }
-
-    /**
-     * Creates a texture source map for a map.
-     */
-    private Map<BigInteger, TextureSource> createSourceMap(MAPFile map) {
-        // Calculate how many of each are used.
-        this.mapTextureList.clear();
-        for (MAPPolygon poly : map.getAllPolygons()) {
-            if (poly instanceof MAPPolyTexture) {
-                MAPPolyTexture polyTex = (MAPPolyTexture) poly;
-                this.mapTextureList.computeIfAbsent(polyTex.getTextureId(), key -> new HashSet<>()).add(polyTex.makeIdentifier(this));
-            }
-        }
-
-        // Calculate the polygon data.
-        Map<BigInteger, TextureSource> texMap = new HashMap<>();
-        Set<Short> visitedTextures = new HashSet<>();
-        for (MAPPolygon poly : map.getAllPolygons()) {
-            BigInteger id = poly.makeIdentifier(this);
-            if (!texMap.containsKey(id))
-                texMap.put(id, poly);
-
-            if (poly instanceof MAPPolyTexture && poly.isOverlay(this)) {
-                MAPPolyTexture polyTex = (MAPPolyTexture) poly;
-                if (visitedTextures.add(polyTex.getTextureId())) {
-                    GameImage image = polyTex.getGameImage(this);
-                    id = image.makeIdentifier(this);
-                    if (!texMap.containsKey(id))
-                        texMap.put(id, image);
-                }
-            }
-        }
-
-        texMap.put(UnknownTextureSource.INSTANCE.makeIdentifier(this), UnknownTextureSource.INSTANCE);
-        texMap.put(MapMesh.CURSOR_COLOR.makeIdentifier(this), MapMesh.CURSOR_COLOR);
-        texMap.put(MapMesh.ANIMATION_COLOR.makeIdentifier(this), MapMesh.ANIMATION_COLOR);
-        texMap.put(MapMesh.INVISIBLE_COLOR.makeIdentifier(this), MapMesh.INVISIBLE_COLOR);
-        texMap.put(MapMesh.GRID_COLOR.makeIdentifier(this), MapMesh.GRID_COLOR);
-        texMap.put(MapMesh.REMOVE_FACE_COLOR.makeIdentifier(this), MapMesh.REMOVE_FACE_COLOR);
-        texMap.put(MapMesh.GENERAL_SELECTION.makeIdentifier(this), MapMesh.GENERAL_SELECTION);
-        return texMap;
     }
 
     /**
@@ -236,6 +217,9 @@ public class TextureMap {
                 MOFPolyTexture polyTex = (MOFPolyTexture) poly;
                 if (visitedTextures.add(polyTex.getImageId())) {
                     GameImage image = polyTex.getGameImage(this);
+                    if (image == null)
+                        continue;
+
                     id = image.makeIdentifier(this);
                     if (!texMap.containsKey(id))
                         texMap.put(id, image);
@@ -248,7 +232,10 @@ public class TextureMap {
             for (MOFPartPolyAnimEntryList entryList : part.getPartPolyAnimLists()) {
                 for (MOFPartPolyAnimEntry entry : entryList.getEntries()) {
                     if (visitedTextures.add((short) entry.getImageId())) {
-                        GameImage image = mof.getMWD().getImageByTextureId(entry.getImageId());
+                        GameImage image = mof.getArchive().getImageByTextureId(entry.getImageId());
+                        if (image == null)
+                            continue;
+
                         BigInteger id = image.makeIdentifier(this);
                         if (!texMap.containsKey(id))
                             texMap.put(id, image);
@@ -257,9 +244,10 @@ public class TextureMap {
             }
         }
 
-        texMap.put(UnknownTextureSource.INSTANCE.makeIdentifier(this), UnknownTextureSource.INSTANCE);
+        texMap.put(UnknownTextureSource.MAGENTA_INSTANCE.makeIdentifier(this), UnknownTextureSource.MAGENTA_INSTANCE);
         texMap.put(MOFController.ANIMATION_COLOR.makeIdentifier(this), MOFController.ANIMATION_COLOR);
         texMap.put(MOFController.CANT_APPLY_COLOR.makeIdentifier(this), MOFController.CANT_APPLY_COLOR);
+        texMap.put(MOFController.HILITE_COLOR.makeIdentifier(this), MOFController.HILITE_COLOR);
         return texMap;
     }
 
@@ -274,7 +262,7 @@ public class TextureMap {
 
     @Getter
     public static class TextureTree {
-        private TextureMap parentMap;
+        private final TextureMap parentMap;
         private final Map<BigInteger, TextureTreeNode> accessMap;
         private int width; // Width of tree.
         private int height; // Height of tree.
@@ -299,8 +287,8 @@ public class TextureMap {
 
             this.accessMap.clear();
 
-            int minX = getWidth() - MAPFile.VERTEX_COLOR_IMAGE_SIZE; // Our goal is to start in the bottom right corner, and grow out.
-            int minY = getHeight() - MAPFile.VERTEX_COLOR_IMAGE_SIZE;
+            int minX = getWidth() - CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE; // Our goal is to start in the bottom right corner, and grow out.
+            int minY = getHeight() - CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE;
             int x = minX;
             int y = minY;
 
@@ -309,6 +297,9 @@ public class TextureMap {
                 TextureSource source = sourceMap.get(key);
 
                 BufferedImage image = source.makeTexture(getParentMap());
+                if (image == null)
+                    continue;
+
                 if (source.isOverlay(getParentMap())) {
                     this.accessMap.put(key, TextureTreeNode.newNode(this, x, y, image.getWidth(), image.getHeight(), image));
 
@@ -322,7 +313,7 @@ public class TextureMap {
                         minX -= image.getWidth();
                         minY -= image.getHeight();
                         x = minX;
-                        y = getHeight() - MAPFile.VERTEX_COLOR_IMAGE_SIZE;
+                        y = getHeight() - CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE;
                     }
                 } else {
                     images.add(new TextureEntry(key, source, image));
@@ -352,9 +343,9 @@ public class TextureMap {
         @Getter
         @AllArgsConstructor
         private static class TextureEntry {
-            private BigInteger id;
-            private TextureSource source;
-            private BufferedImage image;
+            private final BigInteger id;
+            private final TextureSource source;
+            private final BufferedImage image;
         }
 
         private TextureTreeNode insert(GameImage image) {
@@ -486,7 +477,7 @@ public class TextureMap {
         }
 
         public float getMaxU() {
-            return (float) (getStartX() + (getGameImage() != null ? getGameImage().getIngameWidth() : MAPFile.VERTEX_COLOR_IMAGE_SIZE - 2)) / (float) getTree().getWidth();
+            return (float) (getStartX() + (getGameImage() != null ? getGameImage().getIngameWidth() : CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE - 2)) / (float) getTree().getWidth();
         }
 
         public float getMinV() {
@@ -494,7 +485,7 @@ public class TextureMap {
         }
 
         public float getMaxV() {
-            return (float) (getStartY() + (getGameImage() != null ? getGameImage().getIngameHeight() : MAPFile.VERTEX_COLOR_IMAGE_SIZE - 2)) / (float) getTree().getHeight();
+            return (float) (getStartY() + (getGameImage() != null ? getGameImage().getIngameHeight() : CursorVertexColor.VERTEX_COLOR_IMAGE_SIZE - 2)) / (float) getTree().getHeight();
         }
 
         private int getStartX() {
@@ -506,15 +497,15 @@ public class TextureMap {
         }
 
         /**
-         * Apply this node to a MapMesh.
+         * Apply this node to a FrogMesh.
          * @param mesh      The mesh to apply this entry to.
          * @param vertCount The amount of vertices to add.
          */
-        public void applyMesh(FrogMesh mesh, int vertCount) {
+        public void applyMesh(FrogMesh<?> mesh, int vertCount) {
             mesh.getTexCoords().addAll(getMinU(), getMinV());
             mesh.getTexCoords().addAll(getMinU(), getMaxV());
             mesh.getTexCoords().addAll(getMaxU(), getMinV());
-            if (vertCount == MAPPolygon.QUAD_SIZE)
+            if (vertCount == 4)
                 mesh.getTexCoords().addAll(getMaxU(), getMaxV());
         }
 
@@ -535,7 +526,7 @@ public class TextureMap {
 
     @Getter
     @AllArgsConstructor
-    public enum ShaderMode {
+    public enum ShadingMode {
         NO_SHADING("None", 1, 1),
         OVERLAY_SHADING("Overlay", 1, 1),
         MIXED_SHADING("Mixed", 2, 2), // Works to create a middle-ground between accurate and low quality.
@@ -554,22 +545,22 @@ public class TextureMap {
         /**
          * Creates the texture which should be put into the texture map.
          */
-        public BufferedImage makeTexture(TextureMap map);
+        BufferedImage makeTexture(TextureMap map);
 
         /**
          * Tests if the source creates an overlay texture, or an actual texture.
          */
-        public boolean isOverlay(TextureMap map);
+        boolean isOverlay(TextureMap map);
 
         /**
          * Creates a hash code identifier which should match other textures that would look exactly the same, but not match others.
          */
-        public BigInteger makeIdentifier(TextureMap map);
+        BigInteger makeIdentifier(TextureMap map);
 
-        public default BigInteger makeIdentifier(int... colors) {
+        default BigInteger makeIdentifier(int... colors) {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < colors.length; i++)
-                sb.append(Utils.padStringLeft(Integer.toHexString(colors[i]).toUpperCase(), Constants.INTEGER_SIZE, '0'));
+                sb.append(StringUtils.padStringLeft(Integer.toHexString(colors[i]).toUpperCase(), Constants.INTEGER_SIZE, '0'));
 
             return new BigInteger(sb.toString(), 16);
         }
@@ -577,12 +568,12 @@ public class TextureMap {
         /**
          * Gets the GameImage this source represents, if it represents one.
          */
-        public GameImage getGameImage(TextureMap map);
+        GameImage getGameImage(TextureMap map);
 
         /**
          * Called when a mesh using this TextureSource is setup.
          */
-        public default void onMeshSetup(FrogMesh mesh) {
+        default void onMeshSetup(FrogMesh<?> mesh) {
             // Do nothing, by default.
         }
 
@@ -590,7 +581,7 @@ public class TextureMap {
          * Get the node associated with this source, if it exists.
          * @param map The map to get the node from.
          */
-        public default TextureTreeNode getTreeNode(TextureMap map) {
+        default TextureTreeNode getTreeNode(TextureMap map) {
             return map.getNode(this);
         }
     }

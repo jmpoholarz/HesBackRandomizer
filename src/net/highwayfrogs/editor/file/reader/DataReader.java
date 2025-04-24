@@ -1,10 +1,15 @@
 package net.highwayfrogs.editor.file.reader;
 
 import net.highwayfrogs.editor.Constants;
+import net.highwayfrogs.editor.utils.DataUtils;
+import net.highwayfrogs.editor.utils.NumberUtils;
 import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.utils.logging.ILogger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Stack;
 
 /**
@@ -12,8 +17,8 @@ import java.util.Stack;
  * Created by Kneesnap on 8/10/2018.
  */
 public class DataReader {
-    private DataSource source;
-    private Stack<Integer> jumpStack = new Stack<>();
+    private final DataSource source;
+    private final Stack<Integer> jumpStack = new Stack<>();
 
     public DataReader(DataSource source) {
         this.source = source;
@@ -113,7 +118,7 @@ public class DataReader {
      * @return unsignedByteShort.
      */
     public short readUnsignedByteAsShort() {
-        return Utils.byteToUnsignedShort(readByte());
+        return DataUtils.byteToUnsignedShort(readByte());
     }
 
     /**
@@ -121,7 +126,7 @@ public class DataReader {
      * @return unsignedShortInt.
      */
     public int readUnsignedShortAsInt() {
-        return Utils.shortToUnsignedInt(readShort());
+        return DataUtils.shortToUnsignedInt(readShort());
     }
 
     /**
@@ -129,7 +134,7 @@ public class DataReader {
      * @return unsignedIntLong
      */
     public long readUnsignedIntAsLong() {
-        return Utils.intToUnsignedLong(readInt());
+        return DataUtils.intToUnsignedLong(readInt());
     }
 
     /**
@@ -138,7 +143,7 @@ public class DataReader {
      * @return floatValue
      */
     public float readFloat() {
-        return Utils.readFloatFromBytes(readBytes(Constants.FLOAT_SIZE));
+        return DataUtils.readFloatFromBytes(readBytes(Constants.FLOAT_SIZE));
     }
 
     /**
@@ -158,7 +163,7 @@ public class DataReader {
     public short readShort() {
         short value = 0;
         for (int i = 0; i < Constants.SHORT_SIZE; i++)
-            value += ((long) readByte() & 0xFFL) << (Constants.BITS_PER_BYTE * i);
+            value += (short) ((readByte() & 0xFF) << (Constants.BITS_PER_BYTE * i));
         return value;
     }
 
@@ -170,7 +175,7 @@ public class DataReader {
     public int readInt(int bytes) {
         int value = 0;
         for (int i = 0; i < bytes; i++)
-            value += ((long) readByte() & 0xFFL) << (Constants.BITS_PER_BYTE * i);
+            value += (readByte() & 0xFF) << (Constants.BITS_PER_BYTE * i);
         return value;
     }
 
@@ -179,8 +184,17 @@ public class DataReader {
      * @param length The length of the string.
      * @return readStr
      */
-    public String readString(int length) {
-        return new String(readBytes(length));
+    public String readTerminatedString(int length) {
+        return readTerminatedString(length, StandardCharsets.US_ASCII);
+    }
+
+    /**
+     * Read a string of a pre-specified length.
+     * @param length The length of the string.
+     * @return readStr
+     */
+    public String readTerminatedString(int length, Charset charset) {
+        return new String(readBytes(length), charset);
     }
 
     /**
@@ -188,8 +202,21 @@ public class DataReader {
      * @param verify The string to verify.
      */
     public void verifyString(String verify) {
-        String str = readString(verify.getBytes().length);
+        String str = readTerminatedString(verify.getBytes().length);
         Utils.verify(str.equals(verify), "String verify failure! \"%s\" does not match \"%s\".", str, verify);
+    }
+
+    /**
+     * Requires the reader to be at a given index.
+     * @param logger the logger to warn if not at the index.
+     * @param desiredIndex the index to require.
+     * @param messagePrefix The message to print for a warning.
+     */
+    public void requireIndex(ILogger logger, int desiredIndex, String messagePrefix) {
+        if (getIndex() != desiredIndex) {
+            logger.warning(messagePrefix + " at " + NumberUtils.toHexString(getIndex()) + ", but it actually started at " + NumberUtils.toHexString(desiredIndex) + ".");
+            setIndex(desiredIndex);
+        }
     }
 
     /**
@@ -197,7 +224,10 @@ public class DataReader {
      * @param terminator The byte which terminates the string. Usually 0.
      * @return strValue
      */
-    public String readString(byte terminator) {
+    public String readTerminatedString(byte terminator, Charset charset) {
+        if (charset == null)
+            throw new NullPointerException("charset");
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
@@ -205,35 +235,76 @@ public class DataReader {
             while ((temp[0] = readByte()) != terminator)
                 out.write(temp);
             out.close();
-            return out.toString();
+            return out.toString(charset.name());
         } catch (Exception ex) {
             throw new RuntimeException("Failed to read terminating string.", ex);
         }
     }
 
     /**
-     * Read a string of a fixed size that has a terminator byte if it's smaller than that size.
-     * @param length The fixed string size.
-     * @return readString
+     * Reads a null-terminated string from a fixed-length buffer with US_ASCII encoding and null-bytes used as padding.
+     * @param fixedLength The string buffer fixed size in bytes.
      */
-    public String readTerminatedStringOfLength(int length) {
-        return readTerminatedStringOfLength(length, Constants.NULL_BYTE);
+    public String readNullTerminatedFixedSizeString(int fixedLength) {
+        return readNullTerminatedFixedSizeString(StandardCharsets.US_ASCII, fixedLength);
     }
 
     /**
-     * Read a string of a fixed size that has a terminator byte if it's smaller than that size.
-     * @param length     The fixed string size.
-     * @param terminator The terminator byte.
-     * @return readString
+     * Reads a null-terminated string from a fixed-length buffer.
+     * @param fixedLength The string buffer fixed size in bytes.
+     * @param padding The padding byte used expected to fill the empty string data. Generally 0x00.
      */
-    public String readTerminatedStringOfLength(int length, byte terminator) {
-        jumpTemp(getIndex());
-        String result = readString(terminator);
-        jumpReturn();
-        skipBytes(length);
+    public String readNullTerminatedFixedSizeString(int fixedLength, byte padding) {
+        return readNullTerminatedFixedSizeString(StandardCharsets.US_ASCII, fixedLength, padding);
+    }
 
-        if (result.length() > length)
-            result = result.substring(0, length);
+    /**
+     * Reads a null-terminated string from a fixed-length buffer.
+     * This will not validate the padding bytes.
+     * @param charset the charset to decode the string from a byte array with. This will pretty much always be US_ASCII, as there aren't many other encodings which are null-terminated.
+     * @param fixedLength The string buffer fixed size in bytes.
+     */
+    public String readNullTerminatedFixedSizeString(Charset charset, int fixedLength) {
+        if (charset == null)
+            throw new NullPointerException("charset");
+        if (fixedLength < 0)
+            throw new IllegalArgumentException("Cannot read a string with a fixed buffer size of " + fixedLength + ".");
+
+        int startIndex = getIndex();
+        int expectedEndIndex = startIndex + fixedLength;
+        String result = readTerminatedString(Constants.NULL_BYTE, charset);
+        if (getIndex() > expectedEndIndex) {
+            result = result.substring(0, fixedLength);
+            setIndex(expectedEndIndex);
+        } else {
+            skipBytes(expectedEndIndex - getIndex());
+        }
+
+        return result;
+    }
+
+    /**
+     * Reads a null-terminated string from a fixed-length buffer.
+     * @param charset the charset to decode the string from a byte array with. This will pretty much always be US_ASCII, as there aren't many other encodings which are null-terminated.
+     * @param fixedLength The string buffer fixed size in bytes.
+     * @param padding The padding byte used to pad empty string data. An exception will be thrown if the subsequent data does not match this byte.
+     */
+    public String readNullTerminatedFixedSizeString(Charset charset, int fixedLength, byte padding) {
+        if (charset == null)
+            throw new NullPointerException("charset");
+        if (fixedLength < 0)
+            throw new IllegalArgumentException("Cannot read a string with a fixed buffer size of " + fixedLength + ".");
+
+        int startIndex = getIndex();
+        int expectedEndIndex = startIndex + fixedLength;
+        String result = readTerminatedString(Constants.NULL_BYTE, charset);
+        if (getIndex() > expectedEndIndex) {
+            result = result.substring(0, fixedLength);
+            setIndex(expectedEndIndex);
+        } else {
+            skipBytesRequire(padding, expectedEndIndex - getIndex());
+        }
+
         return result;
     }
 
@@ -242,7 +313,40 @@ public class DataReader {
      * @return strValue
      */
     public String readNullTerminatedString() {
-        return readString(Constants.NULL_BYTE);
+        return readTerminatedString(Constants.NULL_BYTE, StandardCharsets.US_ASCII);
+    }
+
+    /**
+     * Read a string which is terminated by a null byte.
+     * @return strValue
+     */
+    public String readNullTerminatedString(Charset charset) {
+        return readTerminatedString(Constants.NULL_BYTE, charset);
+    }
+
+    /**
+     * Read bytes from the source, respecting endian.
+     * @return readBytes
+     */
+    public byte[] readBytes(byte[] destination, int offset, int amount) {
+        try {
+            int bytesRead = 0;
+            int lastReadAmount;
+            while (amount > bytesRead && (lastReadAmount = this.source.readBytes(destination, offset + bytesRead, amount - bytesRead)) > 0)
+                bytesRead += lastReadAmount;
+
+            if (bytesRead != amount)
+                throw new RuntimeException("Failed to read " + amount + " bytes, as only " + bytesRead + " bytes were actually available to read.");
+        } catch (Exception ex) {
+            int remainingBytes = getRemaining();
+            if (remainingBytes > 0) {
+                throw new RuntimeException("Error while reading " + amount + " bytes. (It seems there is an issue with " + Utils.getSimpleName(this.source) + ", because it still reports having " + remainingBytes + " bytes available)", ex);
+            } else {
+                throw new RuntimeException("Error while reading " + amount + " bytes. (Bytes Remaining: " + remainingBytes + ")", ex);
+            }
+        }
+
+        return destination;
     }
 
     /**
@@ -250,9 +354,7 @@ public class DataReader {
      * @return readBytes
      */
     public byte[] readBytes(byte[] destination) {
-        for (int i = 0; i < destination.length; i++)
-            destination[i] = readByte();
-        return destination;
+        return readBytes(destination, 0, destination.length);
     }
 
     /**
@@ -262,9 +364,9 @@ public class DataReader {
      */
     public byte[] readBytes(int amount) {
         try {
-            return source.readBytes(amount);
+            return this.source.readBytes(amount);
         } catch (Exception ex) {
-            throw new RuntimeException("Error while reading " + amount + " bytes.", ex);
+            throw new RuntimeException("Error while reading " + amount + " bytes. (Remaining: " + getRemaining() + ")", ex);
         }
     }
 
@@ -274,10 +376,68 @@ public class DataReader {
      */
     public void skipBytes(int amount) {
         try {
-            source.skip(amount);
+            this.source.skip(amount);
         } catch (Exception ex) {
-            throw new RuntimeException("Error while skipping " + amount + " bytes.", ex);
+            throw new RuntimeException("Error while skipping " + amount + " bytes. (Remaining: " + getRemaining() + ")", ex);
         }
+    }
+
+    /**
+     * Skip bytes, requiring the bytes skipped be 0.
+     * @param amount The number of bytes to skip.
+     */
+    public void skipBytesRequireEmpty(int amount) {
+        skipBytesRequire(Constants.NULL_BYTE, amount);
+    }
+
+    /**
+     * Skip bytes, requiring the bytes skipped be 0.
+     * @param amount The number of bytes to skip.
+     */
+    public void skipBytesRequire(byte expected, int amount) {
+        int index = getIndex();
+        if (amount == 0)
+            return;
+
+        if (amount < 0)
+            throw new RuntimeException("Tried to skip " + amount + " bytes.");
+
+        // Skip bytes.
+        for (int i = 0; i < amount; i++) {
+            byte nextByte = readByte();
+            if (nextByte != expected)
+                throw new RuntimeException("Reader wanted to skip " + amount + " bytes to reach " + NumberUtils.toHexString(index + amount) + ", but got 0x" + DataUtils.toByteString(nextByte) + " at " + NumberUtils.toHexString(index + i) + " when 0x" + DataUtils.toByteString(expected) + " was desired.");
+        }
+    }
+
+    /**
+     * Skip bytes to align to the given byte boundary.
+     * @param alignment The number of bytes the index should have an increment of.
+     */
+    public void align(int alignment) {
+        int index = getIndex();
+        int offsetAmount = (index % alignment);
+        if (offsetAmount != 0)
+            skipBytes(alignment - offsetAmount); // Alignment.
+    }
+
+    /**
+     * Skip bytes to align to the given byte boundary, requiring the bytes skipped be 0.
+     * @param alignment The number of bytes the index should have an increment of.
+     */
+    public void alignRequireEmpty(int alignment) {
+        alignRequireByte(Constants.NULL_BYTE, alignment);
+    }
+
+    /**
+     * Skip bytes to align to the given byte boundary, requiring the bytes skipped be 0.
+     * @param alignment The number of bytes the index should have an increment of.
+     */
+    public void alignRequireByte(byte value, int alignment) {
+        int index = getIndex();
+        int offsetAmount = (index % alignment);
+        if (offsetAmount != 0)
+            skipBytesRequire(value, alignment - offsetAmount);
     }
 
     /**

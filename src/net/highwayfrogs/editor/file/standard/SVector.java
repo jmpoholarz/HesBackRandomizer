@@ -5,23 +5,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import net.highwayfrogs.editor.Constants;
-import net.highwayfrogs.editor.file.GameObject;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.generic.data.IBinarySerializable;
+import net.highwayfrogs.editor.utils.DataUtils;
+import net.highwayfrogs.editor.utils.NumberUtils;
 
 /**
  * Vector comprised of shorts.
+ * TODO: Rename to FixedPt16Vector3
+ * TODO: Interoperability with Vector3f, via IVector3 class?
  * Created by Kneesnap on 8/22/2018.
  */
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SVector extends GameObject implements Vector {
+public class SVector implements IBinarySerializable, Vector {
     private short x;
     private short y;
     private short z;
+    private short padding; // You'd think this is all zero, but it seems like most (all?) of the later SC games stores vertex colors here.
 
     public static final int UNPADDED_BYTE_SIZE = 3 * Constants.SHORT_SIZE;
     public static final int PADDED_BYTE_SIZE = UNPADDED_BYTE_SIZE + Constants.SHORT_SIZE;
@@ -37,8 +41,8 @@ public class SVector extends GameObject implements Vector {
 
     public SVector(int x, int y, int z) {
         setX((short) x);
-        setX((short) y);
-        setX((short) z);
+        setY((short) y);
+        setZ((short) z);
     }
 
     public SVector(float x, float y, float z) {
@@ -55,12 +59,21 @@ public class SVector extends GameObject implements Vector {
     }
 
     /**
+     * Gets the padding unsigned.
+     */
+    public int getUnsignedPadding() {
+        return DataUtils.shortToUnsignedInt(this.padding);
+    }
+
+    /**
      * Load a SVector with an extra 2 bytes of padding.
      * @param reader The reader to read from.
      */
     public void loadWithPadding(DataReader reader) {
         this.load(reader);
-        reader.skipShort();
+        this.padding = reader.readShort();
+        /*if (this.padding != 0 && !(getGameInstance() instanceof MediEvilGameInstance)) // MediEvil uses this for vertex shading.
+            getLogger().logWarning("There is non-zero padding data in the SVector. [Padding: " + this.padding + "]");*/ // TODO: Activate once this becomes an SCGameObject.
     }
 
     @Override
@@ -68,6 +81,27 @@ public class SVector extends GameObject implements Vector {
         writer.writeShort(getX());
         writer.writeShort(getY());
         writer.writeShort(getZ());
+    }
+
+    /**
+     * Clears the contents of the vector.
+     */
+    public void clear() {
+        this.x = (short) 0;
+        this.y = (short) 0;
+        this.z = (short) 0;
+        this.padding = (short) 0;
+    }
+
+    /**
+     * Set the values of this vector.
+     * @param copyVector the vector to copy values from
+     */
+    public void setValues(SVector copyVector) {
+        this.x = copyVector.x;
+        this.y = copyVector.y;
+        this.z = copyVector.z;
+        this.padding = copyVector.padding;
     }
 
     /**
@@ -89,9 +123,9 @@ public class SVector extends GameObject implements Vector {
      * @param z The z value to set.
      */
     public void setValues(float x, float y, float z, int bits) {
-        this.x = Utils.floatToFixedPointShort(x, bits);
-        this.y = Utils.floatToFixedPointShort(y, bits);
-        this.z = Utils.floatToFixedPointShort(z, bits);
+        this.x = DataUtils.floatToFixedPointShort(x, bits);
+        this.y = DataUtils.floatToFixedPointShort(y, bits);
+        this.z = DataUtils.floatToFixedPointShort(z, bits);
     }
 
     /**
@@ -161,7 +195,7 @@ public class SVector extends GameObject implements Vector {
      */
     public void saveWithPadding(DataWriter writer) {
         save(writer);
-        writer.writeNull(Constants.SHORT_SIZE);
+        writer.writeShort(this.padding);
     }
 
     /**
@@ -172,6 +206,17 @@ public class SVector extends GameObject implements Vector {
     public static SVector readWithPadding(DataReader reader) {
         SVector vector = new SVector();
         vector.loadWithPadding(reader);
+        return vector;
+    }
+
+    /**
+     * Load a SVector without padding from a DataReader.
+     * @param reader The data reader to read from.
+     * @return vector
+     */
+    public static SVector readWithoutPadding(DataReader reader) {
+        SVector vector = new SVector();
+        vector.load(reader);
         return vector;
     }
 
@@ -191,32 +236,32 @@ public class SVector extends GameObject implements Vector {
 
     @Override
     public float getFloatX(int bits) {
-        return Utils.fixedPointShortToFloatNBits(getX(), bits);
+        return DataUtils.fixedPointShortToFloatNBits(getX(), bits);
     }
 
     @Override
     public float getFloatY(int bits) {
-        return Utils.fixedPointShortToFloatNBits(getY(), bits);
+        return DataUtils.fixedPointShortToFloatNBits(getY(), bits);
     }
 
     @Override
     public float getFloatZ(int bits) {
-        return Utils.fixedPointShortToFloatNBits(getZ(), bits);
+        return DataUtils.fixedPointShortToFloatNBits(getZ(), bits);
     }
 
     @Override
     public void setFloatX(float xVal, int bits) {
-        this.x = Utils.floatToFixedPointShort(xVal, bits);
+        this.x = DataUtils.floatToFixedPointShort(xVal, bits);
     }
 
     @Override
     public void setFloatY(float yVal, int bits) {
-        this.y = Utils.floatToFixedPointShort(yVal, bits);
+        this.y = DataUtils.floatToFixedPointShort(yVal, bits);
     }
 
     @Override
     public void setFloatZ(float zVal, int bits) {
-        this.z = Utils.floatToFixedPointShort(zVal, bits);
+        this.z = DataUtils.floatToFixedPointShort(zVal, bits);
     }
 
     /**
@@ -243,7 +288,7 @@ public class SVector extends GameObject implements Vector {
             return false;
 
         for (String testStr : split)
-            if (!Utils.isNumber(testStr))
+            if (!NumberUtils.isNumber(testStr))
                 return false;
 
         setFloatX(Float.parseFloat(split[0]), bits);
@@ -263,8 +308,8 @@ public class SVector extends GameObject implements Vector {
      * @return distanceSquared
      */
     public double distanceSquared(SVector other) {
-        return ((other.getFloatX() - getFloatX()) * (other.getFloatX() - getFloatX()))
-                + ((other.getFloatY() - getFloatY()) * (other.getFloatY() - getFloatY()))
-                + ((other.getFloatZ() - getFloatZ()) * (other.getFloatZ() - getFloatZ()));
+        return ((double) (other.getFloatX() - getFloatX()) * (double) (other.getFloatX() - getFloatX()))
+                + ((double) (other.getFloatY() - getFloatY()) * (double) (other.getFloatY() - getFloatY()))
+                + ((double) (other.getFloatZ() - getFloatZ()) * (double) (other.getFloatZ() - getFloatZ()));
     }
 }

@@ -1,15 +1,16 @@
 package net.highwayfrogs.editor.file.config.exe.psx;
 
 import lombok.Getter;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
-import net.highwayfrogs.editor.file.WADFile;
-import net.highwayfrogs.editor.file.config.FroggerEXEInfo;
 import net.highwayfrogs.editor.file.config.exe.MapBook;
 import net.highwayfrogs.editor.file.config.exe.pc.PCMapBook;
-import net.highwayfrogs.editor.file.map.MAPFile;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.generic.GamePlatform;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapFile;
+import net.highwayfrogs.editor.games.sony.shared.mwd.WADFile;
+import net.highwayfrogs.editor.utils.NumberUtils;
 
 import java.util.function.Function;
 
@@ -22,16 +23,24 @@ public class PSXMapBook extends MapBook {
     private int mapId;
     private long remapPointer;
     private boolean useCaveLights;
-    private long environmentTexturePointer;
-    private int wadId;
+    private long environmentTexturePointer = -1;
+    private int wadId = -1;
+
+    public PSXMapBook(FroggerGameInstance instance) {
+        super(instance);
+    }
 
     @Override
     public void load(DataReader reader) {
         this.mapId = reader.readInt();
         this.remapPointer = reader.readUnsignedIntAsLong();
         this.useCaveLights = (reader.readInt() == 1);
-        this.environmentTexturePointer = reader.readUnsignedIntAsLong();
-        this.wadId = reader.readInt();
+
+        if (!getConfig().isBeforeBuild1())
+            this.environmentTexturePointer = reader.readUnsignedIntAsLong();
+
+        if (!getConfig().isAtOrBeforeBuild4())
+            this.wadId = reader.readInt();
     }
 
     @Override
@@ -39,28 +48,26 @@ public class PSXMapBook extends MapBook {
         writer.writeInt(this.mapId);
         writer.writeUnsignedInt(this.remapPointer);
         writer.writeInt(this.useCaveLights ? 1 : 0);
-        writer.writeUnsignedInt(this.environmentTexturePointer);
-        writer.writeInt(this.wadId);
+        if (!getConfig().isBeforeBuild1())
+            writer.writeUnsignedInt(this.environmentTexturePointer);
+        if (!getConfig().isAtOrBeforeBuild4())
+            writer.writeInt(this.wadId);
     }
 
     @Override
-    public void readRemapData(FroggerEXEInfo config) {
-        this.readRemap(config, this.mapId, this.remapPointer);
+    public void addTextureRemaps(FroggerGameInstance instance) {
+        addRemap(instance, this.mapId, this.remapPointer, false);
     }
 
     @Override
-    public void saveRemapData(DataWriter writer, FroggerEXEInfo config) {
-        this.saveRemap(writer, config, this.mapId, this.remapPointer);
-    }
-
-    @Override
-    public boolean isEntry(FileEntry test) {
-        return this.mapId == test.getLoadedId() || this.wadId == test.getLoadedId();
+    public boolean isEntry(SCGameFile<?> file) {
+        int resourceId = file.getFileResourceId();
+        return this.mapId == resourceId || this.wadId == resourceId;
     }
 
     @Override
     public boolean isDummy() {
-        return this.remapPointer == 0;
+        return this.remapPointer <= 0;
     }
 
     @Override
@@ -69,14 +76,23 @@ public class PSXMapBook extends MapBook {
     }
 
     @Override
-    public WADFile getWad(MAPFile map) {
-        return getConfig().getGameFile(this.wadId);
+    public WADFile getWad(FroggerMapFile map) {
+        int wadId = this.wadId;
+
+        // When the map reports a particular theme, I think it's reliable.
+        if (map != null && map.getMapTheme() != null && getConfig().getPlatform() == GamePlatform.PLAYSTATION) {
+            PSXThemeBook themeBook = ((PSXThemeBook) getGameInstance().getThemeBook(map.getMapTheme()));
+            if (themeBook != null && themeBook.getWadId() != wadId)
+                wadId = themeBook.getWadId();
+        }
+
+        return getGameInstance().getGameFile(wadId);
     }
 
     @Override
     public void handleCorrection(String[] args) {
         this.mapId = Integer.parseInt(args[0]);
-        this.remapPointer = Long.decode(args[1]) + getConfig().getRamPointerOffset();
+        this.remapPointer = Long.decode(args[1]) + getGameInstance().getRamOffset();
         this.wadId = Integer.parseInt(args[2]);
     }
 
@@ -85,22 +101,14 @@ public class PSXMapBook extends MapBook {
      * @return fileRemapPointer
      */
     public int getFileRemapPointer() {
-        return (int) (getRemapPointer() - getConfig().getRamPointerOffset());
-    }
-
-    /**
-     * Gets the map's file entry.
-     * @return mapFileEntry
-     */
-    public FileEntry getMapEntry() {
-        return getConfig().getResourceEntry(this.mapId);
+        return (int) (getRemapPointer() - getGameInstance().getRamOffset());
     }
 
     @Override
     public String toString() {
-        return "MAP[" + getConfig().getResourceName(mapId)
-                + "] Remap[" + Utils.toHexString(getFileRemapPointer())
-                + "] WAD[" + getConfig().getResourceName(wadId)
-                + "] ENV[" + getConfig().getTextureIdFromPointer(this.environmentTexturePointer) + "]";
+        return "MAP[" + getGameInstance().getResourceName(this.mapId)
+                + "] Remap[" + NumberUtils.toHexString(getFileRemapPointer())
+                + "] WAD[" + getGameInstance().getResourceName(this.wadId)
+                + "] ENV[" + getGameInstance().getTextureIdFromPointer(this.environmentTexturePointer) + "]";
     }
 }

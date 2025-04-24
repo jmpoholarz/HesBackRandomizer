@@ -1,6 +1,5 @@
 package net.highwayfrogs.editor.file;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,7 +7,11 @@ import lombok.Setter;
 import net.highwayfrogs.editor.Constants;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
-import net.highwayfrogs.editor.gui.editor.DemoController;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerConfig;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.ui.DemoController;
+import net.highwayfrogs.editor.gui.ImageResource;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,23 +22,30 @@ import java.util.List;
  */
 @Getter
 @Setter
-public class DemoFile extends GameFile {
+public class DemoFile extends SCGameFile<FroggerGameInstance> {
     private DemoFrame[] frames = new DemoFrame[MAX_DEMO_FRAMES];
     private int frameCount;
     private int startX;
     private int startZ;
 
-    public static final int TYPE_ID = 6;
-    private static final Image ICON = loadIcon("demo");
     private static final int MAX_DEMO_FRAMES = 30 * 60;
     private static final int FILE_SIZE = MAX_DEMO_FRAMES + (3 * Constants.INTEGER_SIZE);
+
+    public DemoFile(FroggerGameInstance instance) {
+        super(instance);
+    }
+
+    @Override
+    public FroggerConfig getConfig() {
+        return (FroggerConfig) super.getConfig();
+    }
 
     @Override
     public void load(DataReader reader) {
         this.frameCount = reader.readInt();
         this.startX = reader.readInt();
         this.startZ = reader.readInt();
-        for (int i = 0; i < MAX_DEMO_FRAMES; i++)
+        for (int i = 0; i < MAX_DEMO_FRAMES && reader.hasMore(); i++)
             this.frames[i] = new DemoFrame(reader.readByte());
     }
 
@@ -49,13 +59,13 @@ public class DemoFile extends GameFile {
     }
 
     @Override
-    public Image getIcon() {
-        return ICON;
+    public Image getCollectionViewIcon() {
+        return ImageResource.GAME_CONTROLLER_32.getFxImage();
     }
 
     @Override
-    public Node makeEditor() {
-        return loadEditor(new DemoController(), "demo", this);
+    public DemoController makeEditorUI() {
+        return loadEditor(getGameInstance(), "edit-file-demo", new DemoController(getGameInstance()), this);
     }
 
     @AllArgsConstructor
@@ -136,20 +146,20 @@ public class DemoFile extends GameFile {
     @Getter
     @AllArgsConstructor
     public enum DemoAction {
-        SKIP("Do Nothing", Constants.BIT_FLAG_7, false),
-        UP("Move Up", 0x00, false),
-        RIGHT("Move Right", 0x01, false),
-        DOWN("Move Down", 0x02, false),
-        LEFT("Move Left", 0x03, false),
+        SKIP("Do Nothing", (byte) Constants.BIT_FLAG_7, false),
+        UP("Move Up", (byte) 0x00, false),
+        RIGHT("Move Right", (byte) 0x01, false),
+        DOWN("Move Down", (byte) 0x02, false),
+        LEFT("Move Left", (byte) 0x03, false),
         // Bit 2 is unused, it isn't croak, it's just plain unused.
-        SUPER_HOP("Super Hop", Constants.BIT_FLAG_3, true),
-        TONGUE("Tongue", Constants.BIT_FLAG_4, true),
-        ROTATE_COUNTER_CLOCKWISE("Rotate Counter-Clockwise", Constants.BIT_FLAG_5, true),
-        ROTATE_CLOCKWISE("Rotate Clockwise", Constants.BIT_FLAG_6, true);
+        SUPER_HOP("Super Hop", (byte) Constants.BIT_FLAG_3, true),
+        TONGUE("Tongue", (byte) Constants.BIT_FLAG_4, true),
+        ROTATE_COUNTER_CLOCKWISE("Rotate Counter-Clockwise", (byte) Constants.BIT_FLAG_5, true),
+        ROTATE_CLOCKWISE("Rotate Clockwise", (byte) Constants.BIT_FLAG_6, true);
 
-        private String info;
-        private int id;
-        private boolean additive;
+        private final String info;
+        private final byte id;
+        private final boolean additive;
         private static DemoAction[] cachedAdditives;
         private static DemoAction[] cachedNonAdditives;
 

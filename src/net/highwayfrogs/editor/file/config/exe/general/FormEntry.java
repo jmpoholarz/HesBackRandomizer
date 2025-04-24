@@ -4,18 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.highwayfrogs.editor.Constants;
-import net.highwayfrogs.editor.file.GameObject;
-import net.highwayfrogs.editor.file.WADFile;
-import net.highwayfrogs.editor.file.WADFile.WADEntry;
 import net.highwayfrogs.editor.file.config.Config;
-import net.highwayfrogs.editor.file.config.FroggerEXEInfo;
 import net.highwayfrogs.editor.file.config.exe.MapBook;
 import net.highwayfrogs.editor.file.config.exe.ThemeBook;
-import net.highwayfrogs.editor.file.map.MAPFile;
-import net.highwayfrogs.editor.file.map.MAPTheme;
 import net.highwayfrogs.editor.file.mof.MOFHolder;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
+import net.highwayfrogs.editor.games.sony.SCGameData;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerConfig;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapFile;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapTheme;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.entity.FroggerMapEntity;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.form.IFroggerFormEntry;
+import net.highwayfrogs.editor.games.sony.shared.mwd.WADFile;
+import net.highwayfrogs.editor.games.sony.shared.mwd.WADFile.WADEntry;
 
 /**
  * Represents an entry in a form book.
@@ -23,7 +26,7 @@ import net.highwayfrogs.editor.file.writer.DataWriter;
  */
 @Getter
 @Setter
-public class FormEntry extends GameObject {
+public class FormEntry extends SCGameData<FroggerGameInstance> implements IFroggerFormEntry {
     private int entityType; // Index into global entity book.
     private int id; // Index into theme wad.
     private int scriptId;
@@ -33,20 +36,27 @@ public class FormEntry extends GameObject {
     private FormDeathType deathType;
     private long bonusCallbackFunction; // Eaten.
 
-    private transient final MAPTheme theme;
-    private transient final FroggerEXEInfo config;
+    private transient final FroggerMapTheme theme;
     private transient final int globalFormId;
     private transient final int localFormId;
 
     public static final int FLAG_GENERAL = 0x8000;
     public static final int BYTE_SIZE = (8 * Constants.INTEGER_SIZE);
+    public static final int OLD_BYTE_SIZE = (7 * Constants.INTEGER_SIZE);
 
-    public FormEntry(FroggerEXEInfo config, MAPTheme theme, int formId, int globalFormId) {
-        this.config = config;
+    public FormEntry(FroggerGameInstance instance, FroggerMapTheme theme, int formId, int globalFormId) {
+        super(instance);
         this.theme = theme;
         this.localFormId = formId;
         this.id = formId;
         this.globalFormId = globalFormId;
+    }
+
+    /**
+     * Gets the frogger game config.
+     */
+    public FroggerConfig getConfig() {
+        return getGameInstance().getVersionConfig();
     }
 
     @Override
@@ -57,8 +67,10 @@ public class FormEntry extends GameObject {
         this.flags = reader.readInt();
         this.collisionReactFunction = reader.readUnsignedIntAsLong();
         this.radiusSquared = reader.readInt();
-        this.deathType = FormDeathType.values()[reader.readInt()];
-        this.bonusCallbackFunction = reader.readUnsignedIntAsLong();
+        int deathTypeId = reader.readInt();
+        this.deathType = deathTypeId >= 0 && deathTypeId < FormDeathType.values().length ? FormDeathType.values()[deathTypeId] : null;
+        if (!getConfig().isAtOrBeforeBuild4())
+            this.bonusCallbackFunction = reader.readUnsignedIntAsLong();
     }
 
     @Override
@@ -70,17 +82,15 @@ public class FormEntry extends GameObject {
         writer.writeUnsignedInt(this.collisionReactFunction);
         writer.writeInt(this.radiusSquared);
         writer.writeInt(this.deathType.ordinal());
-        writer.writeUnsignedInt(this.bonusCallbackFunction);
+        if (!getConfig().isAtOrBeforeBuild4())
+            writer.writeUnsignedInt(this.bonusCallbackFunction);
     }
 
-    /**
-     * Gets the name of the entity this represents.
-     * @return entityName
-     */
-    public String getEntityName() {
+    @Override
+    public String getEntityTypeName() {
         Config config = getConfig().getEntityBank().getConfig();
         if (config.hasChild("Override")) {
-            String formName = getFormName();
+            String formName = getFormTypeName();
             Config overrideConfig = config.getChild("Override");
             String forceEntity = overrideConfig.getString(formName, null);
             if (forceEntity != null) {
@@ -94,11 +104,8 @@ public class FormEntry extends GameObject {
         return getConfig().getEntityBank().getName(this.entityType);
     }
 
-    /**
-     * Gets the name of this form.
-     * @return formName
-     */
-    public String getFormName() {
+    @Override
+    public String getFormTypeName() {
         return getConfig().getFormBank().getName(this.globalFormId);
     }
 
@@ -108,7 +115,7 @@ public class FormEntry extends GameObject {
      */
     public int getMapFormId() {
         int id = this.localFormId;
-        if (theme == MAPTheme.GENERAL)
+        if (theme == FroggerMapTheme.GENERAL)
             id |= FLAG_GENERAL;
         return id;
     }
@@ -119,10 +126,10 @@ public class FormEntry extends GameObject {
      */
     public int getWadIndex() {
         int wadIndex = getId();
-        if (getTheme() == MAPTheme.GENERAL) {
+        if (getTheme() == FroggerMapTheme.GENERAL) {
             wadIndex -= getTheme().getFormOffset();
-            if (getConfig().isPSX() || getConfig().isPrototype())
-                wadIndex++;
+            if (!getConfig().isAtLeastRetailWindows() && !getConfig().isAtOrBeforeBuild21())
+                wadIndex++; // Some builds have GEN_VRAM.VLO in THEME_GEN.WAD, which requires this offset.
         }
 
         return wadIndex;
@@ -155,24 +162,51 @@ public class FormEntry extends GameObject {
     }
 
     /**
+     * Gets the wad file which the form entry points to a WAD within.
+     * @param mapFile the map file to resolve the wad file for
+     * @return wadFile
+     */
+    public WADFile getWadFile(FroggerMapFile mapFile) {
+        WADFile wadFile;
+        boolean isGeneralTheme = getTheme() == FroggerMapTheme.GENERAL;
+
+        // The game will not use the map book if general is the theme.
+        if (!isGeneralTheme && mapFile.getIndexEntry() != null) { // There is an MWI entry, so try to do what the game does.
+            for (MapBook mapBook : getGameInstance().getMapLibrary()) {
+                if (mapBook != null && mapBook.isEntry(mapFile)) {
+                    wadFile = mapBook.getWad(mapFile);
+                    if (wadFile != null)
+                        return wadFile;
+                }
+            }
+        }
+
+        // If the theme is GENERAL, the game will use the general theme book.
+        // But, we also are using this as a fallback option for if there's no way to find the map book.
+        ThemeBook themeBook = getGameInstance().getThemeBook(getTheme());
+        wadFile = themeBook != null ? themeBook.getWAD(mapFile) : null;
+        if (wadFile != null)
+            return wadFile;
+
+        // This here is a failsafe, and is not something the game does.
+        // At this point, we're going to just get the theme book for the map theme, and use that.
+        // This shouldn't really happen, but it doesn't hurt to include.
+        themeBook = getGameInstance().getThemeBook(mapFile.getMapTheme());
+        wadFile = themeBook != null ? themeBook.getWAD(mapFile) : null;
+        if (wadFile != null)
+            return wadFile;
+
+        throw new RuntimeException("Failed to find the WADFile for the form entry!");
+    }
+
+    /**
      * Gets the MOF for this particular form.
      */
-    public WADEntry getModel(MAPFile mapFile) {
+    public WADEntry getModel(FroggerMapFile mapFile) {
         if (testFlag(FormLibFlag.NO_MODEL))
             return null;
 
-        boolean isGeneralTheme = getTheme() == MAPTheme.GENERAL;
-        ThemeBook themeBook = getConfig().getThemeBook(getTheme());
-
-        WADFile wadFile = null;
-        if (isGeneralTheme) {
-            wadFile = themeBook.getWAD(mapFile);
-        } else {
-            MapBook mapBook = mapFile.getFileEntry().getMapBook();
-            if (mapBook != null)
-                wadFile = mapBook.getWad(mapFile);
-        }
-
+        WADFile wadFile = getWadFile(mapFile);
         int wadIndex = getWadIndex();
         if (wadFile != null && wadFile.getFiles().size() > wadIndex && wadIndex >= 0) { // Test if there's an associated WAD.
             WADEntry wadEntry = wadFile.getFiles().get(wadIndex);
@@ -181,6 +215,11 @@ public class FormEntry extends GameObject {
         }
 
         return null;
+    }
+
+    @Override
+    public WADEntry getEntityModel(FroggerMapEntity entity) {
+        return getModel(entity.getMapFile());
     }
 
     @Getter

@@ -1,5 +1,7 @@
 package net.highwayfrogs.editor.file.reader;
 
+import lombok.Getter;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -9,7 +11,7 @@ import java.nio.file.Files;
  * Created by Kneesnap on 8/10/2018.
  */
 public class FileSource implements DataSource {
-    private byte[] fileData;
+    @Getter private final byte[] fileData;
     private int index;
 
     public FileSource(File file) throws IOException {
@@ -27,6 +29,17 @@ public class FileSource implements DataSource {
         System.arraycopy(this.fileData, this.index, bytes, 0, amount);
         this.index += amount;
         return bytes;
+    }
+
+    @Override
+    public int readBytes(byte[] output, int offset, int amount) throws IOException {
+        amount = Math.max(0, Math.min(amount, this.fileData.length - this.index));
+        if (amount == 0)
+            return 0;
+
+        System.arraycopy(this.fileData, this.index, output, offset, amount);
+        this.index += amount;
+        return amount;
     }
 
     @Override

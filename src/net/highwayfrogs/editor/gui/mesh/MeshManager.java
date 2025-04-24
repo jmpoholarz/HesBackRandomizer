@@ -3,21 +3,23 @@ package net.highwayfrogs.editor.gui.mesh;
 import javafx.collections.ObservableFloatArray;
 import javafx.collections.ObservableIntegerArray;
 import lombok.Getter;
-import net.highwayfrogs.editor.utils.Utils;
 import net.highwayfrogs.editor.file.map.view.FrogMesh;
+import net.highwayfrogs.editor.utils.Utils;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Manages mesh data.
+ * TODO: Appears to be used by old FrogLord systems. Let's toss this later.
  * Created by Kneesnap on 1/21/2019.
  */
 @Getter
 public class MeshManager {
-    private FrogMesh mesh;
-    private LinkedList<MeshData> meshData = new LinkedList<>();
+    private final FrogMesh<?> mesh;
+    private final List<MeshData> meshData = new ArrayList<>();
 
-    public MeshManager(FrogMesh mesh) {
+    public MeshManager(FrogMesh<?> mesh) {
         this.mesh = mesh;
     }
 
@@ -51,15 +53,15 @@ public class MeshManager {
     }
 
     /**
-     * Record recent changes as mesh changes..
+     * Record recent changes as mesh changes.
      */
     public MeshData addMesh() {
-        MeshData lastData = getMeshData().isEmpty() ? null : getMeshData().getLast();
+        MeshData lastData = getMeshData().isEmpty() ? null : getMeshData().get(getMeshData().size() - 1);
 
         int texIndex = lastData != null ? (getTexIndex(lastData) + lastData.getTexCoordCount()) : getMesh().getTextureCount();
         int faceIndex = lastData != null ? (getFaceIndex(lastData) + lastData.getFaceCount()) : getMesh().getFaceCount();
         MeshData newData = new MeshData(getMesh().getFaces().size() - faceIndex, getMesh().getTexCoords().size() - texIndex);
-        getMeshData().addLast(newData);
+        getMeshData().add(newData);
         return newData;
     }
 

@@ -1,29 +1,31 @@
 package net.highwayfrogs.editor.file.mof;
 
 import lombok.Getter;
-import net.highwayfrogs.editor.file.GameObject;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.writer.DataWriter;
+import net.highwayfrogs.editor.games.sony.SCGameData.SCSharedGameData;
+import net.highwayfrogs.editor.games.sony.SCGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerConfig;
+import net.highwayfrogs.editor.utils.DataUtils;
 
 /**
  * Represents the basic mof file types, static and animated.
  * Created by Kneesnap on 2/25/2019.
  */
 @Getter
-public abstract class MOFBase extends GameObject {
-    private transient MOFHolder holder;
+public abstract class MOFBase extends SCSharedGameData {
+    private final transient MOFHolder holder;
 
-    public MOFBase(MOFHolder holder) {
+    public MOFBase(SCGameInstance instance, MOFHolder holder) {
+        super(instance);
         this.holder = holder;
     }
 
     /**
-     * Gets this file's MWI FileEntry.
-     * @return fileEntry
+     * Gets this file's display name.
      */
-    public FileEntry getFileEntry() {
-        return getHolder().getFileEntry();
+    public String getFileDisplayName() {
+        return getHolder().getFileDisplayName();
     }
 
     @Override
@@ -35,9 +37,9 @@ public abstract class MOFBase extends GameObject {
 
         // This is done after the file is read, because to generate flags we must know the contents of the file first.
         if (flags != buildFlags())
-            throw new RuntimeException("Generated Flags (" + buildFlags() + ") do not match read flags (" + flags + ") in " + getFileEntry().getDisplayName());
-        if (!makeSignature().equals(new String(signature)))
-            throw new RuntimeException("Generated Signature (" + makeSignature() + ") does not match read signature (" + new String(signature) + ") in " + getFileEntry().getDisplayName());
+            throw new RuntimeException("Generated Flags (" + buildFlags() + ") do not match read flags (" + flags + ") in " + getFileDisplayName());
+        if (!makeSignature().equals(new String(signature)) && (getGameInstance().isFrogger() && !((FroggerConfig) getConfig()).isAtOrBeforeBuild1())) // Build 1 seems to skip on the signature.
+            throw new RuntimeException("Generated Signature (" + makeSignature() + ") does not match read signature (" + new String(signature) + ") in " + getFileDisplayName() + " (Real Signature Bytes: " + DataUtils.toByteString(signature) + ")");
     }
 
     @Override
@@ -47,7 +49,7 @@ public abstract class MOFBase extends GameObject {
         int sizeAddress = writer.writeNullPointer();
         writer.writeInt(buildFlags());
         onSave(writer);
-        writer.writeAddressAt(sizeAddress, writer.getIndex() - startIndex);
+        writer.writeIntAtPos(sizeAddress, writer.getIndex() - startIndex);
     }
 
     /**

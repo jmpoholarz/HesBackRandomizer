@@ -1,23 +1,20 @@
 package net.highwayfrogs.editor.file.vlo;
 
-import javafx.scene.Node;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import net.highwayfrogs.editor.Constants;
-import net.highwayfrogs.editor.file.GameFile;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
-import net.highwayfrogs.editor.file.WADFile;
-import net.highwayfrogs.editor.file.WADFile.WADEntry;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.vlo.ImageFilterSettings.ImageState;
 import net.highwayfrogs.editor.file.writer.DataWriter;
+import net.highwayfrogs.editor.games.sony.SCGameFile.SCSharedGameFile;
+import net.highwayfrogs.editor.games.sony.SCGameInstance;
+import net.highwayfrogs.editor.games.sony.shared.ui.file.VLOController;
 import net.highwayfrogs.editor.gui.GUIMain;
-import net.highwayfrogs.editor.gui.MainController;
+import net.highwayfrogs.editor.gui.ImageResource;
 import net.highwayfrogs.editor.gui.SelectionMenu;
-import net.highwayfrogs.editor.gui.editor.VLOController;
-import net.highwayfrogs.editor.system.Tuple2;
+import net.highwayfrogs.editor.gui.components.PropertyListViewerComponent.PropertyList;
+import net.highwayfrogs.editor.utils.FileUtils;
 import net.highwayfrogs.editor.utils.Utils;
 
 import javax.imageio.ImageIO;
@@ -36,27 +33,28 @@ import java.util.function.Consumer;
  * Created by Kneesnap on 8/17/2018.
  */
 @Getter
-public class VLOArchive extends GameFile {
-    private List<GameImage> images = new ArrayList<>();
-    private List<ClutEntry> clutEntries = new ArrayList<>();
+public class VLOArchive extends SCSharedGameFile {
+    private final List<GameImage> images = new ArrayList<>();
+    private final List<ClutEntry> clutEntries = new ArrayList<>();
     private boolean psxMode;
 
-    private static final String PC_SIGNATURE = "2GRP";
-    private static final String PSX_SIGNATURE = "2GRV";
+    public static final String PC_SIGNATURE = "2GRP";
+    public static final String PSX_SIGNATURE = "2GRV";
     private static final int SIGNATURE_LENGTH = 4;
 
     private static final int IMAGE_INFO_BYTES = 24;
     private static final int HEADER_SIZE = SIGNATURE_LENGTH + (2 * Constants.INTEGER_SIZE);
     private static final int PSX_HEADER_SIZE = HEADER_SIZE + (2 * Constants.INTEGER_SIZE);
-    public static final int TYPE_ID = 1;
-    public static final int WAD_TYPE = 0;
-    public static final Image ICON = loadIcon("image");
     public static final ImageFilterSettings ICON_EXPORT = new ImageFilterSettings(ImageState.EXPORT);
     public static final ImageFilterSettings VRAM_EXPORT_NO_SCRUNCH = new ImageFilterSettings(ImageState.EXPORT);
 
+    public VLOArchive(SCGameInstance instance) {
+        super(instance);
+    }
+
     @Override
     public void load(DataReader reader) {
-        String readSignature = reader.readString(SIGNATURE_LENGTH);
+        String readSignature = reader.readTerminatedString(SIGNATURE_LENGTH);
         if (readSignature.equals(PSX_SIGNATURE)) {
             this.psxMode = true;
         } else {
@@ -116,6 +114,11 @@ public class VLOArchive extends GameFile {
             this.clutEntries.forEach(entry -> entry.saveExtra(writer));
     }
 
+    @Override
+    public boolean warnIfEndNotReached() {
+        return false;
+    }
+
     /**
      * Export all images in this VLO archive.
      */
@@ -127,47 +130,35 @@ public class VLOArchive extends GameFile {
                 System.out.println("Exported image #" + i + ".");
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            getLogger().throwing(getClass().getSimpleName(), "exportAllImages", ex);
         }
     }
 
     @Override
-    public Image getIcon() {
-        return ICON;
+    public Image getCollectionViewIcon() {
+        return ImageResource.PHOTO_ALBUM_32.getFxImage();
     }
 
     @Override
-    public Node makeEditor() {
-        return loadEditor(new VLOController(), "vlo", this);
-    }
-
-    @Override
-    public void setupEditor(AnchorPane editorPane, Node node) {
-        super.setupEditor(editorPane, node);
-
-        AnchorPane pane = (AnchorPane) node;
-        editorPane.setMaxHeight(pane.getMinHeight()); // Restricts the height of this editor, since there's nothing beyond the editing area.
+    public VLOController makeEditorUI() {
+        return loadEditor(getGameInstance(), "edit-file-vlo", new VLOController(getGameInstance()), this);
     }
 
     @Override
     @SneakyThrows
-    public void exportAlternateFormat(FileEntry fileEntry) {
-        ImageIO.write(makeVRAMImage(), "png", new File(GUIMain.getWorkingDirectory(), Utils.stripExtension(fileEntry.getDisplayName()) + ".png"));
+    public void exportAlternateFormat() {
+        ImageIO.write(makeVRAMImage(), "png", new File(GUIMain.getWorkingDirectory(), FileUtils.stripExtension(getFileDisplayName()) + ".png"));
         System.out.println("Exported VRAM Image.");
     }
 
-    @Override
-    public void handleWadEdit(WADFile parent) {
-        MainController.MAIN_WINDOW.openEditor(MainController.MAIN_WINDOW.getCurrentFilesList(), this);
-        ((VLOController) MainController.getCurrentController()).setParentWad(parent);
-    }
+
 
     @Override
-    public List<Tuple2<String, String>> showWadProperties(WADFile wadFile, WADEntry wadEntry) {
-        List<Tuple2<String, String>> list = new ArrayList<>();
-        list.add(new Tuple2<>("Images", String.valueOf(getImages().size())));
-        list.add(new Tuple2<>("PS1 VLO", String.valueOf(isPsxMode())));
-        return list;
+    public PropertyList addToPropertyList(PropertyList propertyList) {
+        propertyList = super.addToPropertyList(propertyList);
+        propertyList.add("Images", getImages().size());
+        propertyList.add("PS1 VLO", isPsxMode());
+        return propertyList;
     }
 
     /**
@@ -186,7 +177,7 @@ public class VLOArchive extends GameFile {
      * @return gameImage
      */
     public GameImage getImageByTextureId(int textureId) {
-        return getImageByTextureId(textureId, true);
+        return getImageByTextureId(textureId, false);
     }
 
     /**
@@ -210,7 +201,7 @@ public class VLOArchive extends GameFile {
      */
     public GameImage getGlobalTexture(int textureId) {
         GameImage foundImage = getImageByTextureId(textureId, false);
-        return foundImage != null ? foundImage : getMWD().getImageByTextureId(textureId);
+        return foundImage != null ? foundImage : getArchive().getImageByTextureId(textureId);
     }
 
     /**
@@ -224,7 +215,7 @@ public class VLOArchive extends GameFile {
         if (allowNull)
             allImages.add(0, null);
 
-        SelectionMenu.promptSelection("Select an image.", handler, allImages,
+        SelectionMenu.promptSelection(getGameInstance(), "Select an image.", handler, allImages,
                 image -> image != null ? "#" + image.getLocalImageID() + " (" + image.getTextureId() + ")" : "No Image",
                 image -> image.toFXImage(ICON_EXPORT));
     }

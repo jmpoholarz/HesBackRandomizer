@@ -1,14 +1,15 @@
 package net.highwayfrogs.editor.file.config.exe.psx;
 
 import lombok.Getter;
-import net.highwayfrogs.editor.file.MWIFile.FileEntry;
-import net.highwayfrogs.editor.file.WADFile;
 import net.highwayfrogs.editor.file.config.exe.ThemeBook;
 import net.highwayfrogs.editor.file.config.exe.pc.PCThemeBook;
-import net.highwayfrogs.editor.file.map.MAPFile;
 import net.highwayfrogs.editor.file.reader.DataReader;
 import net.highwayfrogs.editor.file.vlo.VLOArchive;
 import net.highwayfrogs.editor.file.writer.DataWriter;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapFile;
+import net.highwayfrogs.editor.games.sony.shared.mwd.WADFile;
 
 import java.util.function.Function;
 
@@ -20,10 +21,14 @@ import java.util.function.Function;
 public class PSXThemeBook extends ThemeBook {
     private int wadId;
     private int vloId;
-    private int multiplayerWadId;
-    private int multiplayerVloId;
+    private int multiplayerWadId = -1;
+    private int multiplayerVloId = -1;
     private long formLibraryPointer;
     private int deathHeight;
+
+    public PSXThemeBook(FroggerGameInstance instance) {
+        super(instance);
+    }
 
     @Override
     public void load(DataReader reader) {
@@ -31,8 +36,11 @@ public class PSXThemeBook extends ThemeBook {
         this.formLibraryPointer = reader.readUnsignedIntAsLong();
         this.vloId = reader.readInt();
         this.deathHeight = reader.readInt();
-        this.multiplayerWadId = reader.readInt();
-        this.multiplayerVloId = reader.readInt();
+
+        if (!getConfig().isAtOrBeforeBuild1()) {
+            this.multiplayerWadId = reader.readInt();
+            this.multiplayerVloId = reader.readInt();
+        }
     }
 
     @Override
@@ -42,18 +50,21 @@ public class PSXThemeBook extends ThemeBook {
         writer.writeUnsignedInt(this.formLibraryPointer);
         writer.writeInt(this.vloId);
         writer.writeInt(this.deathHeight);
-        writer.writeInt(this.multiplayerWadId);
-        writer.writeInt(this.multiplayerVloId);
+
+        if (!getConfig().isAtOrBeforeBuild1()) {
+            writer.writeInt(this.multiplayerWadId);
+            writer.writeInt(this.multiplayerVloId);
+        }
     }
 
     @Override
-    public VLOArchive getVLO(MAPFile map) {
-        return isValid() ? getConfig().getGameFile(map.isMultiplayer() ? getMultiplayerVloId() : getVloId()) : null;
+    public VLOArchive getVLO(FroggerMapFile map) {
+        return isValid() ? getGameInstance().getGameFile(map.isMultiplayer() ? getMultiplayerVloId() : getVloId()) : null;
     }
 
     @Override
-    public WADFile getWAD(MAPFile map) {
-        return isValid() ? getConfig().getGameFile(map.isMultiplayer() ? getMultiplayerWadId() : getWadId()) : null;
+    public WADFile getWAD(FroggerMapFile map) {
+        return isValid() ? getGameInstance().getGameFile(map.isMultiplayer() ? getMultiplayerWadId() : getWadId()) : null;
     }
 
     @Override
@@ -74,22 +85,23 @@ public class PSXThemeBook extends ThemeBook {
         this.multiplayerVloId = Integer.parseInt(args[3]);
         this.formLibraryPointer = Long.decode(args[4]);
         if (this.formLibraryPointer > 0)
-            this.formLibraryPointer += getConfig().getRamPointerOffset();
+            this.formLibraryPointer += getGameInstance().getRamOffset();
     }
 
     @Override
-    public boolean isEntry(FileEntry test) {
-        return wadId == test.getLoadedId() || multiplayerWadId == test.getLoadedId()
-                || vloId == test.getLoadedId() || multiplayerVloId == test.getLoadedId();
+    public boolean isEntry(SCGameFile<?> file) {
+        int resourceId = file.getFileResourceId();
+        return this.wadId == resourceId || this.multiplayerWadId == resourceId
+                || this.vloId == resourceId || this.multiplayerVloId == resourceId;
     }
 
     @Override
     public String toString() {
-        return "WAD = " + getConfig().getResourceName(wadId)
-                + ", VLO = " + getConfig().getResourceName(vloId)
-                + ", mWAD = " + getConfig().getResourceName(multiplayerWadId)
-                + ", mVLO = " + getConfig().getResourceName(multiplayerVloId)
-                + ", Death Height: " + deathHeight;
+        return "WAD = " + getGameInstance().getResourceName(this.wadId)
+                + ", VLO = " + getGameInstance().getResourceName(this.vloId)
+                + ", mWAD = " + getGameInstance().getResourceName(this.multiplayerWadId)
+                + ", mVLO = " + getGameInstance().getResourceName(this.multiplayerVloId)
+                + ", Death Height: " + this.deathHeight;
     }
 
 }
