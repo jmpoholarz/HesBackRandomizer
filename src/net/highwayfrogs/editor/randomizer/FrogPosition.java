@@ -2,6 +2,10 @@ package net.highwayfrogs.editor.randomizer;
 
 import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 
+/**
+ * A location where one of the baby frogs / froglets may be placed in a level that Frogger will need to find in order
+ * to beat the given level.
+ */
 public class FrogPosition {
 
     /**
@@ -10,72 +14,75 @@ public class FrogPosition {
      */
     public String id;
 
-    public float x; // Left-right grid position
-    public float y; // Vertical position on the map
-    public float z; // Forward-back grid position
-    public float yaw; // Rotation about the Z axis
-    public float pitch; // Rotation about the Y axis
-    public float roll; // Rotation about the X axis
-    public int zone; // Area of the map for this position; mutually exclusive with Frogger start
+    /**
+     * Left-right grid position
+     */
+    public float x;
 
-    public int tileX; // X tile in the map of the frog
-    public int tileZ; // Z tile in the map of the frog
-    public int stackIndex; // which index in the stack of tiles at that location to change the gfx
-    public int ringTextureIndex; // texture that holds the ring graphic
-    public int defaultTextureIndex; // index of the tile when not the frog ring tile
-    public ByteUV[] UVs; // UVs for the tile texture
+    /**
+     * Vertical position on the map
+     */
+    public float y;
 
-    @Deprecated
-    FrogPosition(double x, double y, double z, double yaw, double pitch, double roll, int zone) {
-        this.x = (float) x;
-        this.y = (float) y;
-        this.z = (float) z;
-        this.yaw = (float) yaw;
-        this.pitch = (float) pitch;
-        this.roll = (float) roll;
-        this.zone = zone;
-        this.tileX = -1;
-        this.tileZ = -1;
-        this.stackIndex = 0;
-        this.defaultTextureIndex = -1;
-        this.ringTextureIndex = -1;
-        this.UVs = null;
-    }
+    /**
+     * Forward-back grid position
+     */
+    public float z;
 
-    @Deprecated
-    FrogPosition(double x, double y, double z, double yaw, double pitch, double roll, int zone,
-                 int tileX, int tileZ, int stackIndex,
-                 int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
-        this.x = (float) x;
-        this.y = (float) y;
-        this.z = (float) z;
-        this.yaw = (float) yaw;
-        this.pitch = (float) pitch;
-        this.roll = (float) roll;
-        this.zone = zone;
-        this.tileX = tileX;
-        this.tileZ = tileZ;
-        this.stackIndex = stackIndex;
-        this.defaultTextureIndex = defaultTextureIndex;
-        this.ringTextureIndex = ringTextureIndex;
-        this.UVs = UVs;
-    }
+    /**
+     * Rotation about the Z axis
+     */
+    public float yaw;
+
+    /**
+     * Rotation about the Y axis
+     */
+    public float pitch;
+
+    /**
+     * Rotation about the X axis
+     */
+    public float roll;
+
+    /**
+     * Area of the map for this position; mutually exclusive with Frogger start.  In reference images, A corresponds
+     * to zone 0, B to 1, and so on.
+     */
+    public int zone;
+
+    /**
+     * X tile in the map of the frog
+     */
+    public int tileX;
+
+    /**
+     * Z tile in the map of the frog
+     */
+    public int tileZ;
+
+    /**
+     * Which index in the stack of tiles at that location to change the graphics for, used in the case where there
+     * are multiple tiles at the same X and Z that overlap each other vertically.
+     */
+    public int stackIndex;
+
+    /**
+     * Texture that holds the ring graphic
+     */
+    public int ringTextureIndex;
+
+    /**
+     * Index of the tile when not the frog ring tile
+     */
+    public int defaultTextureIndex;
+
+    /**
+     * UVs for the tile texture
+     */
+    public ByteUV[] UVs;
 
     FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone) {
-        this.id = id;
-        this.x = (float) x;
-        this.y = (float) y;
-        this.z = (float) z;
-        this.yaw = (float) yaw;
-        this.pitch = (float) pitch;
-        this.roll = (float) roll;
-        this.zone = zone;
-        this.tileX = -1;
-        this.tileZ = -1;
-        this.stackIndex = 0;
-        this.defaultTextureIndex = -1;
-        this.ringTextureIndex = -1;
-        this.UVs = null;
+        this(id, x, y, z, yaw, pitch, roll, zone, -1, -1, 0, -1, -1, null);
     }
 
     FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone,

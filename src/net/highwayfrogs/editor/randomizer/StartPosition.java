@@ -5,6 +5,9 @@ import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 
 import java.util.ArrayList;
 
+/**
+ * A location where Frogger may spawn in a level.
+ */
 public class StartPosition {
 
     /**
@@ -13,13 +16,25 @@ public class StartPosition {
      */
     public String id;
 
-    public short x; // Left-right grid position
-    public short z; // Forward-back grid position
-    public StartRotation rotation; // Direction the camera initially faces from this start
-    public int zone; // Area of the map for this position; mutually exclusive with frog locations
+    /**
+     * Left-right grid position
+     */
+    public short x;
 
-    @Deprecated
-    public ArrayList<Integer> bannedFrogZones; // Other zones frogs cannot be placed with this start
+    /**
+     * Forward-back grip position
+     */
+    public short z;
+
+    /**
+     * Direction the camera initially faces from this start
+     */
+    public StartRotation rotation;
+
+    /**
+     * Area of the map for this position; mutually exclusive with frog locations
+     */
+    public int zone;
 
     /**
      * A list of FrogletPosition IDs that can be chosen when this start position is selected by the randomizer.
@@ -27,50 +42,20 @@ public class StartPosition {
      */
     public ArrayList<String> bannedFroglets;
 
-    public int ringTextureIndex; // texture that holds the target graphic
-    public int defaultTextureIndex; // index of the tile when not the target tile
-    public ByteUV[] UVs; // UVs for the tile texture
+    /**
+     * Texture that holds the target graphic
+     */
+    public int ringTextureIndex;
 
-    @Deprecated
-    StartPosition(int x, int z, StartRotation rotation, int zone) {
-        this.x = (short) x;
-        this.z = (short) z;
-        this.rotation = rotation;
-        this.zone = zone;
-        bannedFrogZones = new ArrayList<>();
+    /**
+     * Index of the tile when not the target tile
+     */
+    public int defaultTextureIndex;
 
-        this.ringTextureIndex = -1;
-        this.defaultTextureIndex = -1;
-        this.UVs = null;
-    }
-
-    @Deprecated
-    StartPosition(int x, int z, StartRotation rotation, int zone,
-                  ArrayList<Integer> bannedFrogZones) {
-        this.x = (short) x;
-        this.z = (short) z;
-        this.rotation = rotation;
-        this.zone = zone;
-        this.bannedFrogZones = bannedFrogZones;
-
-        this.ringTextureIndex = -1;
-        this.defaultTextureIndex = -1;
-        this.UVs = null;
-    }
-
-    @Deprecated
-    StartPosition(int x, int z, StartRotation rotation, int zone,
-                  int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs, ArrayList<Integer> bannedFrogZones) {
-        this.x = (short) x;
-        this.z = (short) z;
-        this.rotation = rotation;
-        this.zone = zone;
-        bannedFrogZones = new ArrayList<>();
-
-        this.ringTextureIndex = ringTextureIndex;
-        this.defaultTextureIndex = defaultTextureIndex;
-        this.UVs = UVs;
-    }
+    /**
+     * UVs for the tile texture
+     */
+    public ByteUV[] UVs;
 
     StartPosition(String id, int x, int z, StartRotation rotation, int zone, int defaultTextureIndex,
                   int ringTextureIndex, ByteUV[] UVs, ArrayList<String> bannedFroglets) {
