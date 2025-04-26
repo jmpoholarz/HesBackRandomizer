@@ -47,7 +47,7 @@ public class FroggerMapPolygon extends SCGameData<FroggerGameInstance> {
     private CVector[] colors;
     private short flags;
     @Setter private short textureId = -1;
-    private SCByteTextureUV[] textureUvs;
+    @Setter private SCByteTextureUV[] textureUvs;
 
     // The last address which the polygon was written to.
     private transient int lastReadAddress = -1;

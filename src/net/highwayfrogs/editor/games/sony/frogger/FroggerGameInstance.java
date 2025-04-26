@@ -74,7 +74,7 @@ public class FroggerGameInstance extends SCGameInstance {
 
     private static final String CHILD_RESTORE_MAP_BOOK = "MapBookRestore";
     private static final String CHILD_RESTORE_THEME_BOOK = "ThemeBookRestore";
-    private static final int FILE_TYPE_ANY = 0;
+    public static final int FILE_TYPE_ANY = 0;
     private static final int FILE_TYPE_VLO = 1;
     private static final int FILE_TYPE_SOUND = 2;
     private static final int FILE_TYPE_MOF = 3;

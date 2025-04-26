@@ -2,7 +2,7 @@ package net.highwayfrogs.editor.file.config;
 
 import net.highwayfrogs.editor.file.config.data.WorldId;
 import net.highwayfrogs.editor.file.config.exe.LevelInfo;
-import net.highwayfrogs.editor.file.map.MAPTheme;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapTheme;
 
 public class LevelSelectSliceData {
 
@@ -12,7 +12,7 @@ public class LevelSelectSliceData {
     public int level; // index of the level map in getConfig().getAllLevelInfo()
     public WorldId world;
     public int stackPosition; // index of the world in the level stack
-    public MAPTheme theme; // used to group a block in the list
+    public FroggerMapTheme theme; // used to group a block in the list
     public int localLevelId; // index of the level in the world
     public int levelsInWorld; // number of levels in a world
     /* Memory pointers to slice graphical data */
@@ -34,7 +34,7 @@ public class LevelSelectSliceData {
             LevelInfo levelInfo,
             int level,
             WorldId world,
-            MAPTheme theme,
+            FroggerMapTheme theme,
             int stackPosition,
             int localLevelId,
             int levelsInWorld,

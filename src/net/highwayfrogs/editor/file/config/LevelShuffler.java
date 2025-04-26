@@ -2,7 +2,6 @@ package net.highwayfrogs.editor.file.config;
 
 import net.highwayfrogs.editor.file.config.data.WorldId;
 import net.highwayfrogs.editor.file.config.exe.LevelInfo;
-import net.highwayfrogs.editor.file.map.MAPTheme;
 
 import java.util.*;
 

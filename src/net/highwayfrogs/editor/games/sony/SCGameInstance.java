@@ -39,7 +39,7 @@ import java.util.*;
 public abstract class SCGameInstance extends GameInstance {
     @Getter private final Map<MWIResourceEntry, SCGameFile<?>> fileObjectsByFileEntries;
     @Getter private final SCOverlayTable overlayTable;
-    @Getter private MWDFile mainArchive;
+    @Getter public MWDFile mainArchive;
     @Getter private MillenniumWadIndex archiveIndex;
     @Getter private File mwdFile;
     @Getter private File exeFile;
@@ -112,6 +112,9 @@ public abstract class SCGameInstance extends GameInstance {
 
         this.archiveIndex = this.readMWI();
         this.mainArchive = this.readMWD(progressBar);
+
+        System.out.println("hi");
+
     }
 
     @Override

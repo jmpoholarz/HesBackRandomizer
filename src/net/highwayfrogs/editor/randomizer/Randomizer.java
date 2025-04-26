@@ -2,38 +2,26 @@ package net.highwayfrogs.editor.randomizer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import net.highwayfrogs.editor.file.GameFile;
-import net.highwayfrogs.editor.file.MWDFile;
-import net.highwayfrogs.editor.file.MWIFile;
-import net.highwayfrogs.editor.file.config.FroggerEXEInfo;
-import net.highwayfrogs.editor.file.config.LevelShuffler;
-import net.highwayfrogs.editor.file.config.data.MAPLevel;
-import net.highwayfrogs.editor.file.config.exe.LevelInfo;
-import net.highwayfrogs.editor.file.map.MAPFile;
-import net.highwayfrogs.editor.file.map.animation.MAPAnimation;
-import net.highwayfrogs.editor.file.map.animation.MAPUVInfo;
-import net.highwayfrogs.editor.file.map.entity.Entity;
-import net.highwayfrogs.editor.file.map.entity.data.EntityData;
-import net.highwayfrogs.editor.file.map.entity.data.MatrixData;
-import net.highwayfrogs.editor.file.map.entity.data.general.CheckpointEntity;
-import net.highwayfrogs.editor.file.map.grid.GridSquare;
-import net.highwayfrogs.editor.file.map.grid.GridStack;
-import net.highwayfrogs.editor.file.map.path.Path;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyGT4;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolyTexture;
-import net.highwayfrogs.editor.file.map.poly.polygon.MAPPolygon;
-import net.highwayfrogs.editor.file.standard.SVector;
 import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 import net.highwayfrogs.editor.file.standard.psx.PSXMatrix;
-import net.highwayfrogs.editor.gui.GUIMain;
-import net.highwayfrogs.editor.gui.MainController;
-import net.highwayfrogs.editor.gui.editor.SaveController;
-import net.highwayfrogs.editor.utils.Utils;
+import net.highwayfrogs.editor.games.sony.SCGameFile;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapFile;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.animation.FroggerMapAnimation;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.animation.FroggerMapAnimationTargetPolygon;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.entity.FroggerMapEntity;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.entity.data.FroggerEntityDataMatrix;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.entity.data.general.FroggerEntityDataCheckpoint;
+import net.highwayfrogs.editor.games.sony.frogger.map.data.grid.FroggerGridStack;
+import net.highwayfrogs.editor.games.sony.frogger.map.mesh.FroggerMapPolygon;
+import net.highwayfrogs.editor.games.sony.shared.SCByteTextureUV;
+import net.highwayfrogs.editor.games.sony.shared.mwd.MWDFile;
+import net.highwayfrogs.editor.games.sony.shared.mwd.mwi.MWIResourceEntry;
+import net.highwayfrogs.editor.utils.DataUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
+
+import static net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance.FILE_TYPE_ANY;
 
 /**
  * The main class for randomizing Frogger: He's Back
@@ -81,127 +69,135 @@ public class Randomizer {
     }
 
 
-    public ObservableList<GameFile> getMapFiles(MWDFile mwdFile) {
-        ObservableList<GameFile> mapFiles = FXCollections.observableArrayList();
+    public ObservableList<SCGameFile<FroggerGameInstance>> getMapFiles(FroggerGameInstance gameInstance, MWDFile mwdFile) {
+        ObservableList<SCGameFile<FroggerGameInstance>> mapFiles = FXCollections.observableArrayList();
 
         // Iterate through all game files looking for MAP files
-        for (GameFile gameFile : mwdFile.getFiles()) {
-            MWIFile.FileEntry fileEntry = mwdFile.getEntryMap().get(gameFile);
-            // Add the file to the maps if it has a MAP file type ID
-            if (fileEntry.getSpoofedTypeId() == MAPFile.TYPE_ID
-                    && MapData.VALID_MAPS.contains(fileEntry.getDisplayName())) {
+        for (SCGameFile<?> gameFile : mwdFile.getFiles()) {
 
-                //MAPFile mapFile = (MAPFile) gameFile;
-
-                System.out.println(fileEntry.getDisplayName());
-
-                /*MAPLevel level = MAPLevel.getByName(mapFile.getFileEntry().getDisplayName());
-                if (level != null) {
-                    mapFile.getConfig().getLevelImageMap().computeIfAbsent(level, key -> {
-                        if (mapFile.getConfig().getLevelInfoMap().isEmpty())
-                            return null;
-
-                        LevelInfo info = mapFile.getConfig().getLevelInfoMap().get(key);
-                        if (info != null)
-                            return Utils.toFXImage(Utils.resizeImage(mapFile.getConfig().getImageFromPointer(info.getLevelTexturePointer()).toBufferedImage(), 35, 35), false);
-                        return null;
-                    });
-                }*/
-
-                mapFiles.add(gameFile);
+            if (!(gameFile instanceof FroggerMapFile)) {
+                continue;
             }
+
+            FroggerMapFile mapFile = (FroggerMapFile) gameFile;
+            MWIResourceEntry resourceEntry = (MWIResourceEntry) mapFile.getFileDefinition();
+
+            if (resourceEntry.getTypeId() != FILE_TYPE_ANY) {
+                continue;
+            }
+            if (!resourceEntry.hasExtension("map")) {
+                continue;
+            }
+            if (!MapData.VALID_MAPS.contains(gameFile.getFileDisplayName())) {
+                continue;
+            }
+
+            mapFiles.add(mapFile);
+            System.out.println(gameFile.getFileDisplayName());
         }
+
+        System.out.println("Done fetching maps");
+
         return mapFiles;
     }
 
 
-    public void randomize(FroggerEXEInfo exeFile) {
-        parseLaunchArgs();
+    public void randomize(FroggerGameInstance gameInstance) {
+        //parseLaunchArgs();
 
-        // Get MWD file loaded by GUI launch
-        MWDFile mwdFile = MainController.MAIN_WINDOW.getMwdFile();
+        // TODO might have differences between PC and PSX since some variables are different
+        // For now, assuming PC for everything
+
+        MWDFile mwdFile = gameInstance.mainArchive;
 
         // List to hold all of the map files to randomize
-        ObservableList<GameFile> mapFiles = getMapFiles(mwdFile);
+        ObservableList<SCGameFile<FroggerGameInstance>> mapFiles = getMapFiles(gameInstance, mwdFile);
 
         // Init random number generator using provided seed if available
         Random random = loadRandomNumberGenerator();
 
 
 
-        /* Randomize Level Order */
-        //List<MAPLevel> levelList = new ArrayList<>();
-
-        HashMap<Integer, ArrayList<LevelInfo>> levelInfoHashMap = new HashMap<>();
-        for (int i = 0; i < 8; i++) {
-            levelInfoHashMap.put(i, new ArrayList<>());
-        }
+        randomizeMaps(mapFiles, mwdFile, random);
 
 
-        for (LevelInfo info : exeFile.getAllLevelInfo()) {
-            System.out.println(info.toString());
-        }
+        saveEndResult();
+        //System.exit(0);
+    }
 
-        System.out.println("~~~~~~~~~~~~~~~~~~~~");
-
-        //LevelShuffler levelShuffler = new LevelShuffler(exeFile.getAllLevelInfo(), random);
-        //levelShuffler.removeNonSingleplayerLevels();
-
-//        if (randomizeLevelOrder) {
-//            levelShuffler.shuffleLevelsInWorlds();
+    public void randomizeLevelOrder() {
+//        /* Randomize Level Order */
+//        //List<MAPLevel> levelList = new ArrayList<>();
+//
+//        HashMap<Integer, ArrayList<LevelInfo>> levelInfoHashMap = new HashMap<>();
+//        for (int i = 0; i < 8; i++) {
+//            levelInfoHashMap.put(i, new ArrayList<>());
 //        }
+//
+//        for (LevelInfo info : exeFile.getAllLevelInfo()) {
+//            System.out.println(info.toString());
+//        }
+//
+//        System.out.println("~~~~~~~~~~~~~~~~~~~~");
+//
+//        //LevelShuffler levelShuffler = new LevelShuffler(exeFile.getAllLevelInfo(), random);
+//        //levelShuffler.removeNonSingleplayerLevels();
+//
+////        if (randomizeLevelOrder) {
+////            levelShuffler.shuffleLevelsInWorlds();
+////        }
+//
+//
+//        List<LevelInfo> levels = exeFile.getAllLevelInfo();
+//        //LevelInfo A = levels.get(5); //LILY1
+//        //LevelInfo B = levels.get(6); //LILY2
+//        //A.setLevel(49);
+//        //A.setWorld(); ?
+//        //A.setStackPosition(2);
+//        //A.setTheme(); ?
+//        //A.setLocalLevelId(1);
+//        //A.setLevelsInWorld(2);
+//        //A.setWorldImageSelectablePointer(4785856);
+//        //A.setWorldImageVisitedPointer(4797760);
+//        //A.setWorldImageNotTriedPointer(4797760);
+//        //A.setLevelTexturePointer(4783888);
+//        //A.setLevelNameTexturePointer(4795536);
+//        //A.setLevelNameTextureInGamePointer(4795536);
+//
+//        //B.setLevel(48);
+//        //B.setWorld(); ?
+//        //B.setStackPosition(1);
+//        //B.setTheme(); ?
+//        //B.setLocalLevelId(0);
+//        //B.setLevelsInWorld(5);
+//        //B.setWorldImageSelectablePointer(4788064);
+//        //B.setWorldImageVisitedPointer(4794480);
+//        //B.setWorldImageNotTriedPointer(4794480);
+//        //B.setLevelTexturePointer(4800256);
+//        //B.setLevelNameTexturePointer(4796592);
+//        //B.setLevelNameTextureInGamePointer(4796592);*/
+//
+//
+//        for (LevelInfo info : exeFile.getAllLevelInfo()) {
+//            //if (info.getLevel() != null) {
+//            //    levelList.add(info.getLevel());
+//            //}
+//            System.out.println(info.toString());
+//
+//            //levelInfoHashMap.get(info.getStackPosition()).add(info);
+//            //info.save();
+//
+//        }
+    }
 
 
-        List<LevelInfo> levels = exeFile.getAllLevelInfo();
-        //LevelInfo A = levels.get(5); //LILY1
-        //LevelInfo B = levels.get(6); //LILY2
-        //A.setLevel(49);
-        //A.setWorld(); ?
-        //A.setStackPosition(2);
-        //A.setTheme(); ?
-        //A.setLocalLevelId(1);
-        //A.setLevelsInWorld(2);
-        //A.setWorldImageSelectablePointer(4785856);
-        //A.setWorldImageVisitedPointer(4797760);
-        //A.setWorldImageNotTriedPointer(4797760);
-        //A.setLevelTexturePointer(4783888);
-        //A.setLevelNameTexturePointer(4795536);
-        //A.setLevelNameTextureInGamePointer(4795536);
-
-        //B.setLevel(48);
-        //B.setWorld(); ?
-        //B.setStackPosition(1);
-        //B.setTheme(); ?
-        //B.setLocalLevelId(0);
-        //B.setLevelsInWorld(5);
-        //B.setWorldImageSelectablePointer(4788064);
-        //B.setWorldImageVisitedPointer(4794480);
-        //B.setWorldImageNotTriedPointer(4794480);
-        //B.setLevelTexturePointer(4800256);
-        //B.setLevelNameTexturePointer(4796592);
-        //B.setLevelNameTextureInGamePointer(4796592);*/
-
-
-        for (LevelInfo info : exeFile.getAllLevelInfo()) {
-            //if (info.getLevel() != null) {
-            //    levelList.add(info.getLevel());
-            //}
-            System.out.println(info.toString());
-
-            //levelInfoHashMap.get(info.getStackPosition()).add(info);
-            //info.save();
-
-        }
-
-
-
-
+    public void randomizeMaps(ObservableList<SCGameFile<FroggerGameInstance>> mapFiles, MWDFile mwdFile, Random random) {
         /* Randomize Maps */
-        for (GameFile gf : mapFiles) {
-            MAPFile mf = (MAPFile) gf;
+        for (SCGameFile<FroggerGameInstance> gameFile : mapFiles) {
+            FroggerMapFile mapFile = (FroggerMapFile) gameFile;
 
             // Get data to randomize for the given map
-            String mapName = mwdFile.getEntryMap().get(mf).getDisplayName();
+            String mapName = mapFile.getFileDisplayName();
             ArrayList<FrogPosition> frogPositions = MapData.FROG_LOCATIONS.get(mapName);
             ArrayList<StartPosition> startPositions = MapData.START_LOCATIONS.get(mapName);
 
@@ -210,198 +206,224 @@ public class Randomizer {
                 continue;
             }
 
-
-            // Remove all Frog Circle markers
-            for (FrogPosition frogPos : frogPositions) {
-                if (frogPos.tileX == -1 || frogPos.tileZ == -1
-                        || frogPos.defaultTextureIndex == -1) {
-                    continue;
-                }
-                GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
-                MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares()
-                        .get(frogPos.stackIndex).getPolygon();
-
-                if (poly.getTextureId() != frogPos.defaultTextureIndex) {
-                    System.out.println("Reset texture in " + mapName + " at " +
-                            frogPos.tileX + "," + frogPos.tileZ + " from " + poly.getTextureId()
-                            + " to " + frogPos.defaultTextureIndex);
-
-                    poly.setTextureId((short) frogPos.defaultTextureIndex);
-                }
-            }
-
+            removeFrogletRings(mapFile, frogPositions);
 
             // Randomize start location
             StartPosition startPos = startPositions.get(random.nextInt(startPositions.size()));
-            mf.setStartXTile(startPos.x);
-            mf.setStartZTile(startPos.z);
-            mf.setStartRotation(startPos.rotation);
 
-            // Remove all start Target markers except for the selected
-            for (StartPosition startOpt : startPositions) {
-                if (startOpt.x == -1 || startOpt.z == -1 || startOpt.ringTextureIndex == -1) {
-                    continue;
-                }
+            mapFile.getGeneralPacket().setStartGridCoordX(startPos.x);
+            mapFile.getGeneralPacket().setStartGridCoordZ(startPos.z);
+            //mapFile.getGeneralPacket().setStartingTimeLimit(); TODO dynamic times based on start location, esp. for PSX which is more strict on the time limit
+            mapFile.getGeneralPacket().setStartRotation(startPos.rotation);
 
-                for (GridStack gs : mf.getGridStacks()) {
-                    // Find optional start tile in tiles
-                    if (mf.getGridX(gs) != startOpt.x || mf.getGridZ(gs) != startOpt.z) {
-                        continue;
-                    }
-                    if (startPos.x == startOpt.x && startPos.z == startOpt.z) {
-                        // If the optional start tile was actually selected as the start
-                        // Add the target on that tile if supported
-                        if (startOpt.ringTextureIndex != -1) {
+            removeFroggerTargets(mapFile, startPositions, startPos);
 
-                            MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
-
-                            System.out.println("Changed start texture in " + mapName + " at " +
-                                    startOpt.x + "," + startOpt.z + " from " + poly.getTextureId() +
-                                    " to " + startOpt.ringTextureIndex);
-
-                            poly.setTextureId((short) startOpt.ringTextureIndex);
-
-                            // Remove animation from the tile if there is one
-                            for (MAPAnimation ma : mf.getMapAnimations()) {
-                                List<MAPUVInfo> uvs = ma.getMapUVs();
-                                uvs.removeIf(uv -> {
-                                    boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
-                                    //if (ret) System.out.println("Was true");
-                                    return ret;
-                                });
-                            }
-                            // Set Tile UVs if provided
-                            if (startPos.UVs != null) {
-                                poly.setUvs(startPos.UVs);
-                            }
-                        }
-                    }
-                    else {
-                        // If the optional start tile was not selected
-                        // Find all polygons with a matching vertex with the target graphic
-                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares().get(0).getPolygon();
-
-                        ArrayList<int[]> targetMarkedPolys = new ArrayList<>();
-                        targetMarkedPolys.add(poly.getVertices()); // polys which had target graphic
-                        List<MAPPolygon> polysToCheck = mf.getAllPolygons();
-                        for (int i = 0; i < polysToCheck.size(); i++) {
-                            MAPPolygon mp = polysToCheck.get(i);
-                            try {
-                                MAPPolyTexture mpt = (MAPPolyTexture) mp;
-                                if (mpt.getTextureId() == startOpt.ringTextureIndex
-                                        && startOpt.defaultTextureIndex != -1) {
-                                    for (int[] entry : targetMarkedPolys) {
-                                        if (verticesIntersect(entry, mpt.getVertices())) {
-                                            // Set them to the default texture
-                                            mpt.setTextureId((short) startOpt.defaultTextureIndex);
-                                            /*
-                                             * Add the poly just changed to the list of polys to
-                                             * check because another poly with the target graphic
-                                             * may share a vertex with one of them but not the
-                                             * main poly from the original tile provided
-                                             */
-                                            targetMarkedPolys.add(mpt.getVertices());
-                                            // Remove it from the list to prevent an infinite loop
-                                            polysToCheck.remove(i);
-                                            // Restart at the beginning of the list of polys in
-                                            // case any were missed initially
-                                            i = -1;
-                                            break;
-                                        }
-                                    }
-                                }
-                            } catch (Exception ignored) {}
-                        }
-                    }
-                }
-            }
-
-            // Remove banned zone frogs from frogPositions
-            //frogPositions.removeIf(frog -> startPos.bannedFrogZones.contains(frog.zone));
-
-            // Remove all frogs that aren't in list provided to this startPosition
+            // Remove all frogs that are forbidden from this startPosition
             frogPositions.removeIf(frogletPos -> startPos.bannedFroglets.contains(frogletPos.id));
 
-            // Randomize frog locations by moving the entities
-            List<Entity> entities = mf.getEntities();
-            // Iterate through entities to find the frogs
-            for (Entity entity : entities) {
-                if (entity.getEntityData() instanceof CheckpointEntity) {
-                    MatrixData data = (MatrixData) entity.getEntityData();
-
-                    // Select a random available position and update the frog
-                    FrogPosition frogPos = frogPositions.get(random.nextInt(frogPositions.size()));
-                    frogPositions.remove(frogPos); // Remove so no duplicate positions chosen
-
-                    // Update the position of the Entity
-                    PSXMatrix psxMaxtrix = data.getMatrix();
-                    psxMaxtrix.setTransform(new int[] {
-                            Utils.floatToFixedPointInt4Bit(frogPos.x),
-                            Utils.floatToFixedPointInt4Bit(frogPos.y),
-                            Utils.floatToFixedPointInt4Bit(frogPos.z)
-                    });
-                    psxMaxtrix.updateMatrix(
-                            frogPos.yaw * Math.PI / 180.0,
-                            frogPos.pitch * Math.PI / 180.0,
-                            frogPos.roll * Math.PI / 180.0
-                    );
-
-                    // Add new frog circles on tiles that support them
-                    if (frogPos.tileX != -1 && frogPos.tileZ != -1
-                            && frogPos.ringTextureIndex != -1) {
-                        GridStack gs = mf.getGridStack(frogPos.tileX, frogPos.tileZ);
-                        MAPPolyTexture poly = (MAPPolyTexture) gs.getGridSquares()
-                                .get(frogPos.stackIndex).getPolygon();
-
-                        System.out.println("Changed texture in " + mapName + " at " +
-                                frogPos.tileX + "," + frogPos.tileZ + " from " +
-                                poly.getTextureId() + " to " + frogPos.ringTextureIndex);
-
-                        poly.setTextureId((short) frogPos.ringTextureIndex);
-
-                        // Remove animation from the tile if there is one
-                        for (MAPAnimation ma : mf.getMapAnimations()) {
-                            List<MAPUVInfo> uvs = ma.getMapUVs();
-                            uvs.removeIf(uv -> {
-                                boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
-                                //if (ret) System.out.println("Was true");
-                                return ret;
-                            });
-                        }
-                        // Set Tile UVs if provided
-                        if (frogPos.UVs != null) {
-                            poly.setUvs(frogPos.UVs);
-                        }
-
-                    }
-
-
-                }
-            }
+            randomizeFrogletPositions(mapFile, frogPositions, random);
 
             // Randomize lanes in Retro levels
             if (mapName.contains("ORG")) {
-                RetroLaneShuffler rls = new RetroLaneShuffler(random);
-                rls.shuffleLanes(mapName, mf);
+                // TODO: currently getting some divided by zero errors that need to be looked into
+//                RetroLaneShuffler rls = new RetroLaneShuffler(random);
+//                rls.shuffleLanes(mapName, mapFile);
             }
 
         }
+    }
+
+
+    public void saveEndResult() {
+//        // Save the end result
+//        SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
+//        try {
+//            FileWriter writer = new FileWriter(new File(
+//                    GUIMain.EXE_CONFIG.getFolder(), "seed.txt"));
+//            writer.write("Seed: " + randomizerSeed);
+//            writer.flush();
+//            writer.close();
+//        } catch (IOException e) {
+//            System.out.println("Unable to write seed to file. Error: ");
+//            e.printStackTrace();
+//        }
+    }
 
 
 
-        // Save the end result
-        SaveController.saveFiles(GUIMain.EXE_CONFIG, MainController.MAIN_WINDOW.getMwdFile());
-        try {
-            FileWriter writer = new FileWriter(new File(
-                    GUIMain.EXE_CONFIG.getFolder(), "seed.txt"));
-            writer.write("Seed: " + randomizerSeed);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Unable to write seed to file. Error: ");
-            e.printStackTrace();
+    public void randomizeFrogletPositions(FroggerMapFile mapFile, ArrayList<FrogPosition> frogPositions, Random random) {
+        // Randomize frog locations by moving the entities
+        List<FroggerMapEntity> entities = mapFile.getEntityPacket().getEntities();
+        // Iterate through entities to find the frogs
+        for (FroggerMapEntity entity : entities) {
+            if (entity.getEntityData() instanceof FroggerEntityDataCheckpoint) {
+                FroggerEntityDataMatrix data = (FroggerEntityDataMatrix) entity.getEntityData();
+
+                // Select a random available position and update the frog
+                FrogPosition frogPos = frogPositions.get(random.nextInt(frogPositions.size()));
+                frogPositions.remove(frogPos); // Remove so no duplicate positions chosen
+
+                // Update the position of the Entity
+                PSXMatrix psxMatrix = data.getMatrix();
+                psxMatrix.setTransform(new int[] {
+                        DataUtils.floatToFixedPointInt4Bit(frogPos.x),
+                        DataUtils.floatToFixedPointInt4Bit(frogPos.y),
+                        DataUtils.floatToFixedPointInt4Bit(frogPos.z)
+                });
+                psxMatrix.updateMatrix(
+                        frogPos.yaw * Math.PI / 180.0,
+                        frogPos.pitch * Math.PI / 180.0,
+                        frogPos.roll * Math.PI / 180.0
+                );
+
+                // Add new frog circles on tiles that support them
+                if (frogPos.tileX != -1 && frogPos.tileZ != -1
+                        && frogPos.ringTextureIndex != -1) {
+
+                    FroggerGridStack gridStack = mapFile.getGridPacket().getGridStack(frogPos.tileX, frogPos.tileZ);
+                    FroggerMapPolygon poly = gridStack.getGridSquares().get(frogPos.stackIndex).getPolygon();
+
+                    System.out.println("Changed texture in " + mapFile.getFileDisplayName() + " at " +
+                            frogPos.tileX + "," + frogPos.tileZ + " from " +
+                            poly.getTextureId() + " to " + frogPos.ringTextureIndex);
+
+                    poly.setTextureId((short) frogPos.ringTextureIndex);
+
+                    // Remove animation from the tile if there is one
+                    for (FroggerMapAnimation mapAnimation : mapFile.getAnimationPacket().getAnimations()) {
+                        List<FroggerMapAnimationTargetPolygon> uvs = mapAnimation.getTargetPolygons();
+                        uvs.removeIf(uv -> {
+                            boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
+                            //if (ret) System.out.println("Was true");
+                            return ret;
+                        });
+                    }
+                    // Set Tile UVs if provided
+                    if (frogPos.UVs != null) {
+                        // Could probably change the UVs to SCByteTextureUV instead but let's try this first
+                        SCByteTextureUV[] textureUVs = new SCByteTextureUV[frogPos.UVs.length];
+                        // UV order was swapped, so workaround switch 3rd and 4th
+                        ByteUV temp = frogPos.UVs[2];
+                        frogPos.UVs[2] = frogPos.UVs[3];
+                        frogPos.UVs[3] = temp;
+                        for (int i = 0; i < frogPos.UVs.length; i++) {
+                            textureUVs[i] = new SCByteTextureUV(frogPos.UVs[i].getU(), frogPos.UVs[i].getV());
+                        }
+                        poly.setTextureUvs(textureUVs);
+                        System.out.println("Setting UVs in " + mapFile.getFileDisplayName() + " at " +
+                                frogPos.tileX + "," + frogPos.tileZ);
+                    }
+                }
+            }
         }
-        System.exit(0);
+    }
+
+    public void removeFrogletRings(FroggerMapFile mapFile, ArrayList<FrogPosition> frogPositions) {
+        // Remove all Frog Circle markers
+        for (FrogPosition frogPos : frogPositions) {
+            if (frogPos.tileX == -1 || frogPos.tileZ == -1
+                    || frogPos.defaultTextureIndex == -1) {
+                continue;
+            }
+            FroggerGridStack gridStack = mapFile.getGridPacket().getGridStack(frogPos.tileX, frogPos.tileZ);
+            FroggerMapPolygon poly = gridStack.getGridSquares().get(frogPos.stackIndex).getPolygon();
+
+            if (poly.getTextureId() != frogPos.defaultTextureIndex) {
+                System.out.println("Reset texture in " + mapFile.getFileDisplayName() + " at " +
+                        frogPos.tileX + "," + frogPos.tileZ + " from " + poly.getTextureId()
+                        + " to " + frogPos.defaultTextureIndex);
+
+                poly.setTextureId((short) frogPos.defaultTextureIndex);
+            }
+        }
+    }
+
+    public void removeFroggerTargets(FroggerMapFile mapFile, ArrayList<StartPosition> startPositions, StartPosition startPos) {
+        // Remove all start Target markers except for the selected
+        for (StartPosition startOption : startPositions) {
+            if (startOption.x == -1 || startOption.z == -1 || startOption.ringTextureIndex == -1) {
+                continue;
+            }
+
+            FroggerGridStack gridStack = mapFile.getGridPacket().getGridStack(startOption.x, startOption.z);
+
+            if (startPos.x == startOption.x && startPos.z == startOption.z) {
+                // If the optional start tile was actually selected as the start,
+                // Add the target on that tile if supported
+                if (startOption.ringTextureIndex != -1) {
+
+                    // None of the Frogger starts are ever under an overhang, so we can assume always 0 for the index
+                    FroggerMapPolygon poly = gridStack.getGridSquares().get(0).getPolygon();
+
+                    System.out.println("Changed start texture in " + mapFile.getFileDisplayName() + " at " +
+                            startOption.x + "," + startOption.z + " from " + poly.getTextureId() +
+                            " to " + startOption.ringTextureIndex);
+
+                    poly.setTextureId((short) startOption.ringTextureIndex);
+
+                    // Remove animation from the tile if there is one
+                    for (FroggerMapAnimation mapAnimation : mapFile.getAnimationPacket().getAnimations()) {
+                        List<FroggerMapAnimationTargetPolygon> uvs = mapAnimation.getTargetPolygons();
+                        uvs.removeIf(uv -> {
+                            boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
+                            //if (ret) System.out.println("Was true");
+                            return ret;
+                        });
+                    }
+                    // Set Tile UVs if provided TODO: these targets are broken in some cases
+                    if (startPos.UVs != null) {
+                        // Could probably change the UVs to SCByteTextureUV instead but let's try this first
+                        SCByteTextureUV[] textureUVs = new SCByteTextureUV[startPos.UVs.length];
+                        // UV order was swapped, so workaround switch 3rd and 4th
+                        ByteUV temp = startPos.UVs[2];
+                        startPos.UVs[2] = startPos.UVs[3];
+                        startPos.UVs[3] = temp;
+                        for (int i = 0; i < startPos.UVs.length; i++) {
+                            textureUVs[i] = new SCByteTextureUV(startPos.UVs[i].getU(), startPos.UVs[i].getV());
+                        }
+                        poly.setTextureUvs(textureUVs);
+                        System.out.println("Setting UVs in " + mapFile.getFileDisplayName() + " at " +
+                                startPos.x + "," + startPos.z);
+                    }
+                }
+            }
+            else {
+                // If the optional start tile was not selected
+                // Find all polygons with a matching vertex with the target graphic
+                FroggerMapPolygon poly = gridStack.getGridSquares().get(0).getPolygon();
+
+                ArrayList<int[]> targetMarkedPolys = new ArrayList<>();
+                targetMarkedPolys.add(poly.getVertices()); // polys which had target graphic
+                List<FroggerMapPolygon> polysToCheck = mapFile.getPolygonPacket().getPolygons();
+                for (int i = 0; i < polysToCheck.size(); i++) {
+                    FroggerMapPolygon mapPolygon = polysToCheck.get(i);
+                    try {
+                        if (mapPolygon.getTextureId() == startOption.ringTextureIndex
+                                && startOption.defaultTextureIndex != -1) {
+                            for (int[] entry : targetMarkedPolys) {
+                                if (verticesMatch(entry, mapPolygon.getVertices())) {
+                                    continue;
+                                }
+                                if (verticesIntersect(entry, mapPolygon.getVertices())) {
+                                    // Set them to the default texture
+                                    mapPolygon.setTextureId((short) startOption.defaultTextureIndex);
+                                    /*
+                                     * Add the poly just changed to the list of polys to
+                                     * check because another poly with the target graphic
+                                     * may share a vertex with one of them but not the
+                                     * main poly from the original tile provided
+                                     */
+                                    targetMarkedPolys.add(mapPolygon.getVertices());
+                                    // Restart at the beginning of the list of polys in
+                                    // case any were missed initially
+                                    i = -1;
+                                }
+                            }
+                        }
+                    } catch (Exception ignored) {}
+                }
+            }
+        }
     }
 
 
@@ -434,7 +456,7 @@ public class Randomizer {
     }
 
     /**
-     * Given two arrays of vertex IDs, check if any of the IDs between thw two arrays match
+     * Given two arrays of vertex IDs, check if any of the IDs between the two arrays match
      * @param a first array of vertices
      * @param b second array of vertices
      * @return true if any element of a matches any element of b

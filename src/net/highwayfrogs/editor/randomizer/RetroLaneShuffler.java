@@ -1,7 +1,7 @@
 package net.highwayfrogs.editor.randomizer;
 
-import net.highwayfrogs.editor.file.map.MAPFile;
 import net.highwayfrogs.editor.file.standard.SVector;
+import net.highwayfrogs.editor.games.sony.frogger.map.FroggerMapFile;
 import net.highwayfrogs.editor.games.sony.frogger.map.data.path.FroggerPath;
 import net.highwayfrogs.editor.games.sony.frogger.map.data.path.FroggerPathSegmentType;
 import net.highwayfrogs.editor.games.sony.frogger.map.data.path.segments.FroggerPathSegment;
@@ -75,7 +75,7 @@ public class RetroLaneShuffler {
         else {
             return;
         }
-        ls.recalculateLength();
+        //ls.recalculateLength(); //TODO fix after merge from FrogLord
         segments.set(0, ls);
     }
 
@@ -181,8 +181,8 @@ public class RetroLaneShuffler {
      * @param mapName Name of the map, such as ORG1.MAP
      * @param mapFile File for the input map to edit path data of
      */
-    public void shuffleLanes(String mapName, MAPFile mapFile) {
-        List<FroggerPath> allPaths = mapFile.getPaths();
+    public void shuffleLanes(String mapName, FroggerMapFile mapFile) {
+        List<FroggerPath> allPaths = mapFile.getPathPacket().getPaths();
         for (int i = 0; i < allPaths.size(); i++) {
             resolvePath(mapName, i, allPaths.get(i));
         }

@@ -634,9 +634,9 @@ public class MapData {
                  new FrogPosition("SWP3_B2", -152.0, -128.4375, -40.0, 0, 0, 0, 1,
                          6, 14, 0, 0, 62, null), //
                  new FrogPosition("SWP3_B1", -200.0, -112.0, 40.0, 180, 0, 180, 1,
-                         3, 19, 0, 1, 232, null),
+                         3, 19, 0, 1, 6, null),
                  new FrogPosition("SWP3_C1", -184.0, -111.0, -216.0, 0, 0, 0, 2,
-                         4, 3, 0, 1, 232, null), //
+                         4, 3, 0, 1, 6, null), //
                  new FrogPosition("SWP3_E1", 55.875, -62.0625, -214.3125, 0, 89.9, 0, 4,
                          19, 3, 0, 63, 59, null),
                  new FrogPosition("SWP3_E2", 216.0, -56.4375, -199.9375, 0, -89.9, 0, 4,
@@ -763,7 +763,7 @@ public class MapData {
          FROG_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition("DES3_A2", -7.9375, -101.5625, -152.0, 0, 0, 0, 0,
                          11, 9, 0, 12, 3, null),
-                 new FrogPosition("DES3_A1", -88.0, -101.5, -232.5625, 0, 0, 0, 0,
+                 new FrogPosition("DES3_A1", -88.0, -101.5, -232.5625, 0, 0, 0, 0, // TODO UVs look weird and not using ring
                          6, 4, 0, 0, 0, null),
                  new FrogPosition("DES3_B1", -88.125, -152.0, -151.625, 0, 0, 0, 1,
                          6, 9, 0, 0, 3, null), //
@@ -793,7 +793,7 @@ public class MapData {
                          9, 37, 0, 6, 24, null),
                  new FrogPosition("DES4_C2", -56.0, 0.0, 136.0, 180, 0, 180, 2,
                          18, 31, 0, 5, 24, null), //
-                 new FrogPosition("DES4_C3", 72.125, -5.9375, 167.625, 180, 0, 180, 2,
+                 new FrogPosition("DES4_C3", 72.125, -5.9375, 167.625, 180, 89.9, 180, 2,
                          26, 33, 0, 5, 24, null), //
                  new FrogPosition("DES4_D1", -136.0, 0.0, -88.0, 0, 89.9, 0, 3,
                          13, 17, 0, 38, 24, null),
@@ -1023,7 +1023,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("SUB5_D1", "SUB5_C5", "SUB5_C2")))
          )));
          START_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("FOR1_A1", 9, 3, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("FOR1_A1", 9, 3, FroggerMapStartRotation.NORTH, 0, // TODO: UVs Bugged
                          3, 30, //
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
@@ -1182,11 +1182,11 @@ public class MapData {
                          -1, -1, null,
                          new ArrayList<>()), //ignoring since too complicated to overwrite and mostly out of view anyway
                  new StartPosition("SWP3_B1", 13, 17, FroggerMapStartRotation.NORTH, 1,
-                         1, 258, null,
-                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out
+                         1, 75, null,
+                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out, texture broken
                  new StartPosition("SWP3_D1", 17, 17, FroggerMapStartRotation.NORTH, 3,
-                         15, 258, null,
-                         new ArrayList<>()) //TODO: Check if need to move so camera doesn't flip out
+                         15, 75, null,
+                         new ArrayList<>()) //TODO: Check if need to move so camera doesn't flip out, texture broken
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("SWP4_A2", 14, 12, FroggerMapStartRotation.NORTH, 0,
@@ -1220,7 +1220,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("SWP5_G1", "SWP5_G2", "SWP5_I1", "SWP5_I2")))
          )));
          START_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, // TODO: UVs look weird
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_A1", "DES1_A2", "DES1_A3"))), //
                  new StartPosition("DES1_B1", 7, 15, FroggerMapStartRotation.EAST, 1,
@@ -1308,14 +1308,14 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("DES5_G1", "DES5_H1", "DES5_I1"))),
                  new StartPosition("DES5_H1", 34, 20, FroggerMapStartRotation.SOUTH, 7,
                          11, 93, null,
-                         new ArrayList<>(Arrays.asList("DES2_H1", "DES2+H2"))),
+                         new ArrayList<>(Arrays.asList("DES5_H1", "DES2_H2"))),
                  new StartPosition("DES5_J1", 6, 17, FroggerMapStartRotation.EAST, 9,
                          0, 93, null,
-                         new ArrayList<>(Arrays.asList("DES2_I1", "DES2_I2", "DES2_J1")))
+                         new ArrayList<>(Arrays.asList("DES5_I1", "DES5_I2", "DES5_J1")))
          )));
          START_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("JUN1_A1", 12, 3, FroggerMapStartRotation.NORTH, 0, //
-                         44, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block
+                         44, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block TODO: fix tile ID
                          null, new ArrayList<>(Arrays.asList("JUN1_A1", "JUN1_C1"))),
                  new StartPosition("JUN1_B1", 6, 3, FroggerMapStartRotation.NORTH, 1,
                          2, 7,

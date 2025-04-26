@@ -20,6 +20,7 @@ import net.highwayfrogs.editor.gui.GameConfigController;
 import net.highwayfrogs.editor.gui.GameConfigController.GameConfigUIController;
 import net.highwayfrogs.editor.gui.components.FileOpenBrowseComponent.GameConfigFileOpenBrowseComponent;
 import net.highwayfrogs.editor.gui.components.ProgressBarComponent;
+import net.highwayfrogs.editor.randomizer.Randomizer;
 import net.highwayfrogs.editor.system.Config;
 import net.highwayfrogs.editor.utils.StringUtils;
 import net.highwayfrogs.editor.utils.Utils;
@@ -119,6 +120,9 @@ public enum SCGameType implements IGameType {
 
         File exeFile = new File(exeFilePath);
         ((SCGameInstance) instance).loadGame(gameVersionConfigName, instanceConfig, mwdFile, exeFile, progressBar);
+        // HERE??
+        Randomizer r = new Randomizer();
+        r.randomize((FroggerGameInstance) instance);
     }
 
     @Override
