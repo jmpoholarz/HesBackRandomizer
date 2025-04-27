@@ -370,7 +370,7 @@ public class Randomizer {
                             return ret;
                         });
                     }
-                    // Set Tile UVs if provided TODO: these targets are broken in some cases
+                    // Set Tile UVs if provided
                     if (startPos.UVs != null) {
                         // Could probably change the UVs to SCByteTextureUV instead but let's try this first
                         SCByteTextureUV[] textureUVs = new SCByteTextureUV[startPos.UVs.length];

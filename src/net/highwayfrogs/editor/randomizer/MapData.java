@@ -10,6 +10,8 @@ import java.util.Map;
 
 public class MapData {
 
+     static ByteUV[] FULL_SQUARE_UVS = new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)};
+
      public static ArrayList<String> VALID_MAPS = new ArrayList<>(
              Arrays.asList(
                      "ORG1.MAP", "ORG2.MAP", "ORG3.MAP", "ORG4.MAP", "ORG5.MAP",
@@ -705,7 +707,7 @@ public class MapData {
                  new FrogPosition("DES1_A2", 216.0, -0.0625, -231.9375, 0, 0, 0, 0,
                          35, 8, 0, 1, 25, null),
                  new FrogPosition("DES1_A1", -231.9375, -1.0625, -231.9375, 0, 0, 0, 0,
-                         7, 8, 0, 0, 25, null),
+                         7, 8, 0, 0, 25, FULL_SQUARE_UVS),
                  new FrogPosition("DES1_A3", -8.0, 0.0, -87.9375, 0, 0, 0, 0,
                          21, 17, 0, 19, 25, null),
                  new FrogPosition("DES1_B2", -120.25, -93.1875, -120.125, 0, -89.9, 0, 1,
@@ -763,8 +765,8 @@ public class MapData {
          FROG_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition("DES3_A2", -7.9375, -101.5625, -152.0, 0, 0, 0, 0,
                          11, 9, 0, 12, 3, null),
-                 new FrogPosition("DES3_A1", -88.0, -101.5, -232.5625, 0, 0, 0, 0, // TODO UVs look weird and not using ring
-                         6, 4, 0, 0, 0, null),
+                 new FrogPosition("DES3_A1", -88.0, -101.5, -232.5625, 0, 0, 0, 0, // TODO UVs look weird and not using ring on all of them because it's only setting on 1/4 triangles; need to do reverse of the target erase to make it work
+                         6, 4, 0, 0, 3, null),
                  new FrogPosition("DES3_B1", -88.125, -152.0, -151.625, 0, 0, 0, 1,
                          6, 9, 0, 0, 3, null), //
                  new FrogPosition("DES3_C1", -8.125, -152.0, -231.625, 0, 89.9, 0, 2,
@@ -1183,10 +1185,10 @@ public class MapData {
                          new ArrayList<>()), //ignoring since too complicated to overwrite and mostly out of view anyway
                  new StartPosition("SWP3_B1", 13, 17, FroggerMapStartRotation.NORTH, 1,
                          1, 75, null,
-                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out, texture broken
+                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out
                  new StartPosition("SWP3_D1", 17, 17, FroggerMapStartRotation.NORTH, 3,
                          15, 75, null,
-                         new ArrayList<>()) //TODO: Check if need to move so camera doesn't flip out, texture broken
+                         new ArrayList<>()) //TODO: Check if need to move so camera doesn't flip out
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("SWP4_A2", 14, 12, FroggerMapStartRotation.NORTH, 0,
@@ -1220,7 +1222,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("SWP5_G1", "SWP5_G2", "SWP5_I1", "SWP5_I2")))
          )));
          START_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, // TODO: UVs look weird
+                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, // TODO: default Texture UVs look weird
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_A1", "DES1_A2", "DES1_A3"))), //
                  new StartPosition("DES1_B1", 7, 15, FroggerMapStartRotation.EAST, 1,
@@ -1301,7 +1303,8 @@ public class MapData {
                          0, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
                  new StartPosition("DES5_E2", 28, 20, FroggerMapStartRotation.SOUTH, 4,
-                         14, 93, null,
+                         14, 93,
+                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
                  new StartPosition("DES5_G1", 18, 17, FroggerMapStartRotation.EAST, 6,
                          31, 93, null,
@@ -1315,7 +1318,7 @@ public class MapData {
          )));
          START_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("JUN1_A1", 12, 3, FroggerMapStartRotation.NORTH, 0, //
-                         44, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block TODO: fix tile ID
+                         43, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block TODO: fix tile ID
                          null, new ArrayList<>(Arrays.asList("JUN1_A1", "JUN1_C1"))),
                  new StartPosition("JUN1_B1", 6, 3, FroggerMapStartRotation.NORTH, 1,
                          2, 7,

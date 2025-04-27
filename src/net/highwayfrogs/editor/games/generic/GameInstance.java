@@ -136,7 +136,7 @@ public abstract class GameInstance implements IGameInstance {
         this.versionConfig.loadData(config, this.gameType);
         this.onConfigLoad(config);
 
-        // Setup script engine. (Occurs after loading configs)
+        // Setup script engine. (Occurs after loading configs)  -- Rando start here?
         setupScriptEngine(this.scriptEngine);
         this.scriptEngine.seal();
     }
