@@ -17,19 +17,16 @@ import net.highwayfrogs.editor.games.sony.frogger.map.mesh.FroggerMapPolygon;
 import net.highwayfrogs.editor.games.sony.shared.SCByteTextureUV;
 import net.highwayfrogs.editor.games.sony.shared.mwd.MWDFile;
 import net.highwayfrogs.editor.games.sony.shared.mwd.mwi.MWIResourceEntry;
-import net.highwayfrogs.editor.games.sony.shared.ui.SCMainMenuUIController;
-import net.highwayfrogs.editor.gui.MainMenuController;
 import net.highwayfrogs.editor.utils.DataUtils;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.*;
 
 import static net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance.FILE_TYPE_ANY;
+import static net.highwayfrogs.editor.randomizer.Utils.verticesIntersect;
+import static net.highwayfrogs.editor.randomizer.Utils.verticesMatch;
 
 /**
- * The main class for randomizing Frogger: He's Back
+ * The main class for randomizing Frogger: He's Back.
  */
 public class Randomizer {
 
@@ -50,6 +47,7 @@ public class Randomizer {
         for (String s : launchArgs) {
             if (s.startsWith("--seed=") && s.length() > 7) {
                 randomizerSeed = Long.parseLong(s.substring(7));
+                RandomizerConfig.seed = randomizerSeed;
             }
 //            else if (s.startsWith("--randZones=")) {
 //                randomizeZoneOrder = (s.substring(12).equalsIgnoreCase("true"));
@@ -110,9 +108,6 @@ public class Randomizer {
     public void randomize(FroggerGameInstance gameInstance) {
         //parseLaunchArgs();
 
-        // TODO might have differences between PC and PSX since some variables are different
-        // For now, assuming PC for everything
-
         MWDFile mwdFile = gameInstance.mainArchive;
 
         // List to hold all of the map files to randomize
@@ -121,12 +116,7 @@ public class Randomizer {
         // Init random number generator using provided seed if available
         Random random = loadRandomNumberGenerator();
 
-
-
         randomizeMaps(mapFiles, mwdFile, random);
-
-        //saveEndResult(gameInstance);
-
     }
 
     public void randomizeLevelOrder() {
@@ -234,28 +224,6 @@ public class Randomizer {
             }
         }
     }
-
-
-    public void saveEndResult(FroggerGameInstance gameInstance) {
-        // Save the end result
-//        if (true) { // TODO Feature Flag this
-//            return;
-//        }
-        // Only works after the Main Menu has been created; might be nice to do this without the UI loading
-        gameInstance.getMainMenuController().saveMainGameData();
-
-        try {
-            FileWriter writer = new FileWriter(new File(gameInstance.getMainGameFolder(), "seed.txt"));
-            writer.write("Seed: " + randomizerSeed);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            System.out.println("Unable to write seed to file. Error: ");
-            e.printStackTrace();
-        }
-        System.exit(0);
-    }
-
 
 
     public void randomizeFrogletPositions(FroggerMapFile mapFile, ArrayList<FrogPosition> frogPositions, Random random) {
@@ -431,51 +399,5 @@ public class Randomizer {
                 }
             }
         }
-    }
-
-
-    /**
-     * Given two arrays of vertex IDs, check if all the IDs between the two arrays match.  Order
-     * may differ between a and b.
-     * @param aa first array of vertices
-     * @param bb second array of vertices
-     * @return true if all elements in a match all elements in b
-     */
-    boolean verticesMatch(int[] aa, int[] bb) {
-        // Copy arrays since the original is pass by reference and we're going to overwrite values
-        int[] a = Arrays.copyOf(aa, aa.length);
-        int[] b = Arrays.copyOf(bb, bb.length);
-        if (a.length != b.length)
-            return false;
-        for (int i = 0; i < a.length; i++) {
-            boolean isInB = false;
-            for (int j = 0; j < b. length; j++) {
-                if (b[j] == a[i]) {
-                    isInB = true;
-                    a[i] = -1 * i;
-                    b[j] = -1 * j;
-                }
-            }
-            if (!isInB)
-                return false;
-        }
-        return true;
-    }
-
-    /**
-     * Given two arrays of vertex IDs, check if any of the IDs between the two arrays match
-     * @param a first array of vertices
-     * @param b second array of vertices
-     * @return true if any element of a matches any element of b
-     */
-    boolean verticesIntersect(int[] a, int[] b) {
-        for (int i = 0; i < a.length; i++) {
-            for (int j = 0; j < b.length; j++) {
-                if (b[j] == a[i]) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 }
