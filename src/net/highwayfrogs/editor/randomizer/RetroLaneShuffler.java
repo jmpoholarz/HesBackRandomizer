@@ -75,7 +75,7 @@ public class RetroLaneShuffler {
         else {
             return;
         }
-        //ls.recalculateLength(); //TODO fix after merge from FrogLord
+        ls.recalculateLength(null);
         segments.set(0, ls);
     }
 
