@@ -1,4 +1,4 @@
-package net.highwayfrogs.editor.randomizer;
+package net.highwayfrogs.editor.randomizer.data;
 
 import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 import net.highwayfrogs.editor.games.sony.frogger.map.packets.FroggerMapFilePacketGeneral.FroggerMapStartRotation;
@@ -57,7 +57,7 @@ public class StartPosition {
      */
     public ByteUV[] UVs;
 
-    StartPosition(String id, int x, int z, FroggerMapStartRotation rotation, int zone, int defaultTextureIndex,
+    public StartPosition(String id, int x, int z, FroggerMapStartRotation rotation, int zone, int defaultTextureIndex,
                   int ringTextureIndex, ByteUV[] UVs, ArrayList<String> bannedFroglets) {
         this.id = id;
         this.x = (short) x;

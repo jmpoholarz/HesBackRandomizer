@@ -1,4 +1,4 @@
-package net.highwayfrogs.editor.randomizer;
+package net.highwayfrogs.editor.randomizer.data;
 
 import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 import net.highwayfrogs.editor.games.sony.frogger.map.packets.FroggerMapFilePacketGeneral.FroggerMapStartRotation;

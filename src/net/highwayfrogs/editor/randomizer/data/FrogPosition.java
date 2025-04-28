@@ -1,4 +1,4 @@
-package net.highwayfrogs.editor.randomizer;
+package net.highwayfrogs.editor.randomizer.data;
 
 import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 
@@ -81,11 +81,11 @@ public class FrogPosition {
      */
     public ByteUV[] UVs;
 
-    FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone) {
+    public FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone) {
         this(id, x, y, z, yaw, pitch, roll, zone, -1, -1, 0, -1, -1, null);
     }
 
-    FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone,
+    public FrogPosition(String id, double x, double y, double z, double yaw, double pitch, double roll, int zone,
                  int tileX, int tileZ, int stackIndex,
                  int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs) {
         this.id = id;

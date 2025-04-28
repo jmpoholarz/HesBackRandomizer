@@ -17,6 +17,9 @@ import net.highwayfrogs.editor.games.sony.frogger.map.mesh.FroggerMapPolygon;
 import net.highwayfrogs.editor.games.sony.shared.SCByteTextureUV;
 import net.highwayfrogs.editor.games.sony.shared.mwd.MWDFile;
 import net.highwayfrogs.editor.games.sony.shared.mwd.mwi.MWIResourceEntry;
+import net.highwayfrogs.editor.randomizer.data.FrogPosition;
+import net.highwayfrogs.editor.randomizer.data.MapData;
+import net.highwayfrogs.editor.randomizer.data.StartPosition;
 import net.highwayfrogs.editor.utils.DataUtils;
 
 import java.util.*;
