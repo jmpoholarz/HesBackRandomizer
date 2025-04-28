@@ -74,7 +74,7 @@ public class SCMainMenuUIController<TGameInstance extends SCGameInstance> extend
     }
 
     @Override
-    protected void saveMainGameData() {
+    public void saveMainGameData() {
         if (getGameInstance().getGameType().isShowSaveWarning()) {
             boolean saveAnyways = FXUtils.makePopUpYesNo("Saving " + getGameInstance().getGameType().getDisplayName() + " is not supported yet.\n"
                     + "It will most likely crash the game if used. Would you like to continue?");

@@ -1121,7 +1121,7 @@ public class MapData {
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("CAV4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("CAV4_A1", 17, 5, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("CAV4_A1", 17, 5, FroggerMapStartRotation.NORTH, 0, // TODO: didn't reset
                          4, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_A1"))), //
                  new StartPosition("CAV4_C1", 4, 16, FroggerMapStartRotation.EAST, 2,

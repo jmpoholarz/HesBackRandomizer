@@ -17,7 +17,9 @@ import net.highwayfrogs.editor.Constants;
 import net.highwayfrogs.editor.games.generic.GameConfig;
 import net.highwayfrogs.editor.games.generic.GameInstance;
 import net.highwayfrogs.editor.games.generic.IGameType;
+import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
 import net.highwayfrogs.editor.gui.components.ProgressBarComponent;
+import net.highwayfrogs.editor.randomizer.Randomizer;
 import net.highwayfrogs.editor.system.AbstractStringConverter;
 import net.highwayfrogs.editor.system.Config;
 import net.highwayfrogs.editor.system.Config.ConfigValueNode;
@@ -146,6 +148,10 @@ public class GameConfigController extends GameUIController<GameInstance> {
 
         // Shutdown the config viewer.
         newInstance.setupMainMenuWindow();
+
+        // Save Randomizer
+        Randomizer r = new Randomizer();
+        r.saveEndResult((FroggerGameInstance) newInstance);
     }
 
     private void onGameTypeChange(IGameType oldGameType, IGameType newGameType) {
