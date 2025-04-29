@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3 uid="uid://bkrtq8sgku4gt"]
+
+[ext_resource type="Script" path="res://general_settings/general_settings.gd" id="1_gei0x"]
+[ext_resource type="ButtonGroup" uid="uid://b3hi2m72rduvk" path="res://general_settings/version_button_group.tres" id="1_jjjnb"]
+[ext_resource type="PackedScene" uid="uid://be325yhw7bbsy" path="res://info_texture/info_texture.tscn" id="2_kh7ie"]
+
+[node name="GeneralSettings" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_gei0x")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Version"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_pressed = true
+button_group = ExtResource("1_jjjnb")
+text = "PC"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+button_group = ExtResource("1_jjjnb")
+text = "PSX"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Seed"
+
+[node name="InfoTexture" parent="MarginContainer/VBoxContainer/HBoxContainer2" instance=ExtResource("2_kh7ie")]
+layout_mode = 2
+tooltip_text = "The value that identifies this specific configuration
+of the randomizer.  Value must be between
+0 and 2147483647.  Leave blank for a random value."
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="SeedLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "123456"
+virtual_keyboard_type = 2
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/SeedLineEdit" to="." method="_on_seed_line_edit_text_changed"]

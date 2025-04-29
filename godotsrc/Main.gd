@@ -1,6 +1,5 @@
 extends Control
 
-@onready var seed_entry: LineEdit = %SeedEntry
 @onready var seed_error_popup: AcceptDialog = %SeedErrorPopup
 
 @onready var zone_order_checkbox: CheckBox = %ZoneOrderCheckbox
@@ -14,30 +13,17 @@ extends Control
 @onready var error_popup_label: Label = %ErrorLabel
 @onready var success_popup: AcceptDialog = %SuccessPopup
 
-var randomizer_seed = ""
+
+@onready var general_settings: GeneralSettings = %GeneralSettings
+
 var froglord_jar_path := ""
 
-##
-func is_valid_seed(value) -> bool:
-	if value == "":
-		return true
-	if not value.is_valid_int():
-		return false
-	value = int(value)
-	if value < 0 || value > 2147483647:
-		return false
-	return true
+
 
 
 func _ready() -> void:
-	seed_entry.text_changed.connect(_on_seed_entry_text_changed)
 	pick_jar_button.pressed.connect(_on_pick_jar_button_pressed)
 	randomize_button.pressed.connect(_on_randomize_button_pressed)
-
-
-func _on_seed_entry_text_changed(new_text):
-	randomizer_seed = new_text
-	print(randomizer_seed)
 
 
 func _on_pick_jar_button_pressed() -> void:
@@ -52,12 +38,12 @@ func _on_pick_jar_dialog_file_selected(path: String) -> void:
 
 
 func _on_randomize_button_pressed() -> void:
-	if not is_valid_seed(randomizer_seed):
+	if not general_settings.is_valid_seed(general_settings.seed):
 		seed_error_popup.popup_centered()
 		return
 	var args = [
 		"-jar", froglord_jar_path, 
-		"--seed="+randomizer_seed, 
+		"--seed="+str(general_settings.seed), 
 		"--randZones="+str(zone_order_checkbox.button_pressed),
 		"1>", "out.txt", "2>&1"
 	]

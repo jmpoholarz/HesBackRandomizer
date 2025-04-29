@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://be325yhw7bbsy"]
+
+[ext_resource type="Texture2D" uid="uid://djhot0psd8vxy" path="res://info_texture/help_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" id="1_2cml6"]
+
+[node name="InfoTexture" type="TextureRect"]
+texture = ExtResource("1_2cml6")
+stretch_mode = 3

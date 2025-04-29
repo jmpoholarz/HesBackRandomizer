@@ -1,0 +1,98 @@
+[gd_scene load_steps=5 format=3 uid="uid://dkehx6sfb3xbj"]
+
+[ext_resource type="Script" path="res://timer_settings/timer_settings.gd" id="1_1fton"]
+[ext_resource type="Texture2D" uid="uid://djhot0psd8vxy" path="res://info_texture/help_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" id="1_14aij"]
+[ext_resource type="PackedScene" uid="uid://be325yhw7bbsy" path="res://info_texture/info_texture.tscn" id="1_qhw4f"]
+[ext_resource type="ButtonGroup" uid="uid://bs5ropskyfmbd" path="res://timer_settings/timer_settings_button_group.tres" id="2_rfj5f"]
+
+[node name="TimerSettings" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_1fton")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Timers"
+
+[node name="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer" instance=ExtResource("1_qhw4f")]
+layout_mode = 2
+tooltip_text = "Vanilla - use the default timers set by the
+base game.
+
+Dynamic - adjust the timer for each level based
+on the randomized start locations.  Results in
+more time when starting on the edge of levels
+and less when starting in the center."
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+button_group = ExtResource("2_rfj5f")
+text = "Vanilla"
+
+[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+button_pressed = true
+button_group = ExtResource("2_rfj5f")
+text = "Dynamic"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Timer Multiplier"
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+tooltip_text = "Value multiplied to non-Retro Zone timers.  For example,
+a level with a 30 second timer will be set to 60 seconds
+when the multiplier is 2.0 or 15 seconds with a multiplier
+of 0.5.
+
+To get PSX times on PC, set this to 0.67."
+texture = ExtResource("1_14aij")
+stretch_mode = 3
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MultiplierLineEdit" type="LineEdit" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "1.0"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Allow exceeding max timer"
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+tooltip_text = "Allows the timer values set to exceed the default 
+max timer (90s in PSX, 99s in PC).  Expect the UI 
+to bug a little with this enabled."
+texture = ExtResource("1_14aij")
+stretch_mode = 3
+
+[connection signal="text_changed" from="MarginContainer/VBoxContainer/MultiplierLineEdit" to="." method="_on_multiplier_line_edit_text_changed"]

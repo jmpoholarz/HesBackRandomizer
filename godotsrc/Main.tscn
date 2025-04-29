@@ -1,7 +1,9 @@
-[gd_scene load_steps=3 format=3 uid="uid://e6k6arfksh4o"]
+[gd_scene load_steps=5 format=3 uid="uid://e6k6arfksh4o"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cus6d0ce8g6sj" path="res://logo.png" id="2"]
+[ext_resource type="PackedScene" uid="uid://dkehx6sfb3xbj" path="res://timer_settings/timer_settings.tscn" id="3_q0ldo"]
+[ext_resource type="PackedScene" uid="uid://bkrtq8sgku4gt" path="res://general_settings/general_settings.tscn" id="3_xteak"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -38,62 +40,28 @@ texture = ExtResource("2")
 
 [node name="TitleLabel" type="Label" parent="MainWindow/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 7
+size_flags_vertical = 1
 text = "Frogger: He's Back Randomizer
-v0.2"
+v0.3"
 horizontal_alignment = 1
 
-[node name="HboxContainerSeed" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+[node name="VFlowContainer" type="VFlowContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 3
 
-[node name="Label" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/HboxContainerSeed"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "Enter Seed (leave blank for random) :"
-horizontal_alignment = 2
-
-[node name="SeedEntry" type="LineEdit" parent="MainWindow/MarginContainer/VBoxContainer/HboxContainerSeed"]
+[node name="GeneralSettings" parent="MainWindow/MarginContainer/VBoxContainer/VFlowContainer" instance=ExtResource("3_xteak")]
 unique_name_in_owner = true
 layout_mode = 2
-size_flags_horizontal = 3
-max_length = 19
 
-[node name="Settings" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+[node name="TimerSettings" parent="MainWindow/MarginContainer/VBoxContainer/VFlowContainer" instance=ExtResource("3_q0ldo")]
 layout_mode = 2
-
-[node name="EmptyLabel" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/Settings"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="VboxContainer" type="VBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer/Settings"]
-visible = false
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="chkbxLevelOrder" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
-layout_mode = 2
-disabled = true
-text = "Randomize level order"
-
-[node name="ZoneOrderCheckbox" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-tooltip_text = "Note: Gold Frog locations in the level stack may not match up properly."
-mouse_default_cursor_shape = 2
-disabled = true
-text = "Randomize zone order"
-
-[node name="chkbxMixAcrossZones" type="CheckBox" parent="MainWindow/MarginContainer/VBoxContainer/Settings/VboxContainer"]
-layout_mode = 2
-disabled = true
-text = "Mix levels across zones"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
 [node name="Label" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-size_flags_horizontal = 3
 text = "Froglord.Jar : "
 horizontal_alignment = 2
 
@@ -121,6 +89,7 @@ filters = PackedStringArray("*.jar")
 
 [node name="SeedErrorPopup" type="AcceptDialog" parent="MainWindow"]
 unique_name_in_owner = true
+size = Vector2i(392, 122)
 dialog_autowrap = true
 
 [node name="MarginContainer" type="MarginContainer" parent="MainWindow/SeedErrorPopup"]
@@ -130,7 +99,7 @@ anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = -8.0
-offset_bottom = -36.0
+offset_bottom = -49.0
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -153,7 +122,7 @@ anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = -8.0
-offset_bottom = -36.0
+offset_bottom = -49.0
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
@@ -166,6 +135,7 @@ size_flags_vertical = 3
 
 [node name="SuccessPopup" type="AcceptDialog" parent="MainWindow"]
 unique_name_in_owner = true
+size = Vector2i(179, 226)
 dialog_autowrap = true
 
 [node name="MarginContainer" type="MarginContainer" parent="MainWindow/SuccessPopup"]
@@ -175,7 +145,7 @@ anchor_bottom = 1.0
 offset_left = 8.0
 offset_top = 8.0
 offset_right = -8.0
-offset_bottom = -36.0
+offset_bottom = -49.0
 theme_override_constants/margin_left = 8
 theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
