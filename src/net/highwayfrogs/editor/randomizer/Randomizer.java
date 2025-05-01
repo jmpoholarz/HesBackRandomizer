@@ -33,43 +33,19 @@ import static net.highwayfrogs.editor.randomizer.Utils.verticesMatch;
  */
 public class Randomizer {
 
-    String[] launchArgs;
-    long randomizerSeed = -1;
-    boolean randomizeZoneOrder = false;
-    boolean randomizeLevelOrder = true;
-    boolean randomizeLevelsAcrossZones = false;
-
-    public void setLaunchArgs(String[] launchArgs) {
-        this.launchArgs = launchArgs;
-        for (String s : launchArgs) {
-            System.out.println(s);
-        }
-    }
-
-    public void parseLaunchArgs() {
-        for (String s : launchArgs) {
-            if (s.startsWith("--seed=") && s.length() > 7) {
-                randomizerSeed = Long.parseLong(s.substring(7));
-                RandomizerConfig.seed = randomizerSeed;
-            }
-//            else if (s.startsWith("--randZones=")) {
-//                randomizeZoneOrder = (s.substring(12).equalsIgnoreCase("true"));
-//            }
-//            else if (s.startsWith("--randLevels=")) {
-//                randomizeLevelOrder = (s.substring(13).equalsIgnoreCase("true"));
-//            }
-        }
-    }
-
+    /**
+     *
+     * @return
+     */
     public Random loadRandomNumberGenerator() {
         Random random;
-        if (randomizerSeed != -1) {
-            random = new Random(randomizerSeed);
+        if (RandomizerConfig.seed != -1) {
+            random = new Random(RandomizerConfig.seed);
         }
         else {
             random = new Random();
-            randomizerSeed = random.nextInt(Integer.MAX_VALUE);
-            random.setSeed(randomizerSeed);
+            RandomizerConfig.seed = random.nextInt(Integer.MAX_VALUE);
+            random.setSeed(RandomizerConfig.seed);
         }
         return random;
     }
@@ -109,7 +85,9 @@ public class Randomizer {
 
 
     public void randomize(FroggerGameInstance gameInstance) {
-        //parseLaunchArgs();
+        if (!RandomizerFeatureFlags.ENABLE_RANDOMIZATION) {
+            return;
+        }
 
         MWDFile mwdFile = gameInstance.mainArchive;
 
@@ -210,7 +188,7 @@ public class Randomizer {
 
             mapFile.getGeneralPacket().setStartGridCoordX(startPos.x);
             mapFile.getGeneralPacket().setStartGridCoordZ(startPos.z);
-            //mapFile.getGeneralPacket().setStartingTimeLimit(); TODO dynamic times based on start location, esp. for PSX which is more strict on the time limit
+            //mapFile.getGeneralPacket().setStartingTimeLimit(0); // TODO dynamic times based on start location, esp. for PSX which is more strict on the time limit
             mapFile.getGeneralPacket().setStartRotation(startPos.rotation);
 
             removeFroggerTargets(mapFile, startPositions, startPos);

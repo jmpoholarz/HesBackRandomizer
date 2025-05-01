@@ -6,6 +6,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import lombok.Getter;
 import net.highwayfrogs.editor.games.generic.GameInstance;
+import net.highwayfrogs.editor.randomizer.RandomizerConfig;
 import net.highwayfrogs.editor.system.Config;
 import net.highwayfrogs.editor.utils.DataSizeUnit;
 import net.highwayfrogs.editor.utils.FXUtils;
@@ -53,6 +54,9 @@ public class GUIMain extends Application {
 
     public static void main(String[] args) {
         launch(GUIMain.class, args);
+
+        // Copy arguments to the Randomizer config
+        RandomizerConfig.readArguments(args);
     }
 
     @Override
