@@ -55,6 +55,7 @@ unique_name_in_owner = true
 layout_mode = 2
 
 [node name="TimerSettings" parent="MainWindow/MarginContainer/VBoxContainer/VFlowContainer" instance=ExtResource("3_q0ldo")]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
@@ -70,7 +71,7 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "None"
-alignment = 2
+alignment = 0
 clip_text = true
 
 [node name="RandomizeButton" type="Button" parent="MainWindow/MarginContainer/VBoxContainer"]
@@ -82,34 +83,11 @@ text = "Randomize"
 [node name="PickJarDialog" type="FileDialog" parent="MainWindow"]
 unique_name_in_owner = true
 title = "Open a File"
+size = Vector2i(322, 180)
 ok_button_text = "Open"
 file_mode = 0
 access = 2
 filters = PackedStringArray("*.jar")
-
-[node name="SeedErrorPopup" type="AcceptDialog" parent="MainWindow"]
-unique_name_in_owner = true
-size = Vector2i(392, 122)
-dialog_autowrap = true
-
-[node name="MarginContainer" type="MarginContainer" parent="MainWindow/SeedErrorPopup"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = -8.0
-offset_bottom = -49.0
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 8
-
-[node name="Label" type="Label" parent="MainWindow/SeedErrorPopup/MarginContainer"]
-layout_mode = 2
-size_flags_vertical = 3
-text = "Invalid seed.  
-Must be a number between 0 and 2147483647."
 
 [node name="ErrorPopup" type="AcceptDialog" parent="MainWindow"]
 unique_name_in_owner = true
@@ -161,4 +139,6 @@ Updated files:
   frogpsx.mwd
   seed.txt"
 
+[connection signal="pressed" from="MainWindow/MarginContainer/VBoxContainer/HBoxContainer/PickJarButton" to="." method="_on_pick_jar_button_pressed"]
+[connection signal="pressed" from="MainWindow/MarginContainer/VBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
 [connection signal="file_selected" from="MainWindow/PickJarDialog" to="." method="_on_pick_jar_dialog_file_selected"]

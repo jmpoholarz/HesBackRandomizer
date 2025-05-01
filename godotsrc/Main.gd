@@ -1,8 +1,5 @@
 extends Control
 
-@onready var seed_error_popup: AcceptDialog = %SeedErrorPopup
-
-@onready var zone_order_checkbox: CheckBox = %ZoneOrderCheckbox
 
 @onready var pick_jar_button: Button = %PickJarButton
 
@@ -15,15 +12,17 @@ extends Control
 
 
 @onready var general_settings: GeneralSettings = %GeneralSettings
+@onready var timer_settings: TimerSettings = %TimerSettings
 
 var froglord_jar_path := ""
 
 
-
-
-func _ready() -> void:
-	pick_jar_button.pressed.connect(_on_pick_jar_button_pressed)
-	randomize_button.pressed.connect(_on_randomize_button_pressed)
+func validate_all() -> bool:
+	if !general_settings.validate_settings():
+		return false
+	if !timer_settings.validate_settings():
+		return false
+	return true
 
 
 func _on_pick_jar_button_pressed() -> void:
@@ -38,13 +37,15 @@ func _on_pick_jar_dialog_file_selected(path: String) -> void:
 
 
 func _on_randomize_button_pressed() -> void:
-	if not general_settings.is_valid_seed(general_settings.seed):
-		seed_error_popup.popup_centered()
+	if !validate_all():
 		return
+
 	var args = [
 		"-jar", froglord_jar_path, 
 		"--seed="+str(general_settings.seed), 
-		"--randZones="+str(zone_order_checkbox.button_pressed),
+		"--timer_mode=" + str(timer_settings.mode),
+		"--timer_multiplier=" + str(timer_settings.multiplier),
+		"--timer_exceed_max=" + str(timer_settings.exceed_max_timer),
 		"1>", "out.txt", "2>&1"
 	]
 	print("Args: " + str(args))

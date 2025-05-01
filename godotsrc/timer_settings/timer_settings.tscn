@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkehx6sfb3xbj"]
+[gd_scene load_steps=6 format=3 uid="uid://dkehx6sfb3xbj"]
 
 [ext_resource type="Script" path="res://timer_settings/timer_settings.gd" id="1_1fton"]
 [ext_resource type="Texture2D" uid="uid://djhot0psd8vxy" path="res://info_texture/help_24dp_FFFFFF_FILL0_wght400_GRAD0_opsz24.png" id="1_14aij"]
 [ext_resource type="PackedScene" uid="uid://be325yhw7bbsy" path="res://info_texture/info_texture.tscn" id="1_qhw4f"]
 [ext_resource type="ButtonGroup" uid="uid://bs5ropskyfmbd" path="res://timer_settings/timer_settings_button_group.tres" id="2_rfj5f"]
+[ext_resource type="PackedScene" uid="uid://cajpbapbtlpul" path="res://error_shake_component/ErrorShakeComponent.tscn" id="5_at8cj"]
 
 [node name="TimerSettings" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -42,12 +43,12 @@ and less when starting in the center."
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+[node name="ModeVanillaCheckbox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 button_group = ExtResource("2_rfj5f")
 text = "Vanilla"
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+[node name="ModeDynamicCheckbox" type="CheckBox" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 button_pressed = true
 button_group = ExtResource("2_rfj5f")
@@ -80,10 +81,15 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "1.0"
 
+[node name="MultiplierErrorShake" parent="MarginContainer/VBoxContainer/MultiplierLineEdit" node_paths=PackedStringArray("target") instance=ExtResource("5_at8cj")]
+unique_name_in_owner = true
+layout_mode = 1
+target = NodePath("..")
+
 [node name="HBoxContainer3" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CheckBox3" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
+[node name="ExceedMaxCheckbox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer3"]
 layout_mode = 2
 text = "Allow exceeding max timer"
 
@@ -95,4 +101,7 @@ to bug a little with this enabled."
 texture = ExtResource("1_14aij")
 stretch_mode = 3
 
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ModeVanillaCheckbox" to="." method="_on_mode_vanilla_checkbox_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/ModeDynamicCheckbox" to="." method="_on_mode_dynamic_checkbox_toggled"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/MultiplierLineEdit" to="." method="_on_multiplier_line_edit_text_changed"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer3/ExceedMaxCheckbox" to="." method="_on_exceed_max_checkbox_toggled"]

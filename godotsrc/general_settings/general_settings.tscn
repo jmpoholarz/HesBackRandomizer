@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bkrtq8sgku4gt"]
+[gd_scene load_steps=5 format=3 uid="uid://bkrtq8sgku4gt"]
 
 [ext_resource type="Script" path="res://general_settings/general_settings.gd" id="1_gei0x"]
 [ext_resource type="ButtonGroup" uid="uid://b3hi2m72rduvk" path="res://general_settings/version_button_group.tres" id="1_jjjnb"]
 [ext_resource type="PackedScene" uid="uid://be325yhw7bbsy" path="res://info_texture/info_texture.tscn" id="2_kh7ie"]
+[ext_resource type="PackedScene" uid="uid://cajpbapbtlpul" path="res://error_shake_component/ErrorShakeComponent.tscn" id="4_c4km8"]
 
 [node name="GeneralSettings" type="PanelContainer"]
 custom_minimum_size = Vector2(300, 0)
@@ -64,5 +65,9 @@ unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "123456"
 virtual_keyboard_type = 2
+
+[node name="SeedErrorShake" parent="MarginContainer/VBoxContainer/SeedLineEdit" instance=ExtResource("4_c4km8")]
+unique_name_in_owner = true
+layout_mode = 1
 
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/SeedLineEdit" to="." method="_on_seed_line_edit_text_changed"]

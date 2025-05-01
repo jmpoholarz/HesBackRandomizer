@@ -1,20 +1,19 @@
 class_name GeneralSettings
 extends PanelContainer
 
+@onready var seed_line_edit: LineEdit = %SeedLineEdit
+@onready var seed_error_shake: ErrorShakeComponent = %SeedErrorShake
+
 enum VERSION {
 	PC = 0,
 	PSX = 1
 }
 
-var version: VERSION = VERSION.PC
-
-var seed: int = -1
-
-
 const WHITE = Color(1, 1, 1)
 const RED = Color(1, 0, 0)
 
-@onready var seed_line_edit: LineEdit = %SeedLineEdit
+var version: VERSION = VERSION.PC
+var seed: int = -1
 
 
 ##
@@ -25,6 +24,13 @@ func is_valid_seed(value) -> bool:
 		return false
 	value = int(value)
 	if value < 0 || value > 2147483647:
+		return false
+	return true
+
+
+func validate_settings() -> bool:
+	if !is_valid_seed(seed_line_edit.text):
+		seed_error_shake.do_shake()
 		return false
 	return true
 
