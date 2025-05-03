@@ -223,9 +223,9 @@ public class Randomizer {
         double adjusted_time = base_time * RandomizerConfig.timerMultiplier;
         if (!RandomizerConfig.timerCanExceedMax) {
             if (RandomizerConfig.version == RandomizerConfig.VERSION.PC) {
-                adjusted_time = Math.max(adjusted_time, 99.0);
+                adjusted_time = Math.min(adjusted_time, 99.0);
             } else if (RandomizerConfig.version == RandomizerConfig.VERSION.PSX) {
-                adjusted_time = Math.max(adjusted_time, 75.0);
+                adjusted_time = Math.min(adjusted_time, 75.0);
             }
         }
         return (int) adjusted_time;

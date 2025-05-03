@@ -356,7 +356,7 @@ public class MapData {
          FROG_LOCATIONS.put("VOL2.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition("VOL2_B3", -120.125, -87.1875, 151.8125, 180, 0, 180, 1,
                          2, 21, 0, 2, 14, null), //
-                 new FrogPosition("VOL2_B4", -88.0, -71.1875, 88.0, 0, 0, 0, 1,
+                 new FrogPosition("VOL2_B4", -88.0, -71.1875, 88.0, 0, 0, 0, 1, // TODO: didn't reset
                          4, 17, 1, -1, -1, null), //2nd level
                  new FrogPosition("VOL2_B2", -104.0, -111.1875, -24.0, 0, 0, 0, 1,
                          3, 9, 0, -1, -1, null), //grate
@@ -1185,7 +1185,7 @@ public class MapData {
                          new ArrayList<>()), //ignoring since too complicated to overwrite and mostly out of view anyway
                  new StartPosition("SWP3_B1", 13, 17, FroggerMapStartRotation.NORTH, 1, 34,
                          1, 75, null,
-                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out
+                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Need to move so camera doesn't flip out
                  new StartPosition("SWP3_D1", 17, 17, FroggerMapStartRotation.NORTH, 3, 34,
                          15, 75, null,
                          new ArrayList<>()) //TODO: Need to move so camera doesn't flip out
