@@ -1,0 +1,49 @@
+[gd_scene load_steps=2 format=3 uid="uid://b1hm0ne3h3t0a"]
+
+[ext_resource type="Script" path="res://file_picker/file_picker.gd" id="1_ylmd3"]
+
+[node name="FilePicker" type="PanelContainer"]
+custom_minimum_size = Vector2(300, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+script = ExtResource("1_ylmd3")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Base Path : "
+horizontal_alignment = 2
+
+[node name="PickJarButton" type="Button" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "None"
+alignment = 0
+clip_text = true
+
+[node name="PickJarDialog" type="FileDialog" parent="."]
+unique_name_in_owner = true
+auto_translate_mode = 1
+title = "Open a Directory"
+size = Vector2i(322, 180)
+ok_button_text = "Select Current Folder"
+file_mode = 2
+access = 2
+
+[connection signal="pressed" from="MarginContainer/VBoxContainer/HBoxContainer/PickJarButton" to="." method="_on_pick_jar_button_pressed"]
+[connection signal="dir_selected" from="PickJarDialog" to="." method="_on_pick_jar_dialog_dir_selected"]
+[connection signal="file_selected" from="PickJarDialog" to="." method="_on_pick_jar_dialog_file_selected"]

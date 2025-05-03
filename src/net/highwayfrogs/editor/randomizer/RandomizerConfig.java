@@ -62,6 +62,11 @@ public class RandomizerConfig {
             if (s.startsWith("--seed=") && s.length() > 7) {
                 seed = Long.parseLong(s.substring(7));
             }
+            if (s.startsWith("--version=") && s.length() > 10) {
+                version = s.substring(10).equalsIgnoreCase("psx")
+                        ? VERSION.PSX
+                        : VERSION.PC;
+            }
 
             // Timer Settings
             else if (s.startsWith("--timer_mode=") && s.length() > 13) {

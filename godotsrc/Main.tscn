@@ -1,9 +1,11 @@
-[gd_scene load_steps=5 format=3 uid="uid://e6k6arfksh4o"]
+[gd_scene load_steps=7 format=3 uid="uid://e6k6arfksh4o"]
 
 [ext_resource type="Script" path="res://Main.gd" id="1"]
 [ext_resource type="Texture2D" uid="uid://cus6d0ce8g6sj" path="res://logo.png" id="2"]
 [ext_resource type="PackedScene" uid="uid://dkehx6sfb3xbj" path="res://timer_settings/timer_settings.tscn" id="3_q0ldo"]
 [ext_resource type="PackedScene" uid="uid://bkrtq8sgku4gt" path="res://general_settings/general_settings.tscn" id="3_xteak"]
+[ext_resource type="Script" path="res://randomizer_launcher.gd" id="5_ndwhs"]
+[ext_resource type="PackedScene" uid="uid://b1hm0ne3h3t0a" path="res://file_picker/file_picker.tscn" id="5_pbw0v"]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -58,36 +60,14 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MainWindow/MarginContainer/VBoxContainer"]
+[node name="FilePicker" parent="MainWindow/MarginContainer/VBoxContainer" instance=ExtResource("5_pbw0v")]
 layout_mode = 2
-
-[node name="Label" type="Label" parent="MainWindow/MarginContainer/VBoxContainer/HBoxContainer"]
-layout_mode = 2
-text = "Froglord.Jar : "
-horizontal_alignment = 2
-
-[node name="PickJarButton" type="Button" parent="MainWindow/MarginContainer/VBoxContainer/HBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 3
-text = "None"
-alignment = 0
-clip_text = true
 
 [node name="RandomizeButton" type="Button" parent="MainWindow/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 disabled = true
 text = "Randomize"
-
-[node name="PickJarDialog" type="FileDialog" parent="MainWindow"]
-unique_name_in_owner = true
-title = "Open a File"
-size = Vector2i(322, 180)
-ok_button_text = "Open"
-file_mode = 0
-access = 2
-filters = PackedStringArray("*.jar")
 
 [node name="ErrorPopup" type="AcceptDialog" parent="MainWindow"]
 unique_name_in_owner = true
@@ -139,6 +119,9 @@ Updated files:
   frogpsx.mwd
   seed.txt"
 
-[connection signal="pressed" from="MainWindow/MarginContainer/VBoxContainer/HBoxContainer/PickJarButton" to="." method="_on_pick_jar_button_pressed"]
+[node name="RandomizerLauncher" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("5_ndwhs")
+
+[connection signal="directory_chosen" from="MainWindow/MarginContainer/VBoxContainer/FilePicker" to="." method="_on_file_picker_directory_chosen"]
 [connection signal="pressed" from="MainWindow/MarginContainer/VBoxContainer/RandomizeButton" to="." method="_on_randomize_button_pressed"]
-[connection signal="file_selected" from="MainWindow/PickJarDialog" to="." method="_on_pick_jar_dialog_file_selected"]
