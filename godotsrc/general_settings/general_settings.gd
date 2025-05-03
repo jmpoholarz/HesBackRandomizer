@@ -41,3 +41,13 @@ func _on_seed_line_edit_text_changed(new_text: String) -> void:
 		seed = int(new_text)
 	else:
 		seed_line_edit.modulate = RED
+
+
+func _on_pc_check_box_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		version = VERSION.PC
+
+
+func _on_psx_check_box_2_toggled(toggled_on: bool) -> void:
+	if toggled_on:
+		version = VERSION.PSX

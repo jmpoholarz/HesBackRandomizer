@@ -19,4 +19,5 @@ func _on_pick_jar_button_pressed() -> void:
 
 func _on_pick_jar_dialog_dir_selected(dir: String) -> void:
 	print("directory chosen : " + dir)
+	pick_jar_button.text = dir
 	directory_chosen.emit(dir)

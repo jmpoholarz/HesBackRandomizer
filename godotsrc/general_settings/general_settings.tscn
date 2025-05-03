@@ -32,13 +32,13 @@ layout_mode = 2
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="CheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PCCheckBox" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 button_pressed = true
 button_group = ExtResource("1_jjjnb")
 text = "PC"
 
-[node name="CheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="PSXCheckBox2" type="CheckBox" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 button_group = ExtResource("1_jjjnb")
 text = "PSX"
@@ -70,4 +70,6 @@ virtual_keyboard_type = 2
 unique_name_in_owner = true
 layout_mode = 1
 
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/PCCheckBox" to="." method="_on_pc_check_box_toggled"]
+[connection signal="toggled" from="MarginContainer/VBoxContainer/HBoxContainer/PSXCheckBox2" to="." method="_on_psx_check_box_2_toggled"]
 [connection signal="text_changed" from="MarginContainer/VBoxContainer/SeedLineEdit" to="." method="_on_seed_line_edit_text_changed"]
