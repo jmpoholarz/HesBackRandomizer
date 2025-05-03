@@ -262,7 +262,7 @@ public class MapData {
                  new FrogPosition("FOR1_C3", -169.6875, -37.5, 56.0625, 0, 89.9, 0, 2,
                          3, 15, 0, 3, 21,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
-                 new FrogPosition("FOR1_C4", -169.6875, -38.0625, 88.0625, 0, 90, 0, 2,
+                 new FrogPosition("FOR1_C4", -169.6875, -38.0625, 88.0625, 0, 90, 0, 2, //TODO Double check rotation
                          3, 17, 0, 3, 21,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
                  new FrogPosition("FOR1_C5", -119.9375, -34.5625, 137.6875, 180, 0, 180, 2,
@@ -603,7 +603,7 @@ public class MapData {
                          24, 37, 0, 0, 59, null),
                  new FrogPosition("SWP1_B8", 152.0, -64.0, 264.0, 0, 0, 0, 1,
                          30, 43, 0, 0, 59, null), //
-                 new FrogPosition("SWP1_B11", 168.0, -68.125, 152.0, 0, 0, 0, 1,
+                 new FrogPosition("SWP1_B11", 168.0, -68.125, 152.0, 0, 0, 0, 1, // TODO: default texture is wrong
                          31, 36, 1, 2, 59, null), //2nd layer
                  new FrogPosition("SWP1_B12", 184.0, -66.6875, 72.0, 0, 0, 0, 1,
                          32, 31, 0, 0, 59, null), //
@@ -654,7 +654,7 @@ public class MapData {
                          15, 29, 0, -1, -1, null) //ignoring since reqs overriding multiple tiles
          )));
          FROG_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
-                 new FrogPosition("SWP4_B4", 71.1875, -27.0, -53.625, -30, 0, -30, 1,
+                 new FrogPosition("SWP4_B4", 71.1875, -27.0, -53.625, -30, 0, -30, 1, // TODO: rotation seems wrong?
                          19, 23, 0, 44, 41, null),
                  new FrogPosition("SWP4_B2", -8.125, -47.1875, -87.625, 0, 0, 0, 1,
                          14, 21, 0, 44, 41, null),
@@ -883,474 +883,474 @@ public class MapData {
      public static Map<String, ArrayList<StartPosition>> START_LOCATIONS = new HashMap<>();
      static {
          START_LOCATIONS.put("ORG1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("ORG1_A1", 10, 1, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("ORG1_A1", 10, 1, FroggerMapStartRotation.NORTH, 0, 25,
                          -1, -1, null,
                          new ArrayList<>()) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1) River Side
          ))
          );
          START_LOCATIONS.put("ORG2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("ORG2_A1", 10, 1, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("ORG2_A1", 10, 1, FroggerMapStartRotation.NORTH, 0, 20,
                          -1, -1, null,
                          new ArrayList<>()) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1) River Side
          )));
          START_LOCATIONS.put("ORG3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("ORG3_A1", 10, 1, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("ORG3_A1", 10, 1, FroggerMapStartRotation.NORTH, 0, 30,
                          -1, -1, null,
                          new ArrayList<>()) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1) River Side
          )));
          START_LOCATIONS.put("ORG4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("ORG4_A1", 10, 1, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("ORG4_A1", 10, 1, FroggerMapStartRotation.NORTH, 0, 24,
                          -1, -1, null,
                          new ArrayList<>()) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1) River Side
          )));
          START_LOCATIONS.put("ORG5.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("ORG5_A1", 10, 1, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("ORG5_A1", 10, 1, FroggerMapStartRotation.NORTH, 0, 30,
                          -1, -1, null,
                          new ArrayList<>()) //,
                  //new StartPosition(10, 13, StartRotation.SOUTH, 1) River Side
          )));
          START_LOCATIONS.put("SUB1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SUB1_A1", 17, 21, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SUB1_A1", 17, 21, FroggerMapStartRotation.NORTH, 0, 60,
                          13, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_A1", "SUB1_A2", "SUB1_A3"))), //
-                 new StartPosition("SUB1_B1", 23, 26, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("SUB1_B1", 23, 26, FroggerMapStartRotation.EAST, 1, 72,
                          14, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_A1", "SUB1_A2", "SUB1_A3", "SUB1_B1"))),
-                 new StartPosition("SUB1_C1", 16, 42, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("SUB1_C1", 16, 42, FroggerMapStartRotation.EAST, 2, 52,
                          13, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_C1", "SUB1_C2", "SUB1_C3", "SUB1_C4"))),
-                 new StartPosition("SUB1_C2", 19, 38, FroggerMapStartRotation.NORTH, 2,
+                 new StartPosition("SUB1_C2", 19, 38, FroggerMapStartRotation.NORTH, 2, 52,
                          13, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_C1", "SUB1_C2", "SUB1_C3", "SUB1_C4"))),
-                 new StartPosition("SUB1_C3", 37, 42, FroggerMapStartRotation.SOUTH, 2,
+                 new StartPosition("SUB1_C3", 37, 42, FroggerMapStartRotation.SOUTH, 2, 45,
                          13, 47, null,
-                         new ArrayList<>(Arrays.asList("SUB1_C1", "SUB1_C2", "SUB1_C3", "SUB1_C4"))),
-                 new StartPosition("SUB1_D1", 50, 42, FroggerMapStartRotation.WEST, 3,
+                         new ArrayList<>(Arrays.asList("SUB1_C2", "SUB1_C3", "SUB1_C4"))),
+                 new StartPosition("SUB1_D1", 50, 42, FroggerMapStartRotation.WEST, 3, 52,
                          14, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_C4", "SUB1_D1", "SUB1_D2"))),
-                 new StartPosition("SUB1_F1", 51, 29, FroggerMapStartRotation.EAST, 5,
+                 new StartPosition("SUB1_F1", 51, 29, FroggerMapStartRotation.EAST, 5, 45,
                          13, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_F1", "SUB1_F2", "SUB1_F3"))),
-                 new StartPosition("SUB1_F2", 47, 22, FroggerMapStartRotation.NORTH, 5,
+                 new StartPosition("SUB1_F2", 47, 22, FroggerMapStartRotation.NORTH, 5, 50,
                          13, 47, null,
                          new ArrayList<>(Arrays.asList("SUB1_F1", "SUB1_F2", "SUB1_F3")))
          )));
          START_LOCATIONS.put("SUB2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SUB2_A1", 26, 6, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SUB2_A1", 26, 6, FroggerMapStartRotation.NORTH, 0, 45,
                          2, 12, null,
                          new ArrayList<>(Arrays.asList("SUB2_A1", "SUB2_A2"))), //
-                 new StartPosition("SUB2_B1", 19, 26, FroggerMapStartRotation.WEST, 1,
+                 new StartPosition("SUB2_B1", 19, 26, FroggerMapStartRotation.WEST, 1, 51,
                          2, 12, null,
                          new ArrayList<>(Arrays.asList("SUB2_A2", "SUB2_B1", "SUB2_B2", "SUB2_B3"))),
-                 new StartPosition("SUB2_C1", 21, 34, FroggerMapStartRotation.SOUTH, 2,
+                 new StartPosition("SUB2_C1", 21, 34, FroggerMapStartRotation.SOUTH, 2, 64,
                          2, 12, null,
                          new ArrayList<>(Arrays.asList("SUB2_C1", "SUB2_C2", "SUB2_C3", "SUB2_C4", "SUB2_C5", "SUB2_C6"))),
-                 new StartPosition("SUB2_D1", 31, 29, FroggerMapStartRotation.WEST, 3,
+                 new StartPosition("SUB2_D1", 31, 29, FroggerMapStartRotation.WEST, 3, 57,
                          2, 12, null,
                          new ArrayList<>(Arrays.asList("SUB2_D1", "SUB2_C2", "SUB2_C4")))
          )));
          START_LOCATIONS.put("SUB3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SUB3_A1", 21, 6, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SUB3_A1", 21, 6, FroggerMapStartRotation.NORTH, 0, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_A1", "SUB3_A2", "SUB3_A3", "SUB3_A4"))), //
-                 new StartPosition("SUB3_B1", 5, 11, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("SUB3_B1", 5, 11, FroggerMapStartRotation.EAST, 1, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_B1", "SUB3_B2"))),
-                 new StartPosition("SUB3_C1", 17, 17, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("SUB3_C1", 17, 17, FroggerMapStartRotation.EAST, 2, 44,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_C1", "SUB3_F1"))),
-                 new StartPosition("SUB3_C2", 14, 24, FroggerMapStartRotation.SOUTH, 2,
+                 new StartPosition("SUB3_C2", 14, 24, FroggerMapStartRotation.SOUTH, 2, 46,
                          36, 43,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("SUB3_C1"))),
-                 new StartPosition("SUB3_D1", 16, 38, FroggerMapStartRotation.SOUTH, 3,
+                 new StartPosition("SUB3_D1", 16, 38, FroggerMapStartRotation.SOUTH, 3, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_D1"))),
-                 new StartPosition("SUB3_E1", 25, 31, FroggerMapStartRotation.EAST, 4,
+                 new StartPosition("SUB3_E1", 25, 31, FroggerMapStartRotation.EAST, 4, 50,
                          17, 43,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("SUB3_E1", "SUB3_E2"))),
-                 new StartPosition("SUB3_E2", 39, 24, FroggerMapStartRotation.NORTH, 4,
+                 new StartPosition("SUB3_E2", 39, 24, FroggerMapStartRotation.NORTH, 4, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_E2", "SUB3_E3"))),
-                 new StartPosition("SUB3_F1", 29, 10, FroggerMapStartRotation.SOUTH, 5,
+                 new StartPosition("SUB3_F1", 29, 10, FroggerMapStartRotation.SOUTH, 5, 50,
                          12, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_F1", "SUB3_F2", "SUB3_F3"))),
-                 new StartPosition("SUB3_F2", 35, 11, FroggerMapStartRotation.WEST, 5,
+                 new StartPosition("SUB3_F2", 35, 11, FroggerMapStartRotation.WEST, 5, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_F1", "SUB3_F2", "SUB3_F3")))
          )));
          START_LOCATIONS.put("SUB4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SUB4_A1", 17, 24, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SUB4_A1", 17, 24, FroggerMapStartRotation.NORTH, 0, 60,
                          9, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_A1", "SUB4_A2", "SUB4_A3"))), //
-                 new StartPosition("SUB4_A2", 23, 29, FroggerMapStartRotation.EAST, 0,
+                 new StartPosition("SUB4_A2", 23, 29, FroggerMapStartRotation.EAST, 0, 72,
                          14, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_A1", "SUB4_A2", "SUB4_A3"))),
-                 new StartPosition("SUB4_C1", 19, 41, FroggerMapStartRotation.NORTH, 2,
+                 new StartPosition("SUB4_C1", 19, 41, FroggerMapStartRotation.NORTH, 2, 55,
                          9, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_C1", "SUB4_C2"))),
-                 new StartPosition("SUB4_D1", 32, 39, FroggerMapStartRotation.EAST, 3,
+                 new StartPosition("SUB4_D1", 32, 39, FroggerMapStartRotation.EAST, 3, 49,
                          9, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_C2", "SUB4_D1"))),
-                 new StartPosition("SUB4_D2", 37, 45, FroggerMapStartRotation.SOUTH, 3,
+                 new StartPosition("SUB4_D2", 37, 45, FroggerMapStartRotation.SOUTH, 3, 52,
                          14, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_C2", "SUB4_D1"))),
-                 new StartPosition("SUB4_E1", 56, 41, FroggerMapStartRotation.NORTH, 4,
+                 new StartPosition("SUB4_E1", 56, 41, FroggerMapStartRotation.NORTH, 4, 55,
                          14, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_E1", "SUB4_E2"))),
-                 new StartPosition("SUB4_F1", 47, 32, FroggerMapStartRotation.WEST, 5,
+                 new StartPosition("SUB4_F1", 47, 32, FroggerMapStartRotation.WEST, 5, 52,
                          9, 19, null,
                          new ArrayList<>(Arrays.asList("SUB4_F1", "SUB4_F2", "SUB4_F3")))
          )));
          START_LOCATIONS.put("SUB5.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SUB5_A1", 33, 7, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SUB5_A1", 33, 7, FroggerMapStartRotation.NORTH, 0, 40,
                          0, 9, null,
                          new ArrayList<>(Arrays.asList("SUB5_A1", "SUB5_A2", "SUB5_A3", "SUB5_A4"))), //
-                 new StartPosition("SUB5_A2", 20, 12, FroggerMapStartRotation.EAST, 0,
+                 new StartPosition("SUB5_A2", 20, 12, FroggerMapStartRotation.EAST, 0, 40,
                          0, 9, null,
                          new ArrayList<>(Arrays.asList("SUB5_A1", "SUB5_A2", "SUB5_A3", "SUB5_A4"))),
-                 new StartPosition("SUB5_B1", 20, 27, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("SUB5_B1", 20, 27, FroggerMapStartRotation.EAST, 1, 40,
                          3, 9, null,
                          new ArrayList<>(Arrays.asList("SUB5_A4", "SUB5_B1", "SUB5_B2"))),
-                 new StartPosition("SUB5_C1", 36, 22, FroggerMapStartRotation.SOUTH, 2,
+                 new StartPosition("SUB5_C1", 36, 22, FroggerMapStartRotation.SOUTH, 2, 54,
                          29, 9, null,
                          new ArrayList<>(Arrays.asList("SUB5_C1", "SUB5_C2", "SUB5_C3", "SUB5_C4", "SUB5_C5"))),
-                 new StartPosition("SUB5_D1", 38, 30, FroggerMapStartRotation.WEST, 3,
+                 new StartPosition("SUB5_D1", 38, 30, FroggerMapStartRotation.WEST, 3, 45,
                          0, 9, null,
                          new ArrayList<>(Arrays.asList("SUB5_D1", "SUB5_C5", "SUB5_C2")))
          )));
          START_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("FOR1_A1", 9, 3, FroggerMapStartRotation.NORTH, 0, // TODO: UVs Bugged
+                 new StartPosition("FOR1_A1", 9, 3, FroggerMapStartRotation.NORTH, 0, 25, // TODO: UVs Bugged
                          3, 30, //
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
-                 new StartPosition("FOR1_B1", 3, 9, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("FOR1_B1", 3, 9, FroggerMapStartRotation.EAST, 1, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_B1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
-                 new StartPosition("FOR1_C1", 3, 19, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("FOR1_C1", 3, 19, FroggerMapStartRotation.EAST, 2, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_C1", "FOR1_C2", "FOR1_C3", "FOR1_C4", "FOR1_C5", "FOR1_C6", "FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5"))),
-                 new StartPosition("FOR1_D1", 15, 20, FroggerMapStartRotation.SOUTH, 3,
+                 new StartPosition("FOR1_D1", 15, 20, FroggerMapStartRotation.SOUTH, 3, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_C1", "FOR1_C2", "FOR1_C3", "FOR1_C4", "FOR1_C5", "FOR1_C6", "FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5"))),
-                 new StartPosition("FOR1_D2", 24, 15, FroggerMapStartRotation.WEST, 3,
+                 new StartPosition("FOR1_D2", 24, 15, FroggerMapStartRotation.WEST, 3, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
-                 new StartPosition("FOR1_F2", 24, 5, FroggerMapStartRotation.WEST, 5,
+                 new StartPosition("FOR1_F2", 24, 5, FroggerMapStartRotation.WEST, 5, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
-                 new StartPosition("FOR1_F1", 19, 3, FroggerMapStartRotation.NORTH, 5,
+                 new StartPosition("FOR1_F1", 19, 3, FroggerMapStartRotation.NORTH, 5, 25,
                          0, 30,
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4")))
          )));
          START_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("FOR2_A1", 15, 23, FroggerMapStartRotation.SOUTH, 0,
+                 new StartPosition("FOR2_A1", 15, 23, FroggerMapStartRotation.SOUTH, 0, 45,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1"))),
-                 new StartPosition("FOR2_A3", 15, 29, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("FOR2_A3", 15, 29, FroggerMapStartRotation.NORTH, 0, 45,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1"))),
-                 new StartPosition("FOR2_A2", 18, 26, FroggerMapStartRotation.EAST, 0,
+                 new StartPosition("FOR2_A2", 18, 26, FroggerMapStartRotation.EAST, 0, 45,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1"))),
-                 new StartPosition("FOR2_B1", 20, 19, FroggerMapStartRotation.WEST, 1,
+                 new StartPosition("FOR2_B1", 20, 19, FroggerMapStartRotation.WEST, 1, 45,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_B1", "FOR2_C1", "FOR2_C2", "FOR2_C3"))),
-                 new StartPosition("FOR2_E1", 6, 5, FroggerMapStartRotation.WEST, 4,
+                 new StartPosition("FOR2_E1", 6, 5, FroggerMapStartRotation.WEST, 4, 34,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1", "FOR2_E1", "FOR2_H1", "FOR2_H2"))),
-                 new StartPosition("FOR2_G1", 24, 15, FroggerMapStartRotation.SOUTH, 6,
+                 new StartPosition("FOR2_G1", 24, 15, FroggerMapStartRotation.SOUTH, 6, 34,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1", "FOR2_G1", "FOR2_H1", "FOR2_H2", "FOR2_I1"))),
-                 new StartPosition("FOR2_H1", 30, 10, FroggerMapStartRotation.WEST, 7,
+                 new StartPosition("FOR2_H1", 30, 10, FroggerMapStartRotation.WEST, 7, 34,
                          -1, -1, null,
                          new ArrayList<>(Arrays.asList("FOR2_A1", "FOR2_B1", "FOR2_G1", "FOR2_G2", "FOR2_H1", "FOR2_H2")))
          )));
          START_LOCATIONS.put("VOL1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("VOL1_A1", 9, 2, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("VOL1_A1", 9, 2, FroggerMapStartRotation.NORTH, 0, 40,
                          3, 34, null,
                          new ArrayList<>()),
-                 new StartPosition("VOL1_A2", 2, 3, FroggerMapStartRotation.EAST, 0,
+                 new StartPosition("VOL1_A2", 2, 3, FroggerMapStartRotation.EAST, 0, 40,
                          3, 34, null,
                          new ArrayList<>()),
-                 new StartPosition("VOL1_A3", 16, 3, FroggerMapStartRotation.WEST, 0,
+                 new StartPosition("VOL1_A3", 16, 3, FroggerMapStartRotation.WEST, 0, 40,
                          3, 34, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("VOL2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("VOL2_A1", 9, 2, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("VOL2_A1", 9, 2, FroggerMapStartRotation.NORTH, 0, 60,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("VOL3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("VOL3_A1", 3, 3, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("VOL3_A1", 3, 3, FroggerMapStartRotation.NORTH, 0, 60,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("CAV1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("CAV1_A1", 11, 2, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("CAV1_A1", 11, 2, FroggerMapStartRotation.NORTH, 0, 60,
                          3, 4, null,
                          new ArrayList<>(Arrays.asList("CAV1_A1", "CAV1_A2", "CAV1_B1", "CAV1_B2", "CAV1_H1"))),
-                 new StartPosition("CAV1_C1", 3, 7, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("CAV1_C1", 3, 7, FroggerMapStartRotation.EAST, 2, 60,
                          23, 4, null,
                          new ArrayList<>(Arrays.asList("CAV1_A1", "CAV1_A2", "CAV1_B1", "CAV1_B2", "CAV1_C1", "CAV1_C2", "CAV1_D1", "CAV1_D2"))),
-                 new StartPosition("CAV1_E1", 5, 22, FroggerMapStartRotation.SOUTH, 4,
+                 new StartPosition("CAV1_E1", 5, 22, FroggerMapStartRotation.SOUTH, 4, 60,
                          27, 4, null,
                          new ArrayList<>(Arrays.asList("CAV1_D1", "CAV1_D2", "CAV1_E1", "CAV1_E2", "CAV1_E3", "CAV1_E4", "CAV1_E5", "CAV1_F1", "CAV1_F2"))),
-                 new StartPosition("CAV1_E2", 15, 22, FroggerMapStartRotation.SOUTH, 4,
+                 new StartPosition("CAV1_E2", 15, 22, FroggerMapStartRotation.SOUTH, 4, 60,
                          1, 4, null,
                          new ArrayList<>(Arrays.asList("CAV1_D1", "CAV1_D2", "CAV1_E1", "CAV1_E2", "CAV1_E3", "CAV1_E4", "CAV1_E5", "CAV1_F1", "CAV1_F2"))),
-                 new StartPosition("CAV1_G1", 19, 7, FroggerMapStartRotation.WEST, 6,
+                 new StartPosition("CAV1_G1", 19, 7, FroggerMapStartRotation.WEST, 6, 60,
                          22, 4, null,
                          new ArrayList<>(Arrays.asList("CAV1_A1", "CAV1_A2", "CAV1_F1", "CAV1_F2", "CAV1_G1", "CAV1_G2", "CAV1_H1")))
          )));
          START_LOCATIONS.put("CAV3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("CAV3_A1", 13, 12, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("CAV3_A1", 13, 12, FroggerMapStartRotation.NORTH, 0, 52,
                         7,  2, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("CAV4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("CAV4_A1", 17, 5, FroggerMapStartRotation.NORTH, 0, // TODO: didn't reset
+                 new StartPosition("CAV4_A1", 17, 5, FroggerMapStartRotation.NORTH, 0, 38, // TODO: didn't reset
                          4, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_A1"))), //
-                 new StartPosition("CAV4_C1", 4, 16, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("CAV4_C1", 4, 16, FroggerMapStartRotation.EAST, 2, 50,
                          13, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_C1", "CAV4_C2", "CAV4_E1"))),
-                 new StartPosition("CAV4_E1", 17, 17, FroggerMapStartRotation.NORTH, 4,
+                 new StartPosition("CAV4_E1", 17, 17, FroggerMapStartRotation.NORTH, 4, 45,
                           7, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_C1", "CAV4_C2", "CAV4_E1"))),
-                 new StartPosition("CAV4_H1", 6, 29, FroggerMapStartRotation.EAST, 7,
+                 new StartPosition("CAV4_H1", 6, 29, FroggerMapStartRotation.EAST, 7, 60,
                          24, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_H1", "CAV4_I2"))),
-                 new StartPosition("CAV4_H2", 23, 29, FroggerMapStartRotation.WEST, 7,
+                 new StartPosition("CAV4_H2", 23, 29, FroggerMapStartRotation.WEST, 7, 60,
                          23, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_H1", "CAV4_I2"))),
-                 new StartPosition("CAV4_I1", 16, 37, FroggerMapStartRotation.SOUTH, 8,
+                 new StartPosition("CAV4_I1", 16, 37, FroggerMapStartRotation.SOUTH, 8, 65,
                          17, 21, null,
                          new ArrayList<>(Arrays.asList("CAV4_I1", "CAV4_I2", "CAV4_I3", "CAV4_I4")))
          )));
          START_LOCATIONS.put("SKY1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SKY1_A1", 20, 15, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SKY1_A1", 20, 15, FroggerMapStartRotation.NORTH, 0, 70,
                          0, 2, null,
                          new ArrayList<>(Arrays.asList("SKY1_B1"))),
-                 new StartPosition("SKY1_C1", 10, 30, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("SKY1_C1", 10, 30, FroggerMapStartRotation.EAST, 2, 54,
                          0, 2, null,
                          new ArrayList<>(Arrays.asList("SKY1_B1", "SKY1_C1"))),
-                 new StartPosition("SKY1_E1", 30, 13, FroggerMapStartRotation.NORTH, 4,
+                 new StartPosition("SKY1_E1", 30, 13, FroggerMapStartRotation.NORTH, 4, 54,
                          0, 2, null,
                          new ArrayList<>(Arrays.asList("SKY1_E1", "SKY1_E2"))),
-                 new StartPosition("SKY1_F1", 32, 31, FroggerMapStartRotation.SOUTH, 5,
+                 new StartPosition("SKY1_F1", 32, 31, FroggerMapStartRotation.SOUTH, 5, 42,
                          0, 2, null,
                          new ArrayList<>(Arrays.asList("SKY1_D1", "SKY1_F1")))
          )));
          START_LOCATIONS.put("SKY2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SKY2_A1", 23, 8, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SKY2_A1", 23, 8, FroggerMapStartRotation.NORTH, 0, 60,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SKY3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SKY3_A1", 3, 9, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SKY3_A1", 3, 9, FroggerMapStartRotation.NORTH, 0, 22,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SKY4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SKY4_A1", 23, 18, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SKY4_A1", 23, 18, FroggerMapStartRotation.NORTH, 0, 34,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SWP1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SWP1_A1", 10, 10, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SWP1_A1", 10, 10, FroggerMapStartRotation.NORTH, 0, 23,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SWP2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SWP2_A1", 10, 10, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SWP2_A1", 10, 10, FroggerMapStartRotation.NORTH, 0, 50,
                          -1, -1, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SWP3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SWP3_A1", 15, 4, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SWP3_A1", 15, 4, FroggerMapStartRotation.NORTH, 0, 40,
                          -1, -1, null,
                          new ArrayList<>()), //ignoring since too complicated to overwrite and mostly out of view anyway
-                 new StartPosition("SWP3_B1", 13, 17, FroggerMapStartRotation.NORTH, 1,
+                 new StartPosition("SWP3_B1", 13, 17, FroggerMapStartRotation.NORTH, 1, 34,
                          1, 75, null,
                          new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Check if need to move so camera doesn't flip out
-                 new StartPosition("SWP3_D1", 17, 17, FroggerMapStartRotation.NORTH, 3,
+                 new StartPosition("SWP3_D1", 17, 17, FroggerMapStartRotation.NORTH, 3, 34,
                          15, 75, null,
-                         new ArrayList<>()) //TODO: Check if need to move so camera doesn't flip out
+                         new ArrayList<>()) //TODO: Need to move so camera doesn't flip out
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SWP4_A2", 14, 12, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SWP4_A2", 14, 12, FroggerMapStartRotation.NORTH, 0, 45,
                          44, 66, null,
                          new ArrayList<>()),
-                 new StartPosition("SWP4_A1", 11, 15, FroggerMapStartRotation.EAST, 0,
+                 new StartPosition("SWP4_A1", 11, 15, FroggerMapStartRotation.EAST, 0, 45,
                          44, 66, null,
                          new ArrayList<>()),
-                 new StartPosition("SWP4_A3", 17, 15, FroggerMapStartRotation.WEST, 0,
+                 new StartPosition("SWP4_A3", 17, 15, FroggerMapStartRotation.WEST, 0, 45,
                          44, 66, null,
                          new ArrayList<>())
          )));
          START_LOCATIONS.put("SWP5.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("SWP5_A1", 25, 5, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("SWP5_A1", 25, 5, FroggerMapStartRotation.NORTH, 0, 60,
                          4, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_A1"))),
-                 new StartPosition("SWP5_B1", 15, 3, FroggerMapStartRotation.NORTH, 1,
+                 new StartPosition("SWP5_B1", 15, 3, FroggerMapStartRotation.NORTH, 1, 70,
                          3, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_B1", "SWP5_B2"))),
-                 new StartPosition("SWP5_D1", 26, 30, FroggerMapStartRotation.WEST, 3,
+                 new StartPosition("SWP5_D1", 26, 30, FroggerMapStartRotation.WEST, 3, 60,
                          2, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_D1", "SWP5_D2"))),
-                 new StartPosition("SWP5_F1", 15, 27, FroggerMapStartRotation.EAST, 5,
+                 new StartPosition("SWP5_F1", 15, 27, FroggerMapStartRotation.EAST, 5, 60,
                          4, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_F1", "SWP5_F2"))),
-                 new StartPosition("SWP5_G2", 9, 26, FroggerMapStartRotation.NORTH, 6,
+                 new StartPosition("SWP5_G2", 9, 26, FroggerMapStartRotation.NORTH, 6, 70,
                          35, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_G1", "SWP5_G2", "SWP5_I1", "SWP5_I2"))),
-                 new StartPosition("SWP5_G1", 3, 34, FroggerMapStartRotation.SOUTH, 6,
+                 new StartPosition("SWP5_G1", 3, 34, FroggerMapStartRotation.SOUTH, 6, 70,
                          35, 58, null,
                          new ArrayList<>(Arrays.asList("SWP5_G1", "SWP5_G2", "SWP5_I1", "SWP5_I2")))
          )));
          START_LOCATIONS.put("DES1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, // TODO: default Texture UVs look weird
+                 new StartPosition("DES1_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, 40, // TODO: default Texture UVs look weird
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_A1", "DES1_A2", "DES1_A3"))), //
-                 new StartPosition("DES1_B1", 7, 15, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("DES1_B1", 7, 15, FroggerMapStartRotation.EAST, 1, 40,
                          11, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_B1", "DES1_B2"))),
-                 new StartPosition("DES1_C1", 21, 30, FroggerMapStartRotation.NORTH, 2,
+                 new StartPosition("DES1_C1", 21, 30, FroggerMapStartRotation.NORTH, 2, 32,
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_C1", "DES1_C2", "DES1_C3", "DES1_C4", "DES1_C5"))),
-                 new StartPosition("DES1_D1", 36, 15, FroggerMapStartRotation.WEST, 3,
+                 new StartPosition("DES1_D1", 36, 15, FroggerMapStartRotation.WEST, 3, 40,
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_D1", "DES1_D2", "DES1_D3")))
          )));
          START_LOCATIONS.put("DES2.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES2_A1", 8, 9, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("DES2_A1", 8, 9, FroggerMapStartRotation.NORTH, 0, 50,
                          0, 92, null,
                          new ArrayList<>(Arrays.asList("DES2_A1", "DES2_A2", "DES2_A3"))), //
-                 new StartPosition("DES2_B1", 9, 28, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("DES2_B1", 9, 28, FroggerMapStartRotation.EAST, 1, 58,
                          56, 92, null,
                          new ArrayList<>(Arrays.asList("DES2_A3", "DES2_B1", "DES2_B2"))),
-                 new StartPosition("DES2_D1", 26, 15, FroggerMapStartRotation.NORTH, 3,
+                 new StartPosition("DES2_D1", 26, 15, FroggerMapStartRotation.NORTH, 3, 44,
                          38, 92, null,
                          new ArrayList<>(Arrays.asList("DES2_A2", "DES2_A3", "DES2_D1", "DES2_D2", "DES2_D3"))),
-                 new StartPosition("DES2_E1", 30, 20, FroggerMapStartRotation.SOUTH, 4,
+                 new StartPosition("DES2_E1", 30, 20, FroggerMapStartRotation.SOUTH, 4, 44,
                          30 , 92, null,
                          new ArrayList<>(Arrays.asList("DES2_E1", "DES2_E2")))
          )));
          START_LOCATIONS.put("DES3.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES3_A1", 6, 4, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("DES3_A1", 6, 4, FroggerMapStartRotation.NORTH, 0, 30,
                          0, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_A1", "DES3_A2"))), //
-                 new StartPosition("DES3_B1", 6, 9, FroggerMapStartRotation.NORTH, 1,
+                 new StartPosition("DES3_B1", 6, 9, FroggerMapStartRotation.NORTH, 1, 30,
                          0, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_B1"))),
-                 new StartPosition("DES3_C1", 11, 4, FroggerMapStartRotation.EAST, 2,
+                 new StartPosition("DES3_C1", 11, 4, FroggerMapStartRotation.EAST, 2, 30,
                          0, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_C1"))),
-                 new StartPosition("DES3_E1", 3, 24, FroggerMapStartRotation.EAST, 4,
+                 new StartPosition("DES3_E1", 3, 24, FroggerMapStartRotation.EAST, 4, 30,
                          11, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_E1", "DES3_F1"))),
-                 new StartPosition("DES3_F1", 11, 32, FroggerMapStartRotation.SOUTH, 5,
+                 new StartPosition("DES3_F1", 11, 32, FroggerMapStartRotation.SOUTH, 5, 30,
                          0, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_F1", "DES3_F2"))),
-                 new StartPosition("DES3_G1", 15, 20, FroggerMapStartRotation.NORTH, 6,
+                 new StartPosition("DES3_G1", 15, 20, FroggerMapStartRotation.NORTH, 6, 30,
                          15, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_F2", "DES3_G1")))
          )));
          START_LOCATIONS.put("DES4.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES4_A1", 21, 8, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("DES4_A1", 21, 8, FroggerMapStartRotation.NORTH, 0, 70,
                          5, 68, null,
                          new ArrayList<>(Arrays.asList("DES4_A1", "DES4_A2"))), //
-                 new StartPosition("DES4_B1", 7, 15, FroggerMapStartRotation.EAST, 1,
+                 new StartPosition("DES4_B1", 7, 15, FroggerMapStartRotation.EAST, 1, 70,
                          11, 68, null,
                          new ArrayList<>(Arrays.asList("DES4_B1", "DES4_B2"))),
-                 new StartPosition("DES4_C1", 21, 37, FroggerMapStartRotation.SOUTH, 2,
+                 new StartPosition("DES4_C1", 21, 37, FroggerMapStartRotation.SOUTH, 2, 55,
                          39, 68, null,
                          new ArrayList<>(Arrays.asList("DES4_C1", "DES4_C2", "DES4_C3"))),
-                 new StartPosition("DES4_E2", 36, 15, FroggerMapStartRotation.WEST, 4,
+                 new StartPosition("DES4_E2", 36, 15, FroggerMapStartRotation.WEST, 4, 65,
                          5, 68, null,
                          new ArrayList<>(Arrays.asList("DES4_E1", "DES4_E2", "DES4_E3"))),
-                 new StartPosition("DES4_E1", 22, 16, FroggerMapStartRotation.SOUTH, 4,
+                 new StartPosition("DES4_E1", 22, 16, FroggerMapStartRotation.SOUTH, 4, 70,
                          5, 68, null,
                          new ArrayList<>(Arrays.asList("DES4_E1", "DES4_E2", "DES4_E3")))
          )));
          START_LOCATIONS.put("DES5.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("DES5_A1", 8, 9, FroggerMapStartRotation.NORTH, 0,
+                 new StartPosition("DES5_A1", 8, 9, FroggerMapStartRotation.NORTH, 0, 75,
                          0, 93, null, //
                          new ArrayList<>(Arrays.asList("DES5_A1", "DES5_C1", "DES5_C2"))),
-                 new StartPosition("DES5_A2", 17, 19, FroggerMapStartRotation.WEST, 0,
+                 new StartPosition("DES5_A2", 17, 19, FroggerMapStartRotation.WEST, 0, 67,
                          46, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_A1", "DES5_C1", "DES5_C2"))),
-                 new StartPosition("DES5_B1", 26, 15, FroggerMapStartRotation.NORTH, 1,
+                 new StartPosition("DES5_B1", 26, 15, FroggerMapStartRotation.NORTH, 1, 67,
                          36, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_B1", "DES5_C2"))),
-                 new StartPosition("DES5_D1", 7, 29, FroggerMapStartRotation.EAST, 3,
+                 new StartPosition("DES5_D1", 7, 29, FroggerMapStartRotation.EAST, 3, 75,
                          14, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_D1"))),
-                 new StartPosition("DES5_E1", 17, 34, FroggerMapStartRotation.EAST, 4,
+                 new StartPosition("DES5_E1", 17, 34, FroggerMapStartRotation.EAST, 4, 75,
                          0, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
-                 new StartPosition("DES5_E2", 28, 20, FroggerMapStartRotation.SOUTH, 4,
+                 new StartPosition("DES5_E2", 28, 20, FroggerMapStartRotation.SOUTH, 4, 70,
                          14, 93,
                          new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
-                 new StartPosition("DES5_G1", 18, 17, FroggerMapStartRotation.EAST, 6,
+                 new StartPosition("DES5_G1", 18, 17, FroggerMapStartRotation.EAST, 6, 75,
                          31, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_G1", "DES5_H1", "DES5_I1"))),
-                 new StartPosition("DES5_H1", 34, 20, FroggerMapStartRotation.SOUTH, 7,
+                 new StartPosition("DES5_H1", 34, 20, FroggerMapStartRotation.SOUTH, 7, 75,
                          11, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_H1", "DES2_H2"))),
-                 new StartPosition("DES5_J1", 6, 17, FroggerMapStartRotation.EAST, 9,
+                 new StartPosition("DES5_J1", 6, 17, FroggerMapStartRotation.EAST, 9, 75,
                          0, 93, null,
                          new ArrayList<>(Arrays.asList("DES5_I1", "DES5_I2", "DES5_J1")))
          )));
          START_LOCATIONS.put("JUN1.MAP", new ArrayList<>(Arrays.asList(
-                 new StartPosition("JUN1_A1", 12, 3, FroggerMapStartRotation.NORTH, 0, //
+                 new StartPosition("JUN1_A1", 12, 3, FroggerMapStartRotation.NORTH, 0, 45, //
                          43, 7,  // UVs of the default underlying dirt tile are backwards here so using a stone block TODO: fix tile ID
                          null, new ArrayList<>(Arrays.asList("JUN1_A1", "JUN1_C1"))),
-                 new StartPosition("JUN1_B1", 6, 3, FroggerMapStartRotation.NORTH, 1,
+                 new StartPosition("JUN1_B1", 6, 3, FroggerMapStartRotation.NORTH, 1, 45,
                          2, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_B1", "JUN1_C1"))),
-                 new StartPosition("JUN1_E1", 24, 17, FroggerMapStartRotation.WEST, 4,
+                 new StartPosition("JUN1_E1", 24, 17, FroggerMapStartRotation.WEST, 4, 45,
                          24, 7,
                          new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_D1", "JUN1_E1", "JUN1_F1"))),
-                 new StartPosition("JUN1_F1", 13, 15, FroggerMapStartRotation.SOUTH, 5,
+                 new StartPosition("JUN1_F1", 13, 15, FroggerMapStartRotation.SOUTH, 5, 40,
                          24, 7,
                          new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_C1", "JUN1_E1", "JUN1_F1"))),
-                 new StartPosition("JUN1_G1", 11, 20, FroggerMapStartRotation.SOUTH, 6,
+                 new StartPosition("JUN1_G1", 11, 20, FroggerMapStartRotation.SOUTH, 6, 37,
                          26, 7, null,
                          new ArrayList<>(Arrays.asList("JUN1_G1", "JUN1_G2"))),
-                 new StartPosition("JUN1_G2", 9, 25, FroggerMapStartRotation.WEST, 6,
+                 new StartPosition("JUN1_G2", 9, 25, FroggerMapStartRotation.WEST, 6, 35,
                          28, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_G1", "JUN1_G2"))),
-                 new StartPosition("JUN1_H1", 9, 29, FroggerMapStartRotation.NORTH, 7,
+                 new StartPosition("JUN1_H1", 9, 29, FroggerMapStartRotation.NORTH, 7, 53,
                          21, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_H1"))),
-                 new StartPosition("JUN1_J1", 19, 29, FroggerMapStartRotation.WEST, 9,
+                 new StartPosition("JUN1_J1", 19, 29, FroggerMapStartRotation.WEST, 9, 45,
                          6, 7,
                          new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_I1", "JUN1_J1", "JUN1_K1", "JUN1_K2", "JUN1_K3", "JUN1_K4"))),
-                 new StartPosition("JUN1_K1", 6, 34, FroggerMapStartRotation.NORTH, 10,
+                 new StartPosition("JUN1_K1", 6, 34, FroggerMapStartRotation.NORTH, 10, 45,
                          44, 7, null,
                          new ArrayList<>(Arrays.asList("JUN1_I1", "JUN1_J1", "JUN1_K1", "JUN1_K2", "JUN1_K3", "JUN1_K4"))),
-                 new StartPosition("JUN1_K2", 14, 38, FroggerMapStartRotation.SOUTH, 10,
+                 new StartPosition("JUN1_K2", 14, 38, FroggerMapStartRotation.SOUTH, 10, 45,
                          44, 7, null,
                          new ArrayList<>(Arrays.asList("JUN1_I1", "JUN1_J1", "JUN1_K1", "JUN1_K2", "JUN1_K3", "JUN1_K4")))
          )));

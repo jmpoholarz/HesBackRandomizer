@@ -7,6 +7,14 @@ package net.highwayfrogs.editor.randomizer;
 public class RandomizerConfig {
 
     /**
+     * The different versions of Frogger: He's Back supported by the randomizer.
+     */
+    public enum VERSION {
+        PC,
+        PSX
+    }
+
+    /**
      * Enum for how the timers should be set in the levels.  VANILLA will always use the default timer set in the
      * base game.  DYNAMIC will use adjust the time based on the start location in a level.  Typically, starts in
      * the middle of levels will be given less time, and starts on the edges of levels will be given more time.
@@ -20,6 +28,11 @@ public class RandomizerConfig {
      * The seed value used to set up the random number generator.
      */
     public static long seed = -1;
+
+    /**
+     * Which version of Frogger: He's Back is being randomized.
+     */
+    public static VERSION version = VERSION.PC;
 
     /**
      * How timers should be set in the levels.

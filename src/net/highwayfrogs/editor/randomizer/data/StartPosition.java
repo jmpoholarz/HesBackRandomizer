@@ -57,14 +57,20 @@ public class StartPosition {
      */
     public ByteUV[] UVs;
 
-    public StartPosition(String id, int x, int z, FroggerMapStartRotation rotation, int zone, int defaultTextureIndex,
-                  int ringTextureIndex, ByteUV[] UVs, ArrayList<String> bannedFroglets) {
+    /**
+     * How much time the player is given in a level when starting from this location.
+     */
+    public int timerAmount;
+
+    public StartPosition(String id, int x, int z, FroggerMapStartRotation rotation, int zone, int timerAmount,
+                         int defaultTextureIndex, int ringTextureIndex, ByteUV[] UVs, ArrayList<String> bannedFroglets) {
         this.id = id;
         this.x = (short) x;
         this.z = (short) z;
         this.rotation = rotation;
         this.zone = zone;
         this.bannedFroglets = bannedFroglets;
+        this.timerAmount = timerAmount;
 
         this.ringTextureIndex = ringTextureIndex;
         this.defaultTextureIndex = defaultTextureIndex;

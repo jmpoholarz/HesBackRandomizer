@@ -22,7 +22,9 @@ import net.highwayfrogs.editor.randomizer.data.MapData;
 import net.highwayfrogs.editor.randomizer.data.StartPosition;
 import net.highwayfrogs.editor.utils.DataUtils;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance.FILE_TYPE_ANY;
 import static net.highwayfrogs.editor.randomizer.Utils.verticesIntersect;
@@ -188,8 +190,8 @@ public class Randomizer {
 
             mapFile.getGeneralPacket().setStartGridCoordX(startPos.x);
             mapFile.getGeneralPacket().setStartGridCoordZ(startPos.z);
-            //mapFile.getGeneralPacket().setStartingTimeLimit(0); // TODO dynamic times based on start location, esp. for PSX which is more strict on the time limit
             mapFile.getGeneralPacket().setStartRotation(startPos.rotation);
+            mapFile.getGeneralPacket().setStartingTimeLimit(calculate_map_timer(mapFile, startPos));
 
             removeFroggerTargets(mapFile, startPositions, startPos);
 
@@ -204,6 +206,29 @@ public class Randomizer {
                 rls.shuffleLanes(mapName, mapFile);
             }
         }
+    }
+
+    /**
+     * Determines the amount of time given to the player for a particular map.  Time is based on where the player
+     * starts the level and is capped at 75 or 99 for PSX and PC respectively, based on settings.
+     * @param mapFile The current map being randomized.
+     * @param startPos The chosen start position for Frogger in that map.
+     * @return The amount of time that will be given to complete the map with each life.
+     */
+    public int calculate_map_timer(FroggerMapFile mapFile, StartPosition startPos) {
+        int base_time = mapFile.getGeneralPacket().getStartingTimeLimit();
+        if (RandomizerConfig.timerMode == RandomizerConfig.TIMER_MODE.DYNAMIC) {
+            base_time = startPos.timerAmount;
+        }
+        double adjusted_time = base_time * RandomizerConfig.timerMultiplier;
+        if (!RandomizerConfig.timerCanExceedMax) {
+            if (RandomizerConfig.version == RandomizerConfig.VERSION.PC) {
+                adjusted_time = Math.max(adjusted_time, 99.0);
+            } else if (RandomizerConfig.version == RandomizerConfig.VERSION.PSX) {
+                adjusted_time = Math.max(adjusted_time, 75.0);
+            }
+        }
+        return (int) adjusted_time;
     }
 
 
