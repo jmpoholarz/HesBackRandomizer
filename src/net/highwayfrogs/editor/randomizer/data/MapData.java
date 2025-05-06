@@ -11,7 +11,7 @@ import java.util.Map;
 public class MapData {
     // TODO: Maybe refactor this class away from static initialization blocks
 
-     static ByteUV[] FULL_SQUARE_UVS = new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)};
+     static ByteUV[] FULL_SQUARE_UVS = new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,1.0f)};
 
      public static ArrayList<String> VALID_MAPS = new ArrayList<>(
              Arrays.asList(
@@ -827,10 +827,10 @@ public class MapData {
                          22, 19, 0, 8, 1, null),
                  new FrogPosition("JUN1_F1", -55.75, -43.9375, -232.5, 0, -89.9, 0, 5,
                          10, 15, 0, 23, 1,
-                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f)}),
+                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(1.0f,0.0f)}),
                  new FrogPosition("JUN1_G1", 8.3125, -54.6875, -150.875, 0, 89.9, 0, 6,
                          14, 20, 0, 28, 1,
-                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f)}),
+                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(1.0f,0.0f)}),
                  new FrogPosition("JUN1_G2", -71.75, -112.9375, -72.5, 0, -89.9, 0, 6,
                          9, 25, 0, 28, 1, null),
                  new FrogPosition("JUN1_H1", -71.75, -136.4375, -24.5, 0, -89.9, 0, 7,
@@ -847,7 +847,7 @@ public class MapData {
                          9, 36, 0, 44, 46, null),
                  new FrogPosition("JUN1_K1", -135.75, -150.75, 135.4375, 0, 89.9, 0, 10,
                          5, 38, 0, 45, 46,
-                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f)})
+                         new ByteUV[]{new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(1.0f,0.0f)})
          )));
      }
 
@@ -998,7 +998,7 @@ public class MapData {
          START_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("FOR1_A1", 9, 3, FroggerMapStartRotation.NORTH, 0, 25, // TODO: UVs Bugged
                          3, 30, //
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
                  new StartPosition("FOR1_B1", 3, 9, FroggerMapStartRotation.EAST, 1, 25,
                          0, 30, FULL_SQUARE_UVS,
@@ -1195,7 +1195,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("DES1_B1", "DES1_B2"))),
                  new StartPosition("DES1_C1", 21, 30, FroggerMapStartRotation.NORTH, 2, 32,
                          1, 88, null,
-                         new ArrayList<>(Arrays.asList("DES1_C1", "DES1_C2", "DES1_C3", "DES1_C4", "DES1_C5", "DES1_C6"))),
+                         new ArrayList<>(Arrays.asList("DES1_C1", "DES1_C2", "DES1_C3", "DES1_C4", "DES1_C5", "DES1_C6", "DES1_C7"))),
                  new StartPosition("DES1_D1", 36, 15, FroggerMapStartRotation.WEST, 3, 40,
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_D1", "DES1_D2", "DES1_D3")))
@@ -1269,7 +1269,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
                  new StartPosition("DES5_E2", 28, 20, FroggerMapStartRotation.SOUTH, 4, 70,
                          14, 93,
-                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("DES5_E1"))),
                  new StartPosition("DES5_G1", 18, 17, FroggerMapStartRotation.EAST, 6, 75,
                          31, 93, null,
@@ -1287,30 +1287,30 @@ public class MapData {
                          null, new ArrayList<>(Arrays.asList("JUN1_A1", "JUN1_C1"))),
                  new StartPosition("JUN1_B1", 6, 3, FroggerMapStartRotation.NORTH, 1, 45,
                          2, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_B1", "JUN1_C1"))),
                  new StartPosition("JUN1_E1", 24, 17, FroggerMapStartRotation.WEST, 4, 45,
                          24, 7,
-                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_D1", "JUN1_E1", "JUN1_F1"))),
                  new StartPosition("JUN1_F1", 13, 15, FroggerMapStartRotation.SOUTH, 5, 40,
                          24, 7,
-                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_C1", "JUN1_E1", "JUN1_F1"))),
                  new StartPosition("JUN1_G1", 11, 20, FroggerMapStartRotation.SOUTH, 6, 37,
                          26, 7, null,
                          new ArrayList<>(Arrays.asList("JUN1_G1", "JUN1_G2"))),
                  new StartPosition("JUN1_G2", 9, 25, FroggerMapStartRotation.WEST, 6, 35,
                          28, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_G1", "JUN1_G2"))),
                  new StartPosition("JUN1_H1", 9, 29, FroggerMapStartRotation.NORTH, 7, 53,
                          21, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_H1"))),
                  new StartPosition("JUN1_J1", 19, 29, FroggerMapStartRotation.WEST, 9, 45,
                          6, 7,
-                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f)},
+                         new ByteUV[]{new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f), new ByteUV(1.0f,0.0f), new ByteUV(0.0f,0.0f)},
                          new ArrayList<>(Arrays.asList("JUN1_I1", "JUN1_J1", "JUN1_K1", "JUN1_K2", "JUN1_K3", "JUN1_K4"))),
                  new StartPosition("JUN1_K1", 6, 34, FroggerMapStartRotation.NORTH, 10, 45,
                          44, 7, null,

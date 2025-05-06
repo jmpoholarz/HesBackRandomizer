@@ -2,7 +2,6 @@ package net.highwayfrogs.editor.randomizer;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import net.highwayfrogs.editor.file.standard.psx.ByteUV;
 import net.highwayfrogs.editor.file.standard.psx.PSXMatrix;
 import net.highwayfrogs.editor.games.sony.SCGameFile;
 import net.highwayfrogs.editor.games.sony.frogger.FroggerGameInstance;
@@ -263,10 +262,6 @@ public class Randomizer {
                     if (frogPos.UVs != null) {
                         // Could probably change the UVs to SCByteTextureUV instead but let's try this first
                         SCByteTextureUV[] textureUVs = new SCByteTextureUV[frogPos.UVs.length];
-                        // UV order was swapped, so workaround switch 3rd and 4th
-                        ByteUV temp = frogPos.UVs[2];
-                        frogPos.UVs[2] = frogPos.UVs[3];
-                        frogPos.UVs[3] = temp;
                         for (int i = 0; i < frogPos.UVs.length; i++) {
                             textureUVs[i] = new SCByteTextureUV(frogPos.UVs[i].getU(), frogPos.UVs[i].getV());
                         }
@@ -335,10 +330,6 @@ public class Randomizer {
                     if (startPos.UVs != null) {
                         // Could probably change the UVs to SCByteTextureUV instead but let's try this first
                         SCByteTextureUV[] textureUVs = new SCByteTextureUV[startPos.UVs.length];
-                        // UV order was swapped, so workaround switch 3rd and 4th
-                        ByteUV temp = startPos.UVs[2];
-                        startPos.UVs[2] = startPos.UVs[3];
-                        startPos.UVs[3] = temp;
                         for (int i = 0; i < startPos.UVs.length; i++) {
                             textureUVs[i] = new SCByteTextureUV(startPos.UVs[i].getU(), startPos.UVs[i].getV());
                         }
