@@ -35,23 +35,6 @@ import static net.highwayfrogs.editor.randomizer.Utils.verticesMatch;
  */
 public class Randomizer {
 
-    /**
-     *
-     * @return
-     */
-    public Random loadRandomNumberGenerator() {
-        Random random;
-        if (RandomizerConfig.seed != -1) {
-            random = new Random(RandomizerConfig.seed);
-        }
-        else {
-            random = new Random();
-            RandomizerConfig.seed = random.nextInt(Integer.MAX_VALUE);
-            random.setSeed(RandomizerConfig.seed);
-        }
-        return random;
-    }
-
 
     public ObservableList<SCGameFile<FroggerGameInstance>> getMapFiles(FroggerGameInstance gameInstance, MWDFile mwdFile) {
         ObservableList<SCGameFile<FroggerGameInstance>> mapFiles = FXCollections.observableArrayList();
@@ -96,10 +79,7 @@ public class Randomizer {
         // List to hold all of the map files to randomize
         ObservableList<SCGameFile<FroggerGameInstance>> mapFiles = getMapFiles(gameInstance, mwdFile);
 
-        // Init random number generator using provided seed if available
-        Random random = loadRandomNumberGenerator();
-
-        randomizeMaps(mapFiles, mwdFile, random);
+        randomizeMaps(mapFiles, mwdFile, RandomizerConfig.getRandom());
     }
 
     public void randomizeLevelOrder() {

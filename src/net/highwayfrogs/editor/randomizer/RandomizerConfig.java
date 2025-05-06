@@ -1,5 +1,7 @@
 package net.highwayfrogs.editor.randomizer;
 
+import java.util.Random;
+
 /**
  * Global variable cache of relevant randomizer settings to avoid having to pass values all around FrogLord to get
  * things to behave nicely.
@@ -23,6 +25,11 @@ public class RandomizerConfig {
         VANILLA,
         DYNAMIC
     }
+
+    /**
+     * Singleton random number generator seeded with the seed value
+     */
+    private static Random random;
 
     /**
      * The seed value used to set up the random number generator.
@@ -82,5 +89,34 @@ public class RandomizerConfig {
             }
 
         }
+    }
+
+    /**
+     * Set up the random number generator for the randomizer using the provided seed, or pick a random seed and then
+     * seed the randomizer with that value.
+     * @return The Random object configured with the seed value.
+     */
+    public static Random loadRandomNumberGenerator() {
+        Random random;
+        if (seed != -1) {
+            random = new Random(seed);
+        }
+        else {
+            random = new Random();
+            seed = random.nextInt(Integer.MAX_VALUE);
+            random.setSeed(seed);
+        }
+        return random;
+    }
+
+    /**
+     * Set up the random number generator if not yet configured, or fetch the existing one.
+     * @return The seeded Random object to generate any random numbers.
+     */
+    public static Random getRandom() {
+        if (random == null) {
+            random = loadRandomNumberGenerator();
+        }
+        return random;
     }
 }
