@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MapData {
+    // TODO: Maybe refactor this class away from static initialization blocks
 
      static ByteUV[] FULL_SQUARE_UVS = new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)};
 
@@ -160,8 +161,7 @@ public class MapData {
                  new FrogPosition("SUB3_B1", -279.8125, 3.4375, -231.75, 180, 0, 180, 1,
                          6, 7, 0, 0, 15, null), //
                  new FrogPosition("SUB3_B2", -184.0, 0.0, -136.0, 0, 0, 0, 1,
-                         12, 13, 0, 26, 15,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         12, 13, 0, 26, 15, FULL_SQUARE_UVS),
                  new FrogPosition("SUB3_C1", -55.8125, 0.0, -8.3125, 180, 0, 180, 2,
                          20, 21, 0, 0, 15, null), //
                  new FrogPosition("SUB3_D1", -119.8125, 0.0, 280.125, 180, 0, 180, 3,
@@ -239,74 +239,51 @@ public class MapData {
          )));
          FROG_LOCATIONS.put("FOR1.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition("FOR1_A2", -168.0, -35.625, -120.0, 0, 89.9, 0, 0,
-                         3, 4, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         3, 4, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_A1", -120.0, -32.5625, -136.0, 0, 0, 0, 0,
-                         6, 3, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         6, 3, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_A3", -152.0, -38.25, -88.0, 0, -89.9, 0, 0,
-                         4, 6, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         4, 6, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_A4", -120.0, -33.9375, -72.0, 180, 0, 180, 0,
-                         6, 7, 0, 6, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         6, 7, 0, 6, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_A5", -88.0, -30.4375, -88.0, 0, -89.9, 0, 0,
-                         8, 6, 0, 2, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         8, 6, 0, 2, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_A6", -56.0, -27.75, -88.0, 0, 89.9, 0, 0,
-                         10, 6, 0, 5, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         10, 6, 0, 5, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_B1", -168.0, -34.0, 8.0, 0, 89.9, 0, 1,
-                         3, 12, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         3, 12, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_C3", -169.6875, -37.5, 56.0625, 0, 89.9, 0, 2,
-                         3, 15, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
+                         3, 15, 0, 3, 21, FULL_SQUARE_UVS), //
                  new FrogPosition("FOR1_C4", -169.6875, -38.0625, 88.0625, 0, 90, 0, 2, //TODO Double check rotation
-                         3, 17, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
+                         3, 17, 0, 3, 21, FULL_SQUARE_UVS), //
                  new FrogPosition("FOR1_C5", -119.9375, -34.5625, 137.6875, 180, 0, 180, 2,
-                         6, 20, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
+                         6, 20, 0, 3, 21, FULL_SQUARE_UVS), //
                  new FrogPosition("FOR1_C6", -55.875, -31.0, 137.6875, 180, 0, 180, 2,
-                         10, 20, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
+                         10, 20, 0, 3, 21, FULL_SQUARE_UVS), //
                  new FrogPosition("FOR1_C1", -88.0, -31.25, 72.0, 0, -89.9, 0, 2,
-                         8, 16, 0, 11, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         8, 16, 0, 11, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_C2", -120.0, -32.8125, 56.0, 0, 0, 0, 2,
-                         6, 15, 0, 4, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         6, 15, 0, 4, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_D1", 56.0625, -31.5625, 137.6875, 180, 0, 180, 3,
-                         17, 20, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}), //
+                         17, 20, 0, 3, 21, FULL_SQUARE_UVS), //
                  new FrogPosition("FOR1_D2", 104.0, -28.3125, 88.0, 0, 0, 0, 3,
-                         20, 17, 0, 6, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         20, 17, 0, 6, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_D3", 136.0, -30.75, 135.9375, 180, 0, 180, 3,
-                         22, 20, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         22, 20, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_D4", 168.0, -31.1875, 88.0, 0, -89.9, 0, 3,
-                         24, 17, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         24, 17, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_D5", 152.0, -30.1875, 40.0, 0, 0, 0, 3,
-                         23, 14, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         23, 14, 0, 3, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_E1", 152.0, -27.0, -8.0, 180, 0, 180, 4,
-                         23, 11, 0, 13, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         23, 11, 0, 13, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_F4", 55.875, -30.1875, -104.0, 0, 89.9, 0, 5,
-                         17, 5, 0, 5, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         17, 5, 0, 5, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_F3", 120.0, -26.8125, -120.0, 0, 89.9, 0, 5,
-                         21, 4, 0, 3, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         21, 4, 0, 3, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_F1", 168.0, -29.9375, -39.8125, 0, -89.9, 0, 5,
-                         24, 9, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         24, 9, 0, 0, 21, FULL_SQUARE_UVS),
                  new FrogPosition("FOR1_F2", 167.9375, -29.9375, -87.6875, 0, -89.9, 9, 5,
-                         24, 6, 0, 0, 21,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)})
+                         24, 6, 0, 0, 21, FULL_SQUARE_UVS)
          )));
          FROG_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
                  new FrogPosition("FOR2_A1", -88.125, -147.6875, -7.75, 0, 89.9, 0, 0),
@@ -642,8 +619,7 @@ public class MapData {
                  new FrogPosition("SWP3_E1", 55.875, -62.0625, -214.3125, 0, 89.9, 0, 4,
                          19, 3, 0, 63, 59, null),
                  new FrogPosition("SWP3_E2", 216.0, -56.4375, -199.9375, 0, -89.9, 0, 4,
-                         29, 4, 0, 22, 59,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         29, 4, 0, 22, 59, FULL_SQUARE_UVS),
                  new FrogPosition("SWP3_E3", 184.0, -46.0625, 72.0, 0, 0, 0, 4,
                          27, 21, 0, 24, 59, null), //
                  new FrogPosition("SWP3_E4", 88.0, -40.3125, 200.0, 0, 89.9, 0, 4,
@@ -684,8 +660,7 @@ public class MapData {
                  new FrogPosition("SWP5_D1", 104.0, -61.75, 119.9375, 0, -89.9, 0, 3,
                          33, 30, 0, 4, 32, null),
                  new FrogPosition("SWP5_D2", 296.0, 0.0, 135.875, 0, -89.9, 0, 3,
-                         45, 31, 0, 40, 43,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         45, 31, 0, 40, 43, FULL_SQUARE_UVS),
                  new FrogPosition("SWP5_E1", 232.0, 0.0, -88.0, 0, 0, 0, 4,
                          41, 17, 0, 44, 43, null), //
                  new FrogPosition("SWP5_F1", -184.0, -73.375, -40.0, 0, 0, 0, 5,
@@ -755,8 +730,7 @@ public class MapData {
                  new FrogPosition("DES2_D1", 56.125, 3.0, 71.625, 180, 0, 180, 3,
                          24, 26, 0, 0, 70, null), //
                  new FrogPosition("DES2_E2", 120.0, -96.0, -24.0, 180, 0, 180, 4,
-                         28, 20, 0, 22, 70,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         28, 20, 0, 22, 70, FULL_SQUARE_UVS),
                  new FrogPosition("DES2_E1", 39.875, -191.0, 197.5, 0, 0, 0, 4,
                          23, 34, 0, 0, 70, null), //
                  new FrogPosition("DES2_F1", 168.125, -351.25, 215.625, 180, 0, 180, 5,
@@ -802,8 +776,7 @@ public class MapData {
                  new FrogPosition("DES4_D2", -39.9375, 0.0, -24.3125, 180, 0, 180, 3,
                          19, 21, 0, 51, 24, null),
                  new FrogPosition("DES4_D4", 24.0, 0.0, -104.0, 180, 89.9, 180, 3,
-                         23, 16, 0, 25, 24,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)}),
+                         23, 16, 0, 25, 24, FULL_SQUARE_UVS),
                  new FrogPosition("DES4_D3", 104.0625, -8.0625, -6.6875, 180, 0, 180, 3,
                          28, 22, 0, 38, 24, null),
                  new FrogPosition("DES4_E1", 200.0, -96.0, -40.0, 0, -89.9, 0, 4,
@@ -964,15 +937,13 @@ public class MapData {
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_C1", "SUB3_F1"))),
                  new StartPosition("SUB3_C2", 14, 24, FroggerMapStartRotation.SOUTH, 2, 46,
-                         36, 43,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         36, 43, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("SUB3_C1"))),
                  new StartPosition("SUB3_D1", 16, 38, FroggerMapStartRotation.SOUTH, 3, 50,
                          0, 43, null,
                          new ArrayList<>(Arrays.asList("SUB3_D1"))),
                  new StartPosition("SUB3_E1", 25, 31, FroggerMapStartRotation.EAST, 4, 50,
-                         17, 43,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         17, 43, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("SUB3_E1", "SUB3_E2"))),
                  new StartPosition("SUB3_E2", 39, 24, FroggerMapStartRotation.NORTH, 4, 50,
                          0, 43, null,
@@ -1030,28 +1001,22 @@ public class MapData {
                          new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
                  new StartPosition("FOR1_B1", 3, 9, FroggerMapStartRotation.EAST, 1, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_B1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
                  new StartPosition("FOR1_C1", 3, 19, FroggerMapStartRotation.EAST, 2, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_C1", "FOR1_C2", "FOR1_C3", "FOR1_C4", "FOR1_C5", "FOR1_C6", "FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5"))),
                  new StartPosition("FOR1_D1", 15, 20, FroggerMapStartRotation.SOUTH, 3, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_C1", "FOR1_C2", "FOR1_C3", "FOR1_C4", "FOR1_C5", "FOR1_C6", "FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5"))),
                  new StartPosition("FOR1_D2", 24, 15, FroggerMapStartRotation.WEST, 3, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_D1", "FOR1_D2", "FOR1_D3", "FOR1_D4", "FOR1_D5", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
                  new StartPosition("FOR1_F2", 24, 5, FroggerMapStartRotation.WEST, 5, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4"))),
                  new StartPosition("FOR1_F1", 19, 3, FroggerMapStartRotation.NORTH, 5, 25,
-                         0, 30,
-                         new ByteUV[]{new ByteUV(0.0f,0.0f), new ByteUV(1.0f,0.0f), new ByteUV(1.0f,1.0f), new ByteUV(0.0f,1.0f)},
+                         0, 30, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("FOR1_A1", "FOR1_A2", "FOR1_A3", "FOR1_A4", "FOR1_A5", "FOR1_A6", "FOR1_E1", "FOR1_F1", "FOR1_F2", "FOR1_F3", "FOR1_F4")))
          )));
          START_LOCATIONS.put("FOR2.MAP", new ArrayList<>(Arrays.asList(
@@ -1230,7 +1195,7 @@ public class MapData {
                          new ArrayList<>(Arrays.asList("DES1_B1", "DES1_B2"))),
                  new StartPosition("DES1_C1", 21, 30, FroggerMapStartRotation.NORTH, 2, 32,
                          1, 88, null,
-                         new ArrayList<>(Arrays.asList("DES1_C1", "DES1_C2", "DES1_C3", "DES1_C4", "DES1_C5"))),
+                         new ArrayList<>(Arrays.asList("DES1_C1", "DES1_C2", "DES1_C3", "DES1_C4", "DES1_C5", "DES1_C6"))),
                  new StartPosition("DES1_D1", 36, 15, FroggerMapStartRotation.WEST, 3, 40,
                          1, 88, null,
                          new ArrayList<>(Arrays.asList("DES1_D1", "DES1_D2", "DES1_D3")))
@@ -1260,7 +1225,7 @@ public class MapData {
                          0, 80, null,
                          new ArrayList<>(Arrays.asList("DES3_C1"))),
                  new StartPosition("DES3_E1", 3, 24, FroggerMapStartRotation.EAST, 4, 30,
-                         11, 80, null,
+                         11, 80, FULL_SQUARE_UVS,
                          new ArrayList<>(Arrays.asList("DES3_E1", "DES3_F1"))),
                  new StartPosition("DES3_F1", 11, 32, FroggerMapStartRotation.SOUTH, 5, 30,
                          0, 80, null,

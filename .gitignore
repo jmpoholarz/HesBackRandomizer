@@ -26,6 +26,7 @@ nppBackup
 # Godot 4+ specific ignores
 .godot/
 /android/
+/godotsrc/logs
 
 logs/*
 # Let's not leak filesystem details if possible
