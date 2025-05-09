@@ -162,8 +162,6 @@ public class Randomizer {
                 continue;
             }
 
-            removeFrogletRings(mapFile, frogPositions);
-
             // Randomize start location
             StartPosition startPos = startPositions.get(random.nextInt(startPositions.size()));
 
@@ -172,7 +170,8 @@ public class Randomizer {
             mapFile.getGeneralPacket().setStartRotation(startPos.rotation);
             mapFile.getGeneralPacket().setStartingTimeLimit(calculate_map_timer(mapFile, startPos));
 
-            removeFroggerTargets(mapFile, startPositions, startPos);
+            relocateFroggerTarget(mapFile, startPositions, startPos);
+            removeFrogletRings(mapFile, frogPositions, startPos.ringTextureIndex);
 
             // Remove all frogs that are forbidden from this startPosition
             frogPositions.removeIf(frogletPos -> startPos.bannedFroglets.contains(frogletPos.id));
@@ -246,8 +245,7 @@ public class Randomizer {
                     System.out.println("Changed texture in " + mapFile.getFileDisplayName() + " at " +
                             frogPos.tileX + "," + frogPos.tileZ + " from " +
                             poly.getTextureId() + " to " + frogPos.ringTextureIndex);
-
-                    poly.setTextureId((short) frogPos.ringTextureIndex);
+                    retextureTile(poly, mapFile, frogPos.defaultTextureIndex, frogPos.ringTextureIndex, false);
 
                     // Remove animation from the tile if there is one
                     for (FroggerMapAnimation mapAnimation : mapFile.getAnimationPacket().getAnimations()) {
@@ -274,7 +272,13 @@ public class Randomizer {
         }
     }
 
-    public void removeFrogletRings(FroggerMapFile mapFile, ArrayList<FrogPosition> frogPositions) {
+    /**
+     * Must be run after moving the start location.
+     * @param mapFile
+     * @param frogPositions
+     * @param startPosTexture
+     */
+    public void removeFrogletRings(FroggerMapFile mapFile, ArrayList<FrogPosition> frogPositions, int startPosTexture) {
         // Remove all Frog Circle markers
         for (FrogPosition frogPos : frogPositions) {
             if (frogPos.tileX == -1 || frogPos.tileZ == -1
@@ -284,17 +288,21 @@ public class Randomizer {
             FroggerGridStack gridStack = mapFile.getGridPacket().getGridStack(frogPos.tileX, frogPos.tileZ);
             FroggerMapPolygon poly = gridStack.getGridSquares().get(frogPos.stackIndex).getPolygon();
 
+            if (poly.getTextureId() == startPosTexture) {
+                // Don't reset the texture if this has the Frogger start target already set on it
+                continue;
+            }
+
             if (poly.getTextureId() != frogPos.defaultTextureIndex) {
                 System.out.println("Reset texture in " + mapFile.getFileDisplayName() + " at " +
                         frogPos.tileX + "," + frogPos.tileZ + " from " + poly.getTextureId()
                         + " to " + frogPos.defaultTextureIndex);
-
-                poly.setTextureId((short) frogPos.defaultTextureIndex);
+                retextureTile(poly, mapFile, frogPos.ringTextureIndex, frogPos.defaultTextureIndex, false);
             }
         }
     }
 
-    public void removeFroggerTargets(FroggerMapFile mapFile, ArrayList<StartPosition> startPositions, StartPosition startPos) {
+    public void relocateFroggerTarget(FroggerMapFile mapFile, ArrayList<StartPosition> startPositions, StartPosition startPos) {
         // Remove all start Target markers except for the selected
         for (StartPosition startOption : startPositions) {
             if (startOption.x == -1 || startOption.z == -1 || startOption.ringTextureIndex == -1) {
@@ -306,37 +314,40 @@ public class Randomizer {
             if (startPos.x == startOption.x && startPos.z == startOption.z) {
                 // If the optional start tile was actually selected as the start,
                 // Add the target on that tile if supported
-                if (startOption.ringTextureIndex != -1) {
 
-                    // None of the Frogger starts are ever under an overhang, so we can assume always 0 for the index
-                    FroggerMapPolygon poly = gridStack.getGridSquares().get(0).getPolygon();
-
+                // None of the Frogger starts are ever under an overhang, so we can assume always 0 for the index
+                FroggerMapPolygon poly = gridStack.getGridSquares().get(0).getPolygon();
+                if (poly.getTextureId() != ((short) startPos.ringTextureIndex)) {
+                    /*
+                     * Only set if it's not already the target so avoid an issue in SUB1 where the start is a
+                     * tri-tile, and doing the normal neighbor check would bleed the target into a bunch of
+                     * neighboring tris.
+                     */
                     System.out.println("Changed start texture in " + mapFile.getFileDisplayName() + " at " +
                             startOption.x + "," + startOption.z + " from " + poly.getTextureId() +
                             " to " + startOption.ringTextureIndex);
+                    retextureTile(poly, mapFile, startOption.defaultTextureIndex, startOption.ringTextureIndex, false);
+                }
 
-                    poly.setTextureId((short) startOption.ringTextureIndex);
-
-                    // Remove animation from the tile if there is one
-                    for (FroggerMapAnimation mapAnimation : mapFile.getAnimationPacket().getAnimations()) {
-                        List<FroggerMapAnimationTargetPolygon> uvs = mapAnimation.getTargetPolygons();
-                        uvs.removeIf(uv -> {
-                            boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
-                            //if (ret) System.out.println("Was true");
-                            return ret;
-                        });
+                // Remove animation from the tile if there is one
+                for (FroggerMapAnimation mapAnimation : mapFile.getAnimationPacket().getAnimations()) {
+                    List<FroggerMapAnimationTargetPolygon> uvs = mapAnimation.getTargetPolygons();
+                    uvs.removeIf(uv -> {
+                        boolean ret = verticesMatch(uv.getPolygon().getVertices(), poly.getVertices());
+                        //if (ret) System.out.println("Was true");
+                        return ret;
+                    });
+                }
+                // Set Tile UVs if provided
+                if (startPos.UVs != null) {
+                    // Could probably change the UVs to SCByteTextureUV instead but let's try this first
+                    SCByteTextureUV[] textureUVs = new SCByteTextureUV[startPos.UVs.length];
+                    for (int i = 0; i < startPos.UVs.length; i++) {
+                        textureUVs[i] = new SCByteTextureUV(startPos.UVs[i].getU(), startPos.UVs[i].getV());
                     }
-                    // Set Tile UVs if provided
-                    if (startPos.UVs != null) {
-                        // Could probably change the UVs to SCByteTextureUV instead but let's try this first
-                        SCByteTextureUV[] textureUVs = new SCByteTextureUV[startPos.UVs.length];
-                        for (int i = 0; i < startPos.UVs.length; i++) {
-                            textureUVs[i] = new SCByteTextureUV(startPos.UVs[i].getU(), startPos.UVs[i].getV());
-                        }
-                        poly.setTextureUvs(textureUVs);
-                        System.out.println("Setting UVs in " + mapFile.getFileDisplayName() + " at " +
-                                startPos.x + "," + startPos.z);
-                    }
+                    poly.setTextureUvs(textureUVs);
+                    System.out.println("Setting UVs in " + mapFile.getFileDisplayName() + " at " +
+                            startPos.x + "," + startPos.z);
                 }
             }
             else {
@@ -344,37 +355,132 @@ public class Randomizer {
                 // Find all polygons with a matching vertex with the target graphic
                 FroggerMapPolygon poly = gridStack.getGridSquares().get(0).getPolygon();
 
-                ArrayList<int[]> targetMarkedPolys = new ArrayList<>();
-                targetMarkedPolys.add(poly.getVertices()); // polys which had target graphic
-                List<FroggerMapPolygon> polysToCheck = mapFile.getPolygonPacket().getPolygons();
-                for (int i = 0; i < polysToCheck.size(); i++) {
-                    FroggerMapPolygon mapPolygon = polysToCheck.get(i);
-                    try {
-                        if (mapPolygon.getTextureId() == startOption.ringTextureIndex
-                                && startOption.defaultTextureIndex != -1) {
-                            for (int[] entry : targetMarkedPolys) {
-                                if (verticesMatch(entry, mapPolygon.getVertices())) {
-                                    continue;
-                                }
-                                if (verticesIntersect(entry, mapPolygon.getVertices())) {
-                                    // Set them to the default texture
-                                    mapPolygon.setTextureId((short) startOption.defaultTextureIndex);
-                                    /*
-                                     * Add the poly just changed to the list of polys to
-                                     * check because another poly with the target graphic
-                                     * may share a vertex with one of them but not the
-                                     * main poly from the original tile provided
-                                     */
-                                    targetMarkedPolys.add(mapPolygon.getVertices());
-                                    // Restart at the beginning of the list of polys in
-                                    // case any were missed initially
-                                    i = -1;
-                                }
-                            }
-                        }
-                    } catch (Exception ignored) {}
-                }
+                retextureTile(poly, mapFile, startOption.ringTextureIndex, startOption.defaultTextureIndex, true);
+
+
+//                ArrayList<int[]> targetMarkedPolys = new ArrayList<>();
+//                targetMarkedPolys.add(poly.getVertices()); // polys which had target graphic
+//                List<FroggerMapPolygon> polysToCheck = mapFile.getPolygonPacket().getPolygons();
+//                for (int i = 0; i < polysToCheck.size(); i++) {
+//                    FroggerMapPolygon mapPolygon = polysToCheck.get(i);
+//                    try {
+//                        if (mapPolygon.getTextureId() == startOption.ringTextureIndex
+//                                && startOption.defaultTextureIndex != -1) {
+//                            for (int[] entry : targetMarkedPolys) {
+//                                if (verticesMatch(entry, mapPolygon.getVertices())) {
+//                                    continue;
+//                                }
+//                                if (verticesIntersect(entry, mapPolygon.getVertices())) {
+//                                    // Set them to the default texture
+//                                    mapPolygon.setTextureId((short) startOption.defaultTextureIndex);
+//                                    /*
+//                                     * Add the poly just changed to the list of polys to
+//                                     * check because another poly with the target graphic
+//                                     * may share a vertex with one of them but not the
+//                                     * main poly from the original tile provided
+//                                     */
+//                                    targetMarkedPolys.add(mapPolygon.getVertices());
+//                                    // Restart at the beginning of the list of polys in
+//                                    // case any were missed initially
+//                                    i = -1;
+//                                }
+//                            }
+//                        }
+//                    } catch (Exception ignored) {}
+//                }
             }
         }
     }
+
+
+    public void retextureTile(
+            FroggerMapPolygon poly,
+            FroggerMapFile mapFile,
+            int currentTextureIndex,
+            int desiredTextureIndex,
+            boolean forceNeighborCheck
+    ) {
+        if (poly.getVertices().length == 3 || forceNeighborCheck) {
+            retextureSplitTile(poly, mapFile, currentTextureIndex, desiredTextureIndex);
+        } else {
+            retextureFullTile(poly, desiredTextureIndex);
+        }
+    }
+
+    /**
+     * Updates a tile from the current texture to the desired texture.  Starts with the given polygon and checks if
+     * neighboring polygons are the same texture.  If they are, they're also updated to the desired texture.
+     *
+     * Some tiles are made up of multiple triangles or multiple smaller quads rather than just being a single quad.
+     * This makes updating the texture more difficult because it needs to be applied to all of the polygons that make
+     * up a particular tile.  Additionally, the grid stack for a given coordinate only gives one of the polys.
+     *
+     * To get around this, we take the starting poly, record its coordinates, and look through all of the polygons
+     * in the map for polygons that share a vertex and the same texture.  This should roughly update the correct
+     * polys, but there are some edge cases where this won't work (ex: if there are adjacent triangles with the
+     * same texture on different faces).  For now, ignoring those.
+     * @param startPoly The FroggerMapPolygon to start the search from.  Should have currentTextureIndex as its texture.
+     * @param mapFile The FroggerMapFile where the textures are being updated.
+     * @param currentTextureIndex The index of the texture being changed away from.
+     * @param desiredTextureIndex The index of the texture being updated to.
+     */
+    public void retextureSplitTile(FroggerMapPolygon startPoly, FroggerMapFile mapFile, int currentTextureIndex, int desiredTextureIndex) {
+        startPoly.setTextureId((short) desiredTextureIndex);
+        int startPolyVertCount = startPoly.getVertices().length;
+
+        ArrayList<int[]> foundPolys = new ArrayList<>();
+        foundPolys.add(startPoly.getVertices());
+
+        // Iterate through every polygon in the map and check if it intersects with any of the found polys
+        List<FroggerMapPolygon> polysToCheck = mapFile.getPolygonPacket().getPolygons();
+        for (int i = 0; i < polysToCheck.size(); i++) {
+            FroggerMapPolygon poly = polysToCheck.get(i);
+            try {
+                if (poly.getTextureId() != currentTextureIndex) {
+                    continue;
+                }
+                if (poly.getVertices().length != startPolyVertCount) {
+                    continue;
+                }
+                if ((poly.getVertices()[1] == 904 || poly.getVertices()[2] == 904)
+                        && mapFile.getFileDisplayName().equals("DES3.MAP")) {
+                    // Bandage solution to prevent ring graphic from bleeding in DES3_A1
+                    continue;
+                }
+                // Current poly matches the texture we're trying to change.  Now check if it's adjacent.
+                for (int[] entry : foundPolys) {
+                    // Skip adding the same poly multiple times
+                    if (verticesMatch(entry, poly.getVertices())) {
+                        continue;
+                    }
+                    if (verticesIntersect(entry, poly.getVertices())) {
+                        poly.setTextureId((short) desiredTextureIndex);
+                        /*
+                         * Add the poly just changed to the list of polys to
+                         * check because another poly with the target graphic
+                         * may share a vertex with one of them but not the
+                         * main poly from the original tile provided
+                         */
+                        foundPolys.add(poly.getVertices());
+                        // Restart at the beginning of the list of polys in
+                        // case any were missed initially
+                        i = -1;
+                    }
+                }
+
+            } catch (Exception ignored) {}
+        }
+    }
+
+    /**
+     * Updates a tile made up of a quad from the current texture to the desired texture.
+     *
+     * This is a wrapper function with a similar naming scheme as the tri variant.
+     * @param poly The quad to update to the desired texture.
+     * @param desiredTextureIndex The new texture index that should be applied to the tile.
+     */
+    public void retextureFullTile(FroggerMapPolygon poly, int desiredTextureIndex) {
+        poly.setTextureId((short) desiredTextureIndex);
+    }
 }
+
