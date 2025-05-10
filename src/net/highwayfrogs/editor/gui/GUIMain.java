@@ -53,10 +53,9 @@ public class GUIMain extends Application {
     @Getter private static final List<GameInstance> activeGameInstances = new CopyOnWriteArrayList<>();
 
     public static void main(String[] args) {
-        launch(GUIMain.class, args);
-
-        // Copy arguments to the Randomizer config
+        // Copy arguments to the Randomizer config then launch FrogLord
         RandomizerConfig.readArguments(args);
+        launch(GUIMain.class, args);
     }
 
     @Override
