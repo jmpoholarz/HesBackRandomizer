@@ -27,6 +27,7 @@ nppBackup
 .godot/
 /android/
 /godotsrc/logs
+/godotsrc/rcedit-x64.exe
 
 logs/*
 # Let's not leak filesystem details if possible
