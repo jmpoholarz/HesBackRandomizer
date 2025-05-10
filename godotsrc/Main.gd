@@ -27,9 +27,9 @@ func validate_all() -> bool:
 
 ##
 func do_randomization() -> String:
-	var froglord_args = [
-		"-jar", directory_path + "\\FrogLord.jar", 
-		"--version=" + str(general_settings.version),
+	var froglord_args: Array[String] = [
+		"-cp", directory_path + "/FrogLordR-0.3.jar", "net.highwayfrogs.editor.gui.GUIMain",  
+		"--version=" + str(general_settings.VERSION.find_key(general_settings.version)),
 		"--seed=" + str(general_settings.seed), 
 		"--timer_mode=" + str(timer_settings.mode),
 		"--timer_multiplier=" + str(timer_settings.multiplier),
@@ -39,9 +39,9 @@ func do_randomization() -> String:
 	print("Args: " + str(froglord_args))
 	
 	if general_settings.version == GeneralSettings.VERSION.PC:
-		return randomizer_launcher.do_pc_randomization(froglord_args, directory_path)
+		return await randomizer_launcher.do_pc_randomization(froglord_args, directory_path, str(general_settings.seed))
 	elif general_settings.version == GeneralSettings.VERSION.PSX:
-		return randomizer_launcher.do_psx_randomization(froglord_args, directory_path)
+		return await randomizer_launcher.do_psx_randomization(froglord_args, directory_path, str(general_settings.seed))
 	return "Error: Version not supported"
 
 
@@ -54,7 +54,7 @@ func _on_randomize_button_pressed() -> void:
 	if !validate_all():
 		return
 	
-	do_randomization()
+	var response: String = await do_randomization()
 	
 	#
 	#
