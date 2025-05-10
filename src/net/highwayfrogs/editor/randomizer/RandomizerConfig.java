@@ -65,6 +65,7 @@ public class RandomizerConfig {
      */
     public static void readArguments(String[] args) {
         for (String s : args) {
+            System.out.println("Argument: `" + s + "`");
             // General Settings
             if (s.startsWith("--seed=") && s.length() > 7) {
                 seed = Long.parseLong(s.substring(7));
