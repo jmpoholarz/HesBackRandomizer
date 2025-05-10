@@ -43,6 +43,10 @@ public class RandomizedFileSaver {
      * @param outputFolder The folder to save the seed file to.
      */
     private void writeSeedToFile(File outputFolder) {
+        if (RandomizerConfig.version == RandomizerConfig.VERSION.PSX) {
+            outputFolder = outputFolder.getParentFile();
+        }
+
         try {
             FileWriter writer = new FileWriter(new File(outputFolder, "seed.txt"));
             writer.write("Seed: " + RandomizerConfig.seed);
