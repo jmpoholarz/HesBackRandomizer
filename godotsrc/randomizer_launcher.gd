@@ -94,9 +94,9 @@ func run_dumpsxiso(base_path: String) -> void:
 
 
 ##
-func run_mkpsxiso(base_path: String, seed: String) -> void: # TODO: Make this overwrite existing file so it doesn't get stuck
+func run_mkpsxiso(base_path: String, seed: String) -> void:
 	var mkpsxiso_path: String = base_path + "/mkpsxiso.exe"
-	var mkpsxiso_args: Array[String] = ["-y", "-o", base_path + "/frogger_randomized_" + seed + ".bin", base_path + "/frogger.xml"]
+	var mkpsxiso_args: Array[String] = ["-y", "-o", base_path + "/frogger_randomized.bin", base_path + "/frogger.xml"]
 	print("mkpsxiso_path : " + mkpsxiso_path)
 	print("mkpsxiso_args : " + str(mkpsxiso_args))
 	var output: Array = []
