@@ -1151,13 +1151,13 @@ public class MapData {
          START_LOCATIONS.put("SWP3.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("SWP3_A1", 15, 4, FroggerMapStartRotation.NORTH, 0, 40,
                          -1, -1, null,
-                         new ArrayList<>()), //ignoring since too complicated to overwrite and mostly out of view anyway
-                 new StartPosition("SWP3_B1", 13, 18, FroggerMapStartRotation.NORTH, 1, 34,
-                         1, 75, null,
-                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), //TODO: Need to move so camera doesn't flip out
-                 new StartPosition("SWP3_D1", 17, 18, FroggerMapStartRotation.NORTH, 3, 34,
-                         15, 75, null,
-                         new ArrayList<>()) //TODO: Need to move so camera doesn't flip out
+                         new ArrayList<>()) //ignoring since too complicated to overwrite and mostly out of view anyway
+//                 new StartPosition("SWP3_B1", 13, 18, FroggerMapStartRotation.NORTH, 1, 34,
+//                         1, 75, null,
+//                         new ArrayList<>(Arrays.asList("SWP3_B1", "SWP3_B2"))), // Camera flips out due to the ceiling grate
+//                 new StartPosition("SWP3_D1", 17, 18, FroggerMapStartRotation.NORTH, 3, 34,
+//                         15, 75, null,
+//                         new ArrayList<>()) // Camera flips out due to the ceiling grate
          )));
          START_LOCATIONS.put("SWP4.MAP", new ArrayList<>(Arrays.asList(
                  new StartPosition("SWP4_A2", 14, 12, FroggerMapStartRotation.NORTH, 0, 45,
