@@ -1,30 +1,138 @@
 <p align="center">
 Powered by<br>
-<img src="https://github.com/Kneesnap/FrogLord/blob/master/resources/graphics/logo-large.png?raw=true" width="50%" height="50%">
+<img src="https://github.com/Kneesnap/FrogLord/blob/master/resources/graphics/logo-large.png?raw=true" width="50%" height="50%" alt="Froglord Logo">
 </p>
 
 # Frogger He's Back Randomizer
+
 ![Randomizer screenshot collage](media/HBRandoAlpha2Screen1.png)
+
 ## How does it work?
+
 The randomizer scrambles player starting position and froglet 
 locations in each level allowing you to experience the levels
 from a new perspective.  Explore new paths.  Develop new
 strategies.
 ![Randomizer snippet](media/HBRandoDev1e.gif)
+
 The randomizer requires a copy of Frogger: He's Back (1997)
 to run.
 
-## How to use:
-1. Make a backup of your frogger.exe and frogpsx.mwd before use.
-2. Place FroggerHesBackRandomizer.exe, FroggerHesBackRandomizer.pck, 
-and FrogLord.jar in a folder.
-3. Launch FroggerHesBackRandomizer.exe and follow instructions
+> ✅ New in v0.3, PSX is now supported in addition to the PC version!
 
-## What is FrogLord?
-FrogLord is a modding suite for Frogger (1997). It allows 
-fans to create new levels, import 3D models, view unused content, 
-and allow changing all game files.
-To use this tool, you must have a copy of the game.
+# Setup
+
+> ⚠️ The randomizer has only been tested on Windows devices.  Mac and Linux support is not guaranteed.
+> If you try these out, do share whether they work!
+
+## 1. Install Java 8 JDK
+
+This version of the Randomizer still runs on Java 8.  You can install the Java 8 JDK provided by
+[OpenJDK](https://www.openlogic.com/openjdk-downloads?field_java_parent_version_target_id=416&field_operating_system_target_id=436&field_architecture_target_id=391&field_java_package_target_id=396).
+
+The randomizer has been tested with versions 8u442-b06 and 8u262-b10, but other versions likely work as well.
+Start with the latest available and try an older version if that one fails.
+
+## 2. Download the Randomizer
+
+Download the latest version of the randomizer from the [Releases Page](https://github.com/jmpoholarz/HesBackRandomizer/releases).
+You will need all three files under `Assets`.  
+
+Place these files together in a folder, from here referred to as your **BASE_PATH**.
+
+Proceed to PC or PSX directions depending on your version of the game.
+
+## PC
+
+### 3. Locate FROGPSX.MWD and Frogger.exe files
+
+The randomizer needs access to two files that come with your PC installation of Frogger.
+
+Copy both `FROGPSX.MWD` and `Frogger.exe` to your **BASE_PATH** directory which should now contain the following:
+
+![PCFiles.png](media/PCFiles.png)
+
+> ⛔ Avoid using any spaces in **BASE_PATH** if possible.  There's a known bug with the randomizer where
+> spaces will break some of the automatic file renaming.
+
+### 4. Launch the Randomizer
+
+Open `FroggerHesBackRandomizer.exe` and customize the settings to your liking.
+
+Navigate to **BASE_PATH** in the `Base Path` file selection window.  Then click the `Randomize` button.
+
+When the FrogLord window opens, select `Frogger: He's Back` in the `Game` dropdown.
+
+Select your version in the `Version` dropdown.  If you're unsure, try `PC Retail v1.0 (UK)` or the `v3.0` options.
+
+Provide your `FROGPSX.MWD` and `Frogger.exe` files to the next two file select prompts.
+
+Finally, hit `Load`.  The randomizer will launch and update your files.
+
+### 5. Copy Randomized FROGPSX.MWD and Frogger.exe back to Install Directory
+
+Once FrogLord exits, you will see some new files in your **BASE_PATH** directory.
+
+- `frogger.exe.bck` : This is an unmodified copy of your `frogger.exe` file.
+- `FROGPSX.MWD.bck` : This is an unmodified copy of your `FROGPSX.MWD` file.
+- `seed.txt` : This contains the seed number used to generate your files.  If you encounter any bugs, be sure to share the seed.
+
+The `frogger.exe` and `FROGPSX.MWD` will be updated with the randomization in place.  Copy these back to your
+Frogger installation directory, and launch the game as you would normally!
+
+To generate another seed, you can rename `frogger.exe.bck` back to `frogger.exe` and `FROGPSX.MWD.bck` back to
+`FROGPSX.MWD` and run the randomizer again.
+
+## PSX
+
+### 3. Locate Frogger (Track 1).bin
+
+Your PSX Frogger disc likely contains three files: `Frogger (Track 1).bin`, `Frogger (Track 2).bin`, and 
+`Frogger.cue`.  The Track 1 bin file contains the game files needed for the randomizer.  Copy this to your
+**BASE_PATH** directory and rename it to `frogger.bin`
+
+### 4. Download dumpsxiso.exe and mkpsxiso.exe
+
+The PSX files are packed into the `.bin` file and need to be extracted for the Randomizer to edit them.
+
+Download [mkpsxiso-2.10-win64.zip](https://github.com/Lameguy64/mkpsxiso/releases/tag/v2.10), and extract
+to find `dumpsxiso.exe` and `mkpsxiso.exe` in the bin folder.  Move these to your **BASE_PATH**.
+
+![PSXFiles.png](media/PSXFiles.png)
+
+### 5. Launch the Randomizer
+
+Open `FroggerHesBackRandomizer.exe` and customize the settings to your liking.
+
+Navigate to **BASE_PATH** in the `Base Path` file selection window.  Then click the `Randomize` button.
+
+When the FrogLord window opens, select `Frogger: He's Back` in the `Game` dropdown.
+
+Select your version in the `Version` dropdown. 
+If you're unsure, try `PSX Master USA [NTSC/SLUS-00506] (Build 71)` or `PSX Master EUR [PAL/SLES-00704] (Build 75)`.
+
+You may have noticed the randomizer extracted `frogger.bin` into a new `frogger` folder.
+In the next two file select prompts, select `FROGPSX.MWD` and then `SLUS_005.06` from this new folder.
+
+Finally, hit `Load`.  The randomizer will launch, make its changes, and repack your files.
+
+### 6. Copy Files Back
+
+Once FrogLord exits, you will see some new files in your **BASE_PATH** directory.
+
+- `frogger_randomized.bin` : This is a new packed image with the included randomizer changes.  You can run this like you would run the original `Frogger (Track 1).bin`. 
+- `seed.txt` : This contains the seed number used to generate your files.  If you encounter any bugs, be sure to share the seed.
+
+To generate another seed, you can run the randomizer again.  Note that it will automatically overwrite
+the relevant files.
+
+
+# Troubleshooting
+
+The Randomizer interface may provide error text if something goes wrong.  If you're unable to determine the
+problem, check the `C:\Users\<User>\AppData\Roaming\Godot\app_userdata\HesBackRandomizerGUI\logs` directory
+(accessible if you search `%appdata%` in the file explorer) for the full log output.
+
 
 
 ## Also Visit:
@@ -34,28 +142,10 @@ https://highwayfrogs.net/
 
 https://highwayfrogs.net/thread/26/discord-group
 
-## Getting Started:
-Download FrogLord [here](https://github.com/Kneesnap/FrogLord/releases).  
-If you need any help, have questions, or want to get in touch, don't hesitate to talk to us on our [website](https://highwayfrogs.net/) or our [discord server](https://discord.gg/GSNCbCN).
-
-## Join the Community: [![Join the discord server!](https://dcbadge.limes.pink/api/server/https://discord.gg/GSNCbCN)](https://discord.gg/GSNCbCN)
+### Join the Community: [![Join the discord server!](https://dcbadge.limes.pink/api/server/https://discord.gg/GSNCbCN)](https://discord.gg/GSNCbCN)
 Need help? Want to find/share mods? Talk with other Frogger fans? Join our [discord server](https://discord.gg/GSNCbCN).
 
-## Screenshots:
-![MAP Viewer](/_repository/level-screenshot.png)
-![MOF Viewer](/_repository/model-screenshot.png)
-
-## Supported Games
-| Name                     | # of Supported Builds | Support Notes                  |
-|--------------------------|-----------------------|--------------------------------|
-| Beast Wars: Transformers | PC: 1, PSX: 1         | Support WIP.                   |
-| C-12 Final Resistance    | PSX: 16               | Support WIP.                   |
-| Frogger He's Back        | PC: 6, PSX: 67        | Map editing not yet finalized. |
-| Frogger: The Great Quest | PC: 1, PS2: 3         | Support WIP.                   |
-| MediEvil                 | PSX: 38               | Support WIP.                   |
-| MediEvil II              | PSX: 16               | Support WIP.                   |
-| Moon Warrior             | PSX: 1                | Support WIP.                   |
-
+-----
 
 ## Build Instructions:
 
