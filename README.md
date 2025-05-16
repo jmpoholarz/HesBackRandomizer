@@ -133,6 +133,8 @@ The Randomizer interface may provide error text if something goes wrong.  If you
 problem, check the `C:\Users\<User>\AppData\Roaming\Godot\app_userdata\HesBackRandomizerGUI\logs` directory
 (accessible if you search `%appdata%` in the file explorer) for the full log output.
 
+> ⚠️ You may need to close the Randomizer GUI for the log file to appear.
+
 
 
 ## Also Visit:

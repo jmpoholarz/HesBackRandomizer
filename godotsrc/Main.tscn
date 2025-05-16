@@ -93,6 +93,7 @@ size_flags_vertical = 3
 
 [node name="SuccessPopup" type="AcceptDialog" parent="MainWindow"]
 unique_name_in_owner = true
+title = "Success!"
 size = Vector2i(179, 226)
 dialog_autowrap = true
 
@@ -112,12 +113,7 @@ theme_override_constants/margin_bottom = 8
 [node name="Label" type="Label" parent="MainWindow/SuccessPopup/MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Game randomized.
-
-Updated files:
-  frogger.exe
-  frogpsx.mwd
-  seed.txt"
+text = "Game has been randomized."
 
 [node name="RandomizerLauncher" type="Node" parent="."]
 unique_name_in_owner = true

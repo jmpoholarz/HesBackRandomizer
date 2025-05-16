@@ -54,15 +54,14 @@ func _on_randomize_button_pressed() -> void:
 	if !validate_all():
 		return
 	
+	randomize_button.disabled = true
 	var response: String = await do_randomization()
-	
-	#
-	#
-	#
-	#if exit_code == 0:
-		#success_popup.popup_centered()
-	#else:
-		#error_popup_label.text = (
-			#"Could not randomize.  Error code " + str(exit_code) + " " + str(output)
-		#)
-		#error_popup.popup_centered()
+
+	if response == "0":
+		success_popup.popup_centered()
+	else:
+		error_popup_label.text = (
+			"Could not randomize.  FrogLord exited with " + response + ".  Check the output logs for more information."
+		)
+		error_popup.popup_centered()
+	randomize_button.disabled = false

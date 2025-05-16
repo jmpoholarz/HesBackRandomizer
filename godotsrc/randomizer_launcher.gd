@@ -5,7 +5,7 @@ extends Node
 ##
 func do_pc_randomization(froglord_args: Array[String], base_path: String, seed: String) -> String:
 	# froglord.jar
-	run_froglord(froglord_args)
+	var froglord_exit_code = run_froglord(froglord_args)
 	await get_tree().process_frame
 	
 	# mv original files to .bck
@@ -17,16 +17,7 @@ func do_pc_randomization(froglord_args: Array[String], base_path: String, seed: 
 	move_file(base_path + "/FROGPSX-MODIFIED.MWD", base_path + "/FROGPSX.MWD")
 	move_file(base_path + "/frogger-modified.exe", base_path + "/frogger.exe")
 	await get_tree().process_frame
-	return ""
-	
-	# ["/C", "move 
-	# C:\\Users\\Jonathan\\Documents\\Dev\\FrogLord\\HesBackRandomizer\\out\\0.3\\New folder\\FROGPSX.MWD 
-	# C:\\Users\\Jonathan\\Documents\\Dev\\FrogLord\\HesBackRandomizer\\out\\0.3\\New folder\\FROGPSX.MWD.bck"
-	# ]
-	
-	# ["/C", "move 
-	# C:\\Users\\Jonathan\\Documents\\Dev\\FrogLord\\HesBackRandomizer\\out\\0.3\\frogger\\SLUS_005-modified.exe 
-	# C:\\Users\\Jonathan\\Documents\\Dev\\FrogLord\\HesBackRandomizer\\out\\0.3\\frogger\\SLUS_005.06"]
+	return str(froglord_exit_code)
 
 
 ##
@@ -36,7 +27,7 @@ func do_psx_randomization(froglord_args: Array[String], base_path: String, seed:
 	await get_tree().process_frame
 	
 	# froglord.jar
-	run_froglord(froglord_args)
+	var froglord_exit_code = run_froglord(froglord_args)
 	await get_tree().process_frame
 	
 	# mv original files to .bck
@@ -55,7 +46,7 @@ func do_psx_randomization(froglord_args: Array[String], base_path: String, seed:
 	
 	# rename mkpsxiso.bin and .cue (?)
 	
-	return ""
+	return str(froglord_exit_code)
 
 
 ##
