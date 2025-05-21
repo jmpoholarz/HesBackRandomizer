@@ -42,7 +42,7 @@ Start with the latest available and try an older version if that one fails.
 ## 2. Download the Randomizer
 
 Download the latest version of the randomizer from the [Releases Page](https://github.com/jmpoholarz/HesBackRandomizer/releases).
-You will need all three files under `Assets`.  
+You will need all three files in the zip file under `Assets`.  
 
 Place these files together in a folder, from here referred to as your **BASE_PATH**.
 
