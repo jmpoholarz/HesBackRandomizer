@@ -7,13 +7,20 @@ Powered by<br>
 
 ![Randomizer screenshot collage](media/HBRandoAlpha2Screen1.png)
 
+<div style="text-align: center;">
+<h2> v0.3 Trailer </h2>
+
+[![Randomizer v0.3 Trailer](https://img.youtube.com/vi/dQK81khEZcg/0.jpg)](https://www.youtube.com/watch?v=dQK81khEZcg)
+</div>
+
 ## How does it work?
 
 The randomizer scrambles player starting position and froglet 
 locations in each level allowing you to experience the levels
 from a new perspective.  Explore new paths.  Develop new
 strategies.
-![Randomizer snippet](media/HBRandoDev1e.gif)
+
+[//]: # (![Randomizer snippet]&#40;media/HBRandoDev1e.gif&#41;)
 
 The randomizer requires a copy of Frogger: He's Back (1997)
 to run.
